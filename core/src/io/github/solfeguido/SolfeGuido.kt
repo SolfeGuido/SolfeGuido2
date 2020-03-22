@@ -3,6 +3,7 @@ package io.github.solfeguido
 import com.badlogic.gdx.ApplicationListener
 import com.badlogic.gdx.Gdx
 import com.badlogic.gdx.assets.AssetManager
+import io.github.solfeguido.core.Jingles
 import io.github.solfeguido.core.SoundHelper
 import io.github.solfeguido.core.StateMachine
 import io.github.solfeguido.scenes.MenuScreen
@@ -28,6 +29,7 @@ class SolfeGuido : ApplicationListener {
         ), SplashScreen::class.java)
         context.register {
             bindSingleton(NoteDataPool())
+            bindSingleton(Jingles(context))
             bindSingleton(AssetManager())
             bindSingleton(SoundHelper(context))
             bindSingleton(stateMachine)
