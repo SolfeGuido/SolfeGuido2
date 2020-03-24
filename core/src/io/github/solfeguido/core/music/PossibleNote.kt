@@ -1,47 +1,35 @@
 package io.github.solfeguido.core.music
 
-import java.lang.Error
+interface PossibleNote {
 
-abstract class PossibleNote {
+    fun getNaturalNote() : NoteNameEnum
 
-    abstract fun getNaturalNote() : NoteNameEnum
+    fun getFlatNote() : NoteNameEnum
 
-    abstract fun getFlatNote() : NoteNameEnum
-
-    abstract fun getSharpNote(): NoteNameEnum
+    fun getSharpNote(): NoteNameEnum
 }
 
-class ConstantNote(private val constantName: NoteNameEnum) : PossibleNote() {
+class ConstantNote(private val constantName: NoteNameEnum) : PossibleNote {
     override fun getNaturalNote() = constantName
-    override fun getFlatNote() = constantName
-    override fun getSharpNote() = constantName
+    override fun getFlatNote() = NoteNameEnum.None
+    override fun getSharpNote() = NoteNameEnum.None
 }
 
-class FlatOrSharpNote(private val flatNote: NoteNameEnum, private val sharpNote: NoteNameEnum) : PossibleNote() {
-    override fun getNaturalNote() = sharpNote//Sharp by default
+class FlatOrSharpNote(private val flatNote: NoteNameEnum, private val sharpNote: NoteNameEnum) : PossibleNote {
+    override fun getNaturalNote() = NoteNameEnum.None
     override fun getFlatNote() = flatNote
     override fun getSharpNote() = sharpNote
 }
 
-class NaturalOrFlatOrSharp(
-        private val naturalNote: NoteNameEnum,
-        private val flatNote: NoteNameEnum,
-        private val sharpNote: NoteNameEnum
-) : PossibleNote() {
+class NaturalOrSharpNote(private val naturalNote: NoteNameEnum, private val sharpNote: NoteNameEnum) : PossibleNote {
     override fun getNaturalNote() = naturalNote
-    override fun getFlatNote() = sharpNote
-    override fun getSharpNote() = flatNote
-}
-
-class NaturalOrSharpNote(private val naturalNote: NoteNameEnum, private val sharpNote: NoteNameEnum) : PossibleNote() {
-    override fun getNaturalNote() = naturalNote
-    override fun getFlatNote() = naturalNote
+    override fun getFlatNote() = NoteNameEnum.None
     override fun getSharpNote() = sharpNote
 }
 
-class NaturalOrFlatNote(private val naturalNote: NoteNameEnum, private val flatNote: NoteNameEnum): PossibleNote() {
+class NaturalOrFlatNote(private val naturalNote: NoteNameEnum, private val flatNote: NoteNameEnum): PossibleNote {
     override fun getNaturalNote() = naturalNote
     override fun getFlatNote() = flatNote
-    override fun getSharpNote() = naturalNote
+    override fun getSharpNote() = NoteNameEnum.None
 
 }

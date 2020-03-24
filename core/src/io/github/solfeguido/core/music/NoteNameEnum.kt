@@ -7,5 +7,6 @@ enum class NoteNameEnum(val value: String) {
     F("F"),
     G("G"),
     A("A"),
-    B("B")
+    B("B"),
+    None("NONE")
 }
