@@ -7,6 +7,7 @@ import io.github.solfeguido.Constants
 import io.github.solfeguido.utils.NoteDataPool
 import ktx.collections.toGdxSet
 import ktx.inject.Context
+import ktx.log.info
 
 class SoundHelper(private val context: Context) {
 
@@ -40,14 +41,14 @@ class SoundHelper(private val context: Context) {
             var abovePitch = 1f
             val aboveNote = pool.cloneNote(note)
             while(true) {
-                belowNote.prevIndex()
+                belowNote -= 1
                 belowPitch += 1f/12f
                 if(noteExists(belowNote)) {
                     assetManager.get<Sound>(toAssetName(belowNote)).play(volume, belowPitch, 0f)
                     break
                 }
-                aboveNote.nextIndex()
-                abovePitch -= 1f/12f
+                aboveNote += 1
+                abovePitch -= 0.5f/12f
                 if(noteExists(aboveNote)) {
                     assetManager.get<Sound>(toAssetName(aboveNote)).play(volume, abovePitch, 0f)
                     break

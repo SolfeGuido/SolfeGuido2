@@ -1,5 +1,6 @@
 package io.github.solfeguido.core
 
+import com.badlogic.gdx.audio.Music
 import com.badlogic.gdx.utils.OrderedSet
 import com.badlogic.gdx.utils.Pool
 import io.github.solfeguido.core.music.*
@@ -31,14 +32,29 @@ data class MusicalNote(
         private fun naturalIndexOf(name: NoteNameEnum) = NOTE_NAMES.indexOfFirst {  it.getNaturalNote() == name  }
     }
 
-    fun nextIndex() = this.also { midiIndex-- }
+    fun nextIndex() = this.also { midiIndex++ }
 
     fun prevIndex() = this.also { midiIndex-- }
 
-    fun getName(preferSharp: Boolean = true) {
-        val idx = midiIndex % 12
-        val note = idx / 2f
+    operator fun plusAssign(other: MusicalNote) {
+        plusAssign(other.midiIndex)
     }
+
+    operator fun minusAssign(other: MusicalNote) {
+        minusAssign(other.midiIndex)
+    }
+
+    operator fun plusAssign(other: Int) {
+        this.midiIndex += other
+    }
+
+    operator fun minusAssign(other: Int) {
+        this.midiIndex -= other
+    }
+
+    override fun equals(other: Any?) = (other is MusicalNote) && other.midiIndex == midiIndex
+
+    operator fun compareTo(other: MusicalNote) =  this.midiIndex - other.midiIndex
 
     override fun reset() {
         midiIndex = 50
