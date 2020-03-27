@@ -6,50 +6,40 @@ import com.badlogic.gdx.files.FileHandle
 import com.badlogic.gdx.utils.ObjectMap
 import com.badlogic.gdx.utils.Timer
 import io.github.solfeguido.Constants
-import io.github.solfeguido.utils.NoteDataPool
+import io.github.solfeguido.midi.MidiFile
+import io.github.solfeguido.midi.event.NoteOn
 import ktx.collections.gdxMapOf
 import ktx.inject.Context
 
-
-data class JingleNote(val after: Float = 0f,
-                      val note: String = "",
-                      val volume: Float = 1f
-){
-
-}
-
-data class Jingle(
-        val notes: List<JingleNote> = emptyList()
-) {
-}
-
 class Jingles(
         val context: Context,
-        private val jingles: ObjectMap<String, Jingle> = gdxMapOf<String, Jingle>()
+        private val jingles: ObjectMap<String, MidiFile> = gdxMapOf()
 ) {
 
     val allJingles: Array<FileHandle> by lazy {
-        Gdx.files.internal(Constants.JINGLES_PATH).list()
+        Gdx.files.internal(Constants.JINGLES_PATH).list().filter { it.extension().endsWith("mid") }.toTypedArray()
     }
 
     fun playJingle(name: String): Boolean {
         if(!jingles.containsKey(name)) return false
         val jingle = jingles[name]
-        jingle.notes.forEach{
-            Timer.schedule(object: Timer.Task() {
-                override fun run() {
-                    val pool: NoteDataPool = context.inject()
-                    pool.withString(it.note){
-                        note -> context.inject<SoundHelper>().playNote(note, it.volume)
+        if(jingle.trackCount == 0) return false
+        jingle.tracks.forEach {
+            it.events.filterIsInstance<NoteOn>()
+                    .filter { it.velocity > 0 }
+                    .forEach {
+                        Timer.schedule(object: Timer.Task() {
+                            override fun run() {
+                                context.inject<SoundHelper>().playNote(it.noteValue)
+                            }
+                        }, it.tick / 1000f)
                     }
-                }
-            }, it.after)
         }
         return true
     }
 
     fun registerJingles(assetManager: AssetManager) {
-        allJingles.forEach {
+        allJingles.filter { assetManager.contains(it.path()) }.forEach {
             jingles.put(it.nameWithoutExtension(), assetManager.get(it.path()))
         }
     }

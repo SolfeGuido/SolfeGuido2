@@ -37,10 +37,18 @@ class NoteDataPool : Pool<MusicalNote>() {
         return obtain().also { it.fromData(name, level, accidentalEnum) }
     }
 
+    fun get(midiIndex : Int) = obtain().also { it.midiIndex = midiIndex }
+
     fun cloneNote(obj : MusicalNote) = obtain().also { it.midiIndex = obj.midiIndex }
 
     inline fun withString(str: String, action : (MusicalNote) -> Unit) {
         val note = fromString(str)
+        action(note)
+        free(note)
+    }
+
+    inline fun withIndex(idx : Int, action: (MusicalNote) -> Unit) {
+        val note = get(idx)
         action(note)
         free(note)
     }

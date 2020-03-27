@@ -2,61 +2,74 @@ package io.github.solfeguido.core
 
 import com.badlogic.gdx.assets.AssetManager
 import com.badlogic.gdx.audio.Sound
-import com.badlogic.gdx.utils.ObjectSet
 import io.github.solfeguido.Constants
 import io.github.solfeguido.utils.NoteDataPool
-import ktx.collections.toGdxSet
+import ktx.collections.*
 import ktx.inject.Context
-import ktx.log.info
+
+typealias SoundMap = GdxMap<MusicalNote, Pair<Int, Float>>
 
 class SoundHelper(private val context: Context) {
 
-    val existingSounds : ObjectSet<MusicalNote>
+    private val loadedSounds :GdxSet<MusicalNote> = GdxSet()
+    val existingSounds : SoundMap
 
     init {
-        (11..30).map {  }
-        existingSounds = listOf(
+        existingSounds=  listOf(
                 "A" to (1..5),
                 "C" to (2..6),
                 "D#" to (2..6),
                 "F#" to (2..6)
         ).map {
-            pair -> pair.second.map { context.inject<NoteDataPool>().fromString("${pair.first}$it") }
+            pair -> pair.second.map {
+                val note = context.inject<NoteDataPool>().fromString("${pair.first}$it")
+                loadedSounds.add(note)
+                 note to (note.midiIndex to 1f)
+            }
         }.flatten()
-         .toGdxSet()
+        .toGdxMap(0, defaultLoadFactor, {it.second}, {it.first})
+
     }
 
-    private fun toAssetName(note: MusicalNote) = "${Constants.MUSICALNOTES_PATH}/$note.mp3"
+    private fun toAssetName(note: MusicalNote) = toAssetName(note.midiIndex)
+    private fun toAssetName(midiIndex: Int) = "${Constants.MUSICALNOTES_PATH}/$midiIndex.mp3"
 
-    private fun noteExists(note: MusicalNote) = existingSounds.contains(note)
+    private fun isLoadedSound(note: MusicalNote) = loadedSounds.contains(note)
+
+    private fun noteExists(note: MusicalNote) = existingSounds.containsKey(note)
+
+    private fun ensureNoteExists(note: MusicalNote) {
+        if(noteExists(note)) return
+        val pool : NoteDataPool = context.inject()
+        var belowPitch = 1f
+        val belowNote = pool.cloneNote(note)
+        var abovePitch = 1f
+        val aboveNote = pool.cloneNote(note)
+        while(true) {
+            belowNote -= 1
+            belowPitch += 1f/12f
+            if(isLoadedSound(belowNote)) {
+                existingSounds.put(pool.cloneNote(note), (belowNote.midiIndex to belowPitch))
+                break
+            }
+            aboveNote += 1
+            abovePitch -= 0.5f/12f
+            if(isLoadedSound(aboveNote)) {
+                existingSounds.put(pool.cloneNote(note), (aboveNote.midiIndex to abovePitch))
+                break
+            }
+        }
+        pool.free(aboveNote)
+        pool.free(belowNote)
+    }
+
+    fun playNote(midiIndex: Int, volume: Float = 1f) {
+        context.inject<NoteDataPool>().withIndex(midiIndex) { playNote(it, volume) }
+    }
 
     fun playNote(note: MusicalNote, volume: Float = 1f) {
-        val assetManager: AssetManager = context.inject()
-        if(noteExists(note)) {
-            assetManager.get<Sound>(toAssetName(note)).play(volume)
-        } else {
-            val pool : NoteDataPool = context.inject()
-            var belowPitch = 1f
-            val belowNote = pool.cloneNote(note)
-            var abovePitch = 1f
-            val aboveNote = pool.cloneNote(note)
-            while(true) {
-                belowNote -= 1
-                belowPitch += 1f/12f
-                if(noteExists(belowNote)) {
-                    assetManager.get<Sound>(toAssetName(belowNote)).play(volume, belowPitch, 0f)
-                    break
-                }
-                aboveNote += 1
-                abovePitch -= 0.5f/12f
-                if(noteExists(aboveNote)) {
-                    assetManager.get<Sound>(toAssetName(aboveNote)).play(volume, abovePitch, 0f)
-                    break
-                }
-            }
-            pool.free(belowNote)
-            pool.free(aboveNote)
-            // Find the closest note and play it
-        }
+        ensureNoteExists(note)
+        val assetData = existingSounds[note]!!
+        context.inject<AssetManager>().get<Sound>(toAssetName(assetData.first)).play(volume, assetData.second, 0f)
     }
 }
