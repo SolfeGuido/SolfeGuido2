@@ -25,8 +25,9 @@ import ktx.collections.toGdxArray
 import ktx.log.info
 import java.io.BufferedInputStream
 import java.io.File
+import java.io.InputStream
 
-class MidiFile(file: File) {
+class MidiFile(inputStream: InputStream) {
 
     val type: Int
     val trackCount: Int
@@ -49,7 +50,7 @@ class MidiFile(file: File) {
     }
 
     init {
-        val inBuffer = BufferedInputStream(file.inputStream())
+        val inBuffer = BufferedInputStream(inputStream)
         val buffer = ByteArray(HEADER_SIZE)
         inBuffer.read(buffer)
 

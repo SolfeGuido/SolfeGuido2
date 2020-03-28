@@ -15,19 +15,11 @@ class SoundHelper(private val context: Context) {
     val existingSounds : SoundMap
 
     init {
-        existingSounds=  listOf(
-                "A" to (1..5),
-                "C" to (2..6),
-                "D#" to (2..6),
-                "F#" to (2..6)
-        ).map {
-            pair -> pair.second.map {
-                val note = context.inject<NoteDataPool>().fromString("${pair.first}$it")
+        existingSounds=  (33..90 step 3).map {
+                val note = context.inject<NoteDataPool>().fromIndex(it)
                 loadedSounds.add(note)
                  note to (note.midiIndex to 1f)
-            }
-        }.flatten()
-        .toGdxMap(0, defaultLoadFactor, {it.second}, {it.first})
+        }.toGdxMap(0, defaultLoadFactor, {it.second}, {it.first})
 
     }
 
@@ -70,6 +62,7 @@ class SoundHelper(private val context: Context) {
     fun playNote(note: MusicalNote, volume: Float = 1f) {
         ensureNoteExists(note)
         val assetData = existingSounds[note]!!
+        println("$assetData")
         context.inject<AssetManager>().get<Sound>(toAssetName(assetData.first)).play(volume, assetData.second, 0f)
     }
 }

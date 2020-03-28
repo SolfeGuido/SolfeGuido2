@@ -55,5 +55,6 @@ class NoteDataPool : Pool<MusicalNote>() {
 
     fun fromString(str: String) = obtain().fromString(str)
 
+    fun fromIndex(midiIndex : Int) = obtain().also { it.midiIndex = midiIndex }
 
 }

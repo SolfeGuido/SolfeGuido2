@@ -2,6 +2,8 @@ package io.github.solfeguido.scenes
 
 import com.badlogic.gdx.assets.AssetManager
 import com.badlogic.gdx.assets.loaders.resolvers.InternalFileHandleResolver
+import com.badlogic.gdx.assets.loaders.resolvers.LocalFileHandleResolver
+import com.badlogic.gdx.audio.Music
 import com.badlogic.gdx.audio.Sound
 import com.badlogic.gdx.graphics.Texture
 import com.badlogic.gdx.scenes.scene2d.ui.Label
@@ -75,10 +77,12 @@ class SplashScreen(context: Context) : UIScreen(context) {
     override fun render(delta: Float) {
         super.render(delta)
         if(assetManager.update()){
+            assetManager.finishLoading()
             Scene2DSkin.defaultSkin = getDefaultSkin(context.inject())
             val jingles : Jingles = context.inject()
             jingles.registerJingles(assetManager)
             jingles.playJingle("Startup")
+            //jingles.playAllNotes()
             context.inject<StateMachine>().switch<MenuScreen>()
         }
         val progress = (( (totalAssets - assetManager.queuedAssets) / totalAssets.toFloat()) * 100).toInt()

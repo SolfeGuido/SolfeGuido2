@@ -20,6 +20,22 @@ class Jingles(
         Gdx.files.internal(Constants.JINGLES_PATH).list().filter { it.extension().endsWith("mid") }.toTypedArray()
     }
 
+    fun playAllNotes() {
+        var wait = 3000
+        (33..90).forEach {
+            Gdx.app.postRunnable {
+
+            }
+            Timer.schedule(object: Timer.Task() {
+                override fun run() {
+                    println("Play $it")
+                    context.inject<SoundHelper>().playNote(it)
+                }
+            }, wait / 1000f)
+            wait += 500
+        }
+    }
+
     fun playJingle(name: String): Boolean {
         if(!jingles.containsKey(name)) return false
         val jingle = jingles[name]

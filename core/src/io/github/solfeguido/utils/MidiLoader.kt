@@ -17,7 +17,7 @@ class MidiLoader(fileHandleResolver: FileHandleResolver)  : AsynchronousAssetLoa
     class MidiLoaderParameter() : AssetLoaderParameters<MidiFile>()
 
     override fun loadSync(manager: AssetManager?, fileName: String?, file: FileHandle?, parameter: MidiLoaderParameter?): MidiFile {
-        midiFile = MidiFile(file!!.file())
+        midiFile = MidiFile(if(fileName == null) file!!.read() else resolve(fileName).read())
         return midiFile!!
     }
 
@@ -26,6 +26,6 @@ class MidiLoader(fileHandleResolver: FileHandleResolver)  : AsynchronousAssetLoa
     }
 
     override fun loadAsync(manager: AssetManager?, fileName: String?, file: FileHandle?, parameter: MidiLoaderParameter?) {
-        midiFile = MidiFile(file!!.file())
+        midiFile = MidiFile(if(fileName == null) file!!.read() else resolve(fileName).read())
     }
 }
