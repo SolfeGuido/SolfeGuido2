@@ -58,7 +58,7 @@ class SplashScreen(context: Context) : UIScreen(context) {
         soundHelper.existingSounds.forEach {
             assetManager.load<Sound>("sounds/notes/${it.key}.mp3")
         }
-        assetManager.load<Sound>("sounds/click.wav")
+        assetManager.load<Sound>(Constants.CLICK_SOUND)
 
         assetManager.registerFreeTypeFontLoaders(replaceDefaultBitmapFontLoader = true)
         assetManager.loadFreeTypeFont("fonts/Oswald.ttf") {

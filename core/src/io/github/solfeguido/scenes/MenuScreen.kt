@@ -1,7 +1,10 @@
 package io.github.solfeguido.scenes
 
 import com.badlogic.gdx.Gdx
+import com.badlogic.gdx.assets.AssetManager
+import com.badlogic.gdx.audio.Sound
 import com.badlogic.gdx.utils.Align
+import io.github.solfeguido.Constants
 import io.github.solfeguido.ui.UIScreen
 import io.github.solfeguido.ui.iconButton
 import io.github.solfeguido.utils.IconName
@@ -30,6 +33,7 @@ class MenuScreen(context: Context) : UIScreen(context) {
                     iconButton(IconName.Info) {
                         onClick {
                             //Slide to other state
+                            context.inject<AssetManager>().get<Sound>(Constants.CLICK_SOUND).play()
                         }
                         pad(5f)
                     }.inCell.expandX().top().left()

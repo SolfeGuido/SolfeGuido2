@@ -18,7 +18,7 @@ fun getDefaultSkin(assetManager: AssetManager): Skin{
         }
         label(name = "iconStyle") {
             font = assetManager.get<BitmapFont>("fonts/Icons.ttf")
-            font.data.setScale(.7f)
+            font.data.setScale(2f)
         }
         textButton( name=  "iconButtonStyle") {
             font = assetManager.get<BitmapFont>("fonts/Icons.ttf")
