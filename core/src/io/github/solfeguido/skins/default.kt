@@ -5,25 +5,24 @@ import com.badlogic.gdx.graphics.Color
 import com.badlogic.gdx.graphics.g2d.BitmapFont
 import com.badlogic.gdx.scenes.scene2d.ui.Skin
 import ktx.freetype.loadFreeTypeFont
-import ktx.style.button
-import ktx.style.label
-import ktx.style.skin
-import ktx.style.textButton
+import ktx.style.*
 
 fun getDefaultSkin(assetManager: AssetManager): Skin{
     return skin {
+        val self = this
+        color("font", 68f/255f, 68f/255f, 68f/255f,  1f)
+        color("fontHover", 0.8f, 0.8f, 0.8f, 1f)
         label {
             font = assetManager.get<BitmapFont>("fonts/MarckScript.ttf")
-            fontColor = Color.BLACK
+            fontColor = Color(self.getColor("font"))
         }
         label(name = "iconStyle") {
-            fontColor = Color.BLACK
             font = assetManager.get<BitmapFont>("fonts/Icons.ttf")
-            font.data.setScale(.5f)
+            font.data.setScale(.7f)
         }
         textButton( name=  "iconButtonStyle") {
-            fontColor = Color.BLACK
             font = assetManager.get<BitmapFont>("fonts/Icons.ttf")
+            fontColor = self.getColor("font")
         }
     }
 }

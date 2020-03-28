@@ -62,7 +62,6 @@ class SoundHelper(private val context: Context) {
     fun playNote(note: MusicalNote, volume: Float = 1f) {
         ensureNoteExists(note)
         val assetData = existingSounds[note]!!
-        println("$assetData")
         context.inject<AssetManager>().get<Sound>(toAssetName(assetData.first)).play(volume, assetData.second, 0f)
     }
 }

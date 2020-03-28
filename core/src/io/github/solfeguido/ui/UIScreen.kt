@@ -8,6 +8,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.Skin
 import ktx.actors.stage
 import ktx.app.KtxScreen
 import ktx.inject.Context
+import ktx.log.info
 import ktx.scene2d.KWidget
 import ktx.scene2d.Scene2DSkin
 import ktx.scene2d.actor
@@ -38,7 +39,7 @@ abstract class UIScreen(protected val context: Context) : KtxScreen {
         Gdx.gl.glClearColor(1f, 1f, 1f, 0f)
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT)
 
-        stage.act(delta)
+        stage.act()
         stage.draw()
 
     }

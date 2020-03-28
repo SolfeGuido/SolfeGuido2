@@ -2,11 +2,10 @@ package io.github.solfeguido.scenes
 
 import com.badlogic.gdx.assets.AssetManager
 import com.badlogic.gdx.assets.loaders.resolvers.InternalFileHandleResolver
-import com.badlogic.gdx.assets.loaders.resolvers.LocalFileHandleResolver
-import com.badlogic.gdx.audio.Music
 import com.badlogic.gdx.audio.Sound
 import com.badlogic.gdx.graphics.Texture
 import com.badlogic.gdx.scenes.scene2d.ui.Label
+import com.badlogic.gdx.scenes.scene2d.ui.ProgressBar
 import io.github.solfeguido.Constants
 import io.github.solfeguido.core.Jingles
 import io.github.solfeguido.core.SoundHelper
@@ -24,6 +23,7 @@ import ktx.scene2d.Scene2DSkin
 import ktx.scene2d.label
 import ktx.scene2d.table
 import ktx.assets.setLoader
+import ktx.scene2d.progressBar
 
 
 class SplashScreen(context: Context) : UIScreen(context) {
@@ -31,12 +31,19 @@ class SplashScreen(context: Context) : UIScreen(context) {
     private var totalAssets : Int = 0
     private var assetManager : AssetManager = context.inject()
     private lateinit var progressLabel: Label
+    private lateinit var pBar : ProgressBar
 
     override fun show() {
         super.show()
         stage += table {
             setFillParent(true)
             progressLabel = label("0%")
+            row()
+            pBar = progressBar {
+                this.setRange(0f, 100f)
+                this.setAnimateDuration(0.1f)
+            }
+            pBar.inCell.expandX().fillX()
         }
 
         val soundHelper: SoundHelper = context.inject()
@@ -82,10 +89,10 @@ class SplashScreen(context: Context) : UIScreen(context) {
             val jingles : Jingles = context.inject()
             jingles.registerJingles(assetManager)
             jingles.playJingle("Startup")
-            //jingles.playAllNotes()
             context.inject<StateMachine>().switch<MenuScreen>()
         }
         val progress = (( (totalAssets - assetManager.queuedAssets) / totalAssets.toFloat()) * 100).toInt()
         progressLabel.setText("$progress%")
+        pBar.value = progress.toFloat()
     }
 }
