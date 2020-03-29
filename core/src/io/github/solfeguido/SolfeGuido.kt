@@ -28,7 +28,6 @@ class SolfeGuido : ApplicationListener {
                 SplashScreen::class.java to { SplashScreen(context) }
         ), SplashScreen::class.java)
         context.register {
-            bindSingleton(NoteDataPool())
             bindSingleton(Jingles(context))
             bindSingleton(AssetManager())
             bindSingleton(SoundHelper(context))

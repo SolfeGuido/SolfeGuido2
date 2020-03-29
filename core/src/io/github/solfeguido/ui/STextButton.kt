@@ -73,9 +73,4 @@ class STextButton(text: String, style: TextButton.TextButtonStyle) : Button(), K
         })
     }
 
-    override fun draw(batch: Batch?, parentAlpha: Float) {
-        // Maybe draw stuff
-        super.draw(batch, parentAlpha)
-    }
-
 }

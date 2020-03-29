@@ -10,7 +10,7 @@ import ktx.collections.gdxSetOf
 import ktx.log.info
 
 data class MusicalNote(
-        var midiIndex: Int
+        var midiIndex: Int = 60
 ) : Pool.Poolable {
 
     companion object {

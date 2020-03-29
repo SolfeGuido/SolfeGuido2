@@ -3,6 +3,7 @@ package io.github.solfeguido.scenes
 import com.badlogic.gdx.Gdx
 import com.badlogic.gdx.assets.AssetManager
 import com.badlogic.gdx.audio.Sound
+import com.badlogic.gdx.scenes.scene2d.actions.Actions
 import com.badlogic.gdx.utils.Align
 import io.github.solfeguido.Constants
 import io.github.solfeguido.ui.UIScreen
@@ -44,8 +45,11 @@ class MenuScreen(context: Context) : UIScreen(context) {
                 iconButton(IconName.Cog) {
                     label.setAlignment(Align.topRight)
                     onClick {
+                        setOrigin(Align.center)
+                        this.addAction(Actions.rotateBy(360f, 0.3f))
                         info { "Show options" }
                     }
+                    pad(5f)
                 }.inCell.expandX().top().right()
                 pad(10f)
                 inCell.expandX().fillX()
