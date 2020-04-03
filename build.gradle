@@ -22,7 +22,7 @@ allprojects {
     ext {
         appName = "Solfeguido"
         gdxVersion = '1.9.10'
-        ktxVersion = '1.9.10-SNAPSHOT'
+        ktxVersion = '1.9.10-b4'
         roboVMVersion = '2.3.8'
         aiVersion = '1.8.0'
     }

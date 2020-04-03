@@ -2,7 +2,7 @@ package io.github.solfeguido.core
 
 import com.badlogic.gdx.assets.AssetManager
 import com.badlogic.gdx.audio.Sound
-import io.github.solfeguido.Constants
+import io.github.solfeguido.config.Constants
 import io.github.solfeguido.utils.NoteDataPool
 import ktx.collections.*
 import ktx.inject.Context

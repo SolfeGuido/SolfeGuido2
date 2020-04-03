@@ -4,7 +4,7 @@ import com.badlogic.gdx.assets.AssetManager
 import com.badlogic.gdx.graphics.Color
 import com.badlogic.gdx.graphics.g2d.BitmapFont
 import com.badlogic.gdx.scenes.scene2d.ui.Skin
-import ktx.freetype.loadFreeTypeFont
+import io.github.solfeguido.config.Constants
 import ktx.style.*
 
 fun getDefaultSkin(assetManager: AssetManager): Skin{
@@ -13,7 +13,7 @@ fun getDefaultSkin(assetManager: AssetManager): Skin{
         color("font", 68f/255f, 68f/255f, 68f/255f,  1f)
         color("fontHover", 0.8f, 0.8f, 0.8f, 1f)
         label {
-            font = assetManager.get<BitmapFont>("fonts/MarckScript.ttf")
+            font = assetManager.get<BitmapFont>(Constants.TITLE_FONT)
             fontColor = Color(self.getColor("font"))
         }
         label(name = "iconStyle") {

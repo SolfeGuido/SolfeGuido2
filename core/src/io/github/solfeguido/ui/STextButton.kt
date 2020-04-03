@@ -1,7 +1,6 @@
 package io.github.solfeguido.ui
 
 import com.badlogic.gdx.graphics.Color
-import com.badlogic.gdx.graphics.g2d.Batch
 import com.badlogic.gdx.math.Interpolation
 import com.badlogic.gdx.scenes.scene2d.Actor
 import com.badlogic.gdx.scenes.scene2d.InputEvent
@@ -12,7 +11,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.Skin
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener
 import com.badlogic.gdx.utils.Align
-import io.github.solfeguido.Constants
+import io.github.solfeguido.config.Constants
 import io.github.solfeguido.utils.gCol
 import ktx.scene2d.KTable
 import  ktx.style.get

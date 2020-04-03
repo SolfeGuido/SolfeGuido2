@@ -5,7 +5,7 @@ import com.badlogic.gdx.assets.AssetManager
 import com.badlogic.gdx.files.FileHandle
 import com.badlogic.gdx.utils.ObjectMap
 import com.badlogic.gdx.utils.Timer
-import io.github.solfeguido.Constants
+import io.github.solfeguido.config.Constants
 import io.github.solfeguido.midi.MidiFile
 import io.github.solfeguido.midi.event.NoteOn
 import ktx.collections.gdxMapOf

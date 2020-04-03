@@ -5,13 +5,15 @@ import com.badlogic.gdx.assets.AssetManager
 import com.badlogic.gdx.assets.loaders.resolvers.InternalFileHandleResolver
 import com.badlogic.gdx.audio.Sound
 import com.badlogic.gdx.graphics.Texture
+import com.badlogic.gdx.graphics.g2d.freetype.FreeTypeFontGenerator
 import com.badlogic.gdx.graphics.g2d.freetype.FreetypeFontLoader
 import com.badlogic.gdx.scenes.scene2d.ui.Label
 import com.badlogic.gdx.scenes.scene2d.ui.ProgressBar
-import io.github.solfeguido.Constants
+import io.github.solfeguido.config.Constants
 import io.github.solfeguido.core.Jingles
 import io.github.solfeguido.core.SoundHelper
 import io.github.solfeguido.core.StateMachine
+import io.github.solfeguido.enums.IconName
 import io.github.solfeguido.midi.MidiFile
 import io.github.solfeguido.skins.getDefaultSkin
 import io.github.solfeguido.ui.UIScreen
@@ -25,7 +27,6 @@ import ktx.scene2d.Scene2DSkin
 import ktx.scene2d.label
 import ktx.scene2d.table
 import ktx.assets.setLoader
-import ktx.log.info
 import ktx.scene2d.progressBar
 
 
@@ -64,19 +65,22 @@ class SplashScreen(context: Context) : UIScreen(context) {
         assetManager.load<Sound>(Constants.CLICK_SOUND)
 
 
+        FreeTypeFontGenerator.setMaxTextureSize(2048)
         assetManager.registerFreeTypeFontLoaders(replaceDefaultBitmapFontLoader = true)
 
-        info { "${Gdx.graphics.height / 2}" }
         assetManager.load("bigIcon.ttf", FreetypeFontLoader.FreeTypeFontLoaderParameter().also {
+
             it.fontFileName = Constants.ICONS_PATH
             with(it.fontParameters){
                 size = Gdx.graphics.height / 2
                 minFilter = Texture.TextureFilter.Linear
                 magFilter = Texture.TextureFilter.Linear
+                characters = IconName.values().joinToString("") { it.value }
+                kerning = false
             }
         })
 
-        assetManager.loadFreeTypeFont("fonts/Oswald.ttf") {
+        assetManager.loadFreeTypeFont(Constants.PRIMARY_FONT) {
             size = Constants.TITLE_SIZE
             minFilter = Texture.TextureFilter.Linear
             magFilter = Texture.TextureFilter.Linear
@@ -89,7 +93,7 @@ class SplashScreen(context: Context) : UIScreen(context) {
             it.fontParameters.magFilter = Texture.TextureFilter.Linear
         })
 
-        assetManager.loadFreeTypeFont("fonts/MarckScript.ttf") {
+        assetManager.loadFreeTypeFont(Constants.TITLE_FONT) {
             size = Constants.TITLE_SIZE
             minFilter = Texture.TextureFilter.Linear
             magFilter = Texture.TextureFilter.Linear

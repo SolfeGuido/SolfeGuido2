@@ -5,7 +5,8 @@ import com.badlogic.gdx.assets.AssetManager
 import com.badlogic.gdx.audio.Sound
 import com.badlogic.gdx.scenes.scene2d.actions.Actions
 import com.badlogic.gdx.utils.Align
-import io.github.solfeguido.Constants
+import io.github.solfeguido.config.Constants
+import io.github.solfeguido.enums.ClefEnum
 import io.github.solfeguido.ui.UIScreen
 import io.github.solfeguido.ui.iconButton
 import io.github.solfeguido.enums.IconName
@@ -57,7 +58,7 @@ class MenuScreen(context: Context) : UIScreen(context) {
             }
             row()
             val padding = 0f
-            measure {
+            measure(ClefEnum.FClef) {
             }.inCell.grow().pad(padding, 0f, padding, 0f)
             row()
             slidingTable(Align.bottomLeft) {
