@@ -8,7 +8,7 @@ import com.badlogic.gdx.utils.Align
 import io.github.solfeguido.Constants
 import io.github.solfeguido.ui.UIScreen
 import io.github.solfeguido.ui.iconButton
-import io.github.solfeguido.utils.IconName
+import io.github.solfeguido.enums.IconName
 import ktx.actors.onClick
 import ktx.actors.plusAssign
 import ktx.inject.Context

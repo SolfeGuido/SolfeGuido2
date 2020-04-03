@@ -1,4 +1,4 @@
-package io.github.solfeguido.utils
+package io.github.solfeguido.enums
 
 enum class  IconName(val value: String) {
     Home            ("A"),
