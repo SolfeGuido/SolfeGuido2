@@ -5,6 +5,8 @@ import com.badlogic.gdx.graphics.GL20
 import com.badlogic.gdx.graphics.g2d.SpriteBatch
 import com.badlogic.gdx.scenes.scene2d.Stage
 import com.badlogic.gdx.scenes.scene2d.ui.Skin
+import com.badlogic.gdx.utils.viewport.FillViewport
+import com.badlogic.gdx.utils.viewport.Viewport
 import ktx.actors.stage
 import ktx.app.KtxScreen
 import ktx.inject.Context
@@ -22,8 +24,13 @@ abstract class UIScreen(protected val context: Context) : KtxScreen {
     override fun show() {
         super.show()
         batch = SpriteBatch()
-        stage = stage(batch)
+        stage = stage(batch, FillViewport(Gdx.graphics.width.toFloat(), Gdx.graphics.height.toFloat()))
         Gdx.input.inputProcessor = stage
+    }
+
+    override fun resize(width: Int, height: Int) {
+        super.resize(width, height)
+        stage.viewport.update(width, height)
     }
 
     fun <S> KWidget<S>.slidingTable(

@@ -3,7 +3,9 @@ package io.github.solfeguido.ui
 import com.badlogic.gdx.scenes.scene2d.ui.Label
 import com.badlogic.gdx.scenes.scene2d.ui.Skin
 import com.badlogic.gdx.utils.IntIntMap
+import io.github.solfeguido.enums.ClefEnum
 import io.github.solfeguido.enums.IconName
+import io.github.solfeguido.enums.KeySignatureEnum
 import ktx.collections.defaultLoadFactor
 import ktx.collections.defaultMapSize
 import ktx.collections.set
@@ -28,6 +30,12 @@ inline fun <S> KWidget<S>.iconButton(
         init: (@Scene2dDsl STextButton).(S) -> Unit = {}) =
         actor(STextButton(icon.value, style, skin), init)
 
+
+inline fun <S> KWidget<S>.measure(
+        clef: ClefEnum = ClefEnum.GClef,
+        keySignature: KeySignatureEnum = KeySignatureEnum.CMajor,
+        init: (@Scene2dDsl Measure).(S) -> Unit = {}
+) = actor(Measure(clef, keySignature), init)
 
 fun gdxIntIntMapOf(vararg keysToValues: Pair<Int, Int>,
                                  initialCapacity: Int = defaultMapSize,

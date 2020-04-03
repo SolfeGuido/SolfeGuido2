@@ -17,11 +17,14 @@ fun getDefaultSkin(assetManager: AssetManager): Skin{
             fontColor = Color(self.getColor("font"))
         }
         label(name = "iconStyle") {
-            font = assetManager.get<BitmapFont>("fonts/Icons.ttf")
+            font = assetManager.get<BitmapFont>("icon.ttf")
             font.data.setScale(.9f)
         }
+        label(name = "bigIconStyle") {
+            font = assetManager.get<BitmapFont>("bigIcon.ttf")
+        }
         textButton( name=  "iconButtonStyle") {
-            font = assetManager.get<BitmapFont>("fonts/Icons.ttf")
+            font = assetManager.get<BitmapFont>("icon.ttf")
             fontColor = self.getColor("font")
         }
     }

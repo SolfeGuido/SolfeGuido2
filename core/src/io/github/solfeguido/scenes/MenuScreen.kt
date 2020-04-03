@@ -9,6 +9,7 @@ import io.github.solfeguido.Constants
 import io.github.solfeguido.ui.UIScreen
 import io.github.solfeguido.ui.iconButton
 import io.github.solfeguido.enums.IconName
+import io.github.solfeguido.ui.measure
 import ktx.actors.onClick
 import ktx.actors.plusAssign
 import ktx.inject.Context
@@ -55,9 +56,9 @@ class MenuScreen(context: Context) : UIScreen(context) {
                 inCell.expandX().fillX()
             }
             row()
-            table {
-                inCell.expand()
-            }
+            val padding = 0f
+            measure {
+            }.inCell.grow().pad(padding, 0f, padding, 0f)
             row()
             slidingTable(Align.bottomLeft) {
                 debug = true
