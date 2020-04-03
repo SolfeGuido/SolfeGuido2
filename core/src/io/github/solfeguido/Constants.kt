@@ -6,7 +6,7 @@ class Constants {
         const val JINGLES_PATH = "midi/jingles"
         const val SOUNDS_PATH = "sounds"
         const val MUSICALNOTES_PATH = "$SOUNDS_PATH/notes"
-        const val CLICK_SOUND = "$SOUNDS_PATH/click.ogg"
+        const val CLICK_SOUND = "$SOUNDS_PATH/click.mp3"
 
         // Animations
         const val PRESSED_SCALING = 0.7f
