@@ -1,4 +1,4 @@
-package io.github.solfeguido.core.music
+package io.github.solfeguido.enums
 
 enum class NoteAccidentalEnum(val value: String) {
     Natural(""),

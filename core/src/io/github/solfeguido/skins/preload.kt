@@ -6,7 +6,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.Skin
 import ktx.style.label
 import ktx.style.progressBar
 import ktx.style.skin
-import io.github.solfeguido.utils.colorDrawable
+import io.github.solfeguido.factories.colorDrawable
 
 
 const val PROGRESS_BAR_HEIGHT = 2

@@ -1,4 +1,4 @@
-package io.github.solfeguido.utils
+package io.github.solfeguido.midi
 
 import com.badlogic.gdx.assets.AssetDescriptor
 import com.badlogic.gdx.assets.AssetLoaderParameters
@@ -7,7 +7,6 @@ import com.badlogic.gdx.assets.loaders.AsynchronousAssetLoader
 import com.badlogic.gdx.assets.loaders.FileHandleResolver
 import com.badlogic.gdx.files.FileHandle
 import com.badlogic.gdx.utils.Array
-import io.github.solfeguido.midi.MidiFile
 import ktx.collections.gdxArrayOf
 
 class MidiLoader(fileHandleResolver: FileHandleResolver)  : AsynchronousAssetLoader<MidiFile, MidiLoader.MidiLoaderParameter>(fileHandleResolver){

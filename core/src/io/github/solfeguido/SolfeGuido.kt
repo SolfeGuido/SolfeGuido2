@@ -9,7 +9,6 @@ import io.github.solfeguido.core.StateMachine
 import io.github.solfeguido.scenes.MenuScreen
 import io.github.solfeguido.scenes.SplashScreen
 import io.github.solfeguido.skins.getPreloadSkin
-import io.github.solfeguido.utils.NoteDataPool
 import ktx.collections.gdxMapOf
 import ktx.inject.Context
 import ktx.scene2d.Scene2DSkin

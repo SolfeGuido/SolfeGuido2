@@ -1,20 +1,19 @@
-package io.github.solfeguido.utils
+package io.github.solfeguido.factories
 
-import com.badlogic.gdx.utils.Pool
 import com.badlogic.gdx.utils.Pools
-import io.github.solfeguido.core.music.NoteNameEnum
-import io.github.solfeguido.core.MusicalNote
-import io.github.solfeguido.core.music.NoteAccidentalEnum
+import io.github.solfeguido.enums.NoteNameEnum
+import io.github.solfeguido.core.MidiNote
+import io.github.solfeguido.enums.NoteAccidentalEnum
+import io.github.solfeguido.enums.NoteOrderEnum
 import ktx.collections.GdxArray
 import ktx.collections.gdxArrayOf
-import ktx.log.info
 
-object NoteDataPool{
+object MidiNotePool{
 
-    private val notesOrder: GdxArray<MusicalNote>
+    val NOTES_ORDER: GdxArray<MidiNote>
 
     init {
-        notesOrder = gdxArrayOf(
+        NOTES_ORDER = gdxArrayOf(
                 get(NoteNameEnum.C, 2, NoteAccidentalEnum.Natural),
                 get(NoteNameEnum.C, 2, NoteAccidentalEnum.Sharp),
                 get(NoteNameEnum.D, 2, NoteAccidentalEnum.Natural),
@@ -30,24 +29,24 @@ object NoteDataPool{
         )
     }
 
-    fun obtain() = Pools.obtain(MusicalNote::class.java)
-    fun free(note: MusicalNote) = Pools.free(note)
+    fun obtain() = Pools.obtain(MidiNote::class.java)
+    fun free(note: MidiNote) = Pools.free(note)
 
-    fun get(name: NoteNameEnum, level: Int, accidentalEnum: NoteAccidentalEnum = NoteAccidentalEnum.Natural) : MusicalNote {
+    fun get(name: NoteNameEnum, level: Int, accidentalEnum: NoteAccidentalEnum = NoteAccidentalEnum.Natural) : MidiNote {
         return obtain().also { it.fromData(name, level, accidentalEnum) }
     }
 
     fun get(midiIndex : Int) = obtain().also { it.midiIndex = midiIndex }
 
-    fun cloneNote(obj : MusicalNote) = obtain().also { it.midiIndex = obj.midiIndex }
+    fun cloneNote(obj : MidiNote) = obtain().also { it.midiIndex = obj.midiIndex }
 
-    inline fun withString(str: String, action : (MusicalNote) -> Unit) {
+    inline fun withString(str: String, action : (MidiNote) -> Unit) {
         val note = fromString(str)
         action(note)
         free(note)
     }
 
-    inline fun withIndex(idx : Int, action: (MusicalNote) -> Unit) {
+    inline fun withIndex(idx : Int, action: (MidiNote) -> Unit) {
         val note = get(idx)
         action(note)
         free(note)

@@ -1,7 +1,5 @@
 package io.github.solfeguido.enums
 
-import io.github.solfeguido.core.music.NoteAccidentalEnum
-
 enum class KeySignatureEnum(val symbol: NoteAccidentalEnum, val numberOf: Int, val scale: ScaleEnum) {
     //Major scale
     CMajor(NoteAccidentalEnum.Sharp, 0, ScaleEnum.Major),

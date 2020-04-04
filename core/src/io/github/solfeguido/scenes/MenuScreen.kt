@@ -8,10 +8,10 @@ import com.badlogic.gdx.utils.Align
 import io.github.solfeguido.config.Constants
 import io.github.solfeguido.enums.ClefEnum
 import io.github.solfeguido.ui.UIScreen
-import io.github.solfeguido.ui.iconButton
+import io.github.solfeguido.factories.iconButton
 import io.github.solfeguido.enums.IconName
 import io.github.solfeguido.enums.KeySignatureEnum
-import io.github.solfeguido.ui.measure
+import io.github.solfeguido.factories.measure
 import ktx.actors.onClick
 import ktx.actors.plusAssign
 import ktx.inject.Context
@@ -59,7 +59,7 @@ class MenuScreen(context: Context) : UIScreen(context) {
             }
             row()
             val padding = 0f
-            measure(ClefEnum.CClef4, KeySignatureEnum.CFlatMajor) {
+            measure(ClefEnum.GClef) {
             }.inCell.grow().pad(padding, 0f, padding, 0f)
             row()
             slidingTable(Align.bottomLeft) {

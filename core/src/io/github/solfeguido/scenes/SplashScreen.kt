@@ -17,7 +17,7 @@ import io.github.solfeguido.enums.IconName
 import io.github.solfeguido.midi.MidiFile
 import io.github.solfeguido.skins.getDefaultSkin
 import io.github.solfeguido.ui.UIScreen
-import io.github.solfeguido.utils.MidiLoader
+import io.github.solfeguido.midi.MidiLoader
 import ktx.actors.plusAssign
 import ktx.assets.load
 import ktx.freetype.loadFreeTypeFont

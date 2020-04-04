@@ -19,8 +19,7 @@ package io.github.solfeguido.midi.event
 
 import com.badlogic.gdx.math.MathUtils
 import com.badlogic.gdx.utils.IntIntMap
-import io.github.solfeguido.ui.gdxIntIntMapOf
-import ktx.collections.gdxIntIntMap
+import io.github.solfeguido.factories.gdxIntIntMapOf
 import java.io.InputStream
 import java.io.OutputStream
 

@@ -3,13 +3,16 @@ package io.github.solfeguido.actors
 import com.badlogic.gdx.graphics.g2d.Batch
 import com.badlogic.gdx.scenes.scene2d.ui.WidgetGroup
 import com.badlogic.gdx.scenes.scene2d.utils.Drawable
+import com.badlogic.gdx.utils.Pools
 import io.github.solfeguido.config.ClefConfig
 import io.github.solfeguido.config.KeySignatureConfig
 import io.github.solfeguido.enums.ClefEnum
 import io.github.solfeguido.enums.KeySignatureEnum
-import io.github.solfeguido.utils.colorDrawable
-import io.github.solfeguido.utils.gCol
-import ktx.log.info
+import io.github.solfeguido.factories.MidiNotePool
+import io.github.solfeguido.factories.NoteActorPool
+import io.github.solfeguido.factories.colorDrawable
+import io.github.solfeguido.factories.gCol
+import ktx.collections.gdxListOf
 
 
 class MeasureActor(val clef: ClefEnum = ClefEnum.GClef, val keySignature: KeySignatureEnum = KeySignatureEnum.CMajor) : WidgetGroup() {
@@ -25,6 +28,13 @@ class MeasureActor(val clef: ClefEnum = ClefEnum.GClef, val keySignature: KeySig
     private val clefPosition: ClefConfig = ClefConfig.ClefEquivalent[clef, ClefConfig.GClef]
     private val signatureActor = KeySignatureActor(this).also { addActor(it) }
 
+    private val notes = gdxListOf<NoteActor>()
+
+    init {
+        val test = NoteActorPool.generate(MidiNotePool.fromIndex(60), this)
+        notes.add(test)
+        addActor(test)
+    }
 
     override fun layout() {
         super.layout()
@@ -36,7 +46,7 @@ class MeasureActor(val clef: ClefEnum = ClefEnum.GClef, val keySignature: KeySig
         clefActor.setScale(scale)
         clefActor.y = lineSpace * clefPosition.baseLine
         signatureActor.x = clefActor.width * scale
-        signatureActor.y = (bottomLine - lineSpace * 1.5f)  + KeySignatureConfig.ClefTranslate[clef] * (lineSpace / 2)
+        signatureActor.y = (bottomLine - lineSpace * 1.5f)  + KeySignatureConfig.CLEF_TRANSLATE[clef] * (lineSpace / 2)
     }
 
     override fun draw(batch: Batch?, parentAlpha: Float) {

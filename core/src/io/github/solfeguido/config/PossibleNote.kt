@@ -1,4 +1,6 @@
-package io.github.solfeguido.core.music
+package io.github.solfeguido.config
+
+import io.github.solfeguido.enums.NoteNameEnum
 
 interface PossibleNote {
 
@@ -31,5 +33,4 @@ class NaturalOrFlatNote(private val naturalNote: NoteNameEnum, private val flatN
     override fun getNaturalNote() = naturalNote
     override fun getFlatNote() = flatNote
     override fun getSharpNote() = NoteNameEnum.None
-
 }

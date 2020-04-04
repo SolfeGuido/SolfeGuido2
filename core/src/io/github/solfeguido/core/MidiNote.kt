@@ -1,17 +1,21 @@
 package io.github.solfeguido.core
 
-import com.badlogic.gdx.audio.Music
-import com.badlogic.gdx.utils.OrderedSet
 import com.badlogic.gdx.utils.Pool
-import io.github.solfeguido.core.music.*
-import io.github.solfeguido.core.music.NoteNameEnum
+import io.github.solfeguido.config.ConstantNote
+import io.github.solfeguido.config.FlatOrSharpNote
+import io.github.solfeguido.config.NaturalOrFlatNote
+import io.github.solfeguido.config.NaturalOrSharpNote
+import io.github.solfeguido.config.PossibleNote
+import io.github.solfeguido.enums.NoteNameEnum
+import io.github.solfeguido.enums.NoteAccidentalEnum
 import ktx.collections.gdxArrayOf
-import ktx.collections.gdxSetOf
 import ktx.log.info
 
-data class MusicalNote(
+data class MidiNote(
         var midiIndex: Int = 60
 ) : Pool.Poolable {
+
+    // Idea: add 'preferFlat' boolean if use flat over sharp when possible
 
     companion object {
         private val NOTE_NAMES = gdxArrayOf<PossibleNote>(
@@ -29,18 +33,23 @@ data class MusicalNote(
                 NaturalOrFlatNote(NoteNameEnum.B, NoteNameEnum.C)
         )
 
-        private fun naturalIndexOf(name: NoteNameEnum) = NOTE_NAMES.indexOfFirst {  it.getNaturalNote() == name  }
+        fun naturalIndexOf(name: NoteNameEnum) = NOTE_NAMES.indexOfFirst {  it.getNaturalNote() == name  }
+
+        fun accidentalOf(index: Int) = NOTE_NAMES[index].let {
+            if(it.getNaturalNote() != NoteNameEnum.None) NoteAccidentalEnum.Natural
+            NoteAccidentalEnum.Sharp
+        }
     }
 
     fun nextIndex() = this.also { midiIndex++ }
 
     fun prevIndex() = this.also { midiIndex-- }
 
-    operator fun plusAssign(other: MusicalNote) {
+    operator fun plusAssign(other: MidiNote) {
         plusAssign(other.midiIndex)
     }
 
-    operator fun minusAssign(other: MusicalNote) {
+    operator fun minusAssign(other: MidiNote) {
         minusAssign(other.midiIndex)
     }
 
@@ -52,9 +61,9 @@ data class MusicalNote(
         this.midiIndex -= other
     }
 
-    override fun equals(other: Any?) = (other is MusicalNote) && other.midiIndex == midiIndex
+    override fun equals(other: Any?) = (other is MidiNote) && other.midiIndex == midiIndex
 
-    operator fun compareTo(other: MusicalNote) =  this.midiIndex - other.midiIndex
+    operator fun compareTo(other: MidiNote) =  this.midiIndex - other.midiIndex
 
     override fun reset() {
         midiIndex = 50
@@ -68,7 +77,7 @@ data class MusicalNote(
             name: NoteNameEnum,
             level: Int,
             accidental: NoteAccidentalEnum
-        ) : MusicalNote {
+        ) : MidiNote {
         midiIndex = (level + 1) * 12 + naturalIndexOf(name) + when(accidental) {
             NoteAccidentalEnum.Flat -> -1
             NoteAccidentalEnum.Natural  -> 0
@@ -78,7 +87,7 @@ data class MusicalNote(
     }
 
 
-    fun fromString(str: String) : MusicalNote {
+    fun fromString(str: String) : MidiNote {
         if(str.length < 2) return this// Can't do much
         val noteName = NoteNameEnum.valueOf(str[0].toString())
         return when (val levelOrAcc = str[1]) {

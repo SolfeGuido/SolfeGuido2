@@ -4,10 +4,9 @@ import com.badlogic.gdx.scenes.scene2d.Group
 import com.badlogic.gdx.scenes.scene2d.ui.Label
 import com.badlogic.gdx.scenes.scene2d.ui.WidgetGroup
 import io.github.solfeguido.config.KeySignatureConfig
-import io.github.solfeguido.core.music.NoteAccidentalEnum
+import io.github.solfeguido.enums.NoteAccidentalEnum
 import io.github.solfeguido.enums.ClefEnum
-import io.github.solfeguido.enums.IconName
-import io.github.solfeguido.utils.gCol
+import io.github.solfeguido.factories.gCol
 import ktx.collections.GdxArray
 import ktx.collections.gdxArrayOf
 import ktx.collections.toGdxArray
@@ -22,15 +21,15 @@ class KeySignatureActor(private val measure: MeasureActor) : WidgetGroup() {
     override fun getHeight() = totalHeight
 
     init {
-        val icon = getIcon(measure.keySignature.symbol)
+        val icon = KeySignatureConfig.getIcon(measure.keySignature.symbol)
         accidentals = (1..measure.keySignature.numberOf).map {
             val lbl = Label(icon.value, Scene2DSkin.defaultSkin, "bigIconStyle")
             val group = Group()
             group.addActor(lbl)
             lbl.color = gCol("font")
             lbl.pack()
-            group.x = 0f//(it * lbl.width)
-            group.y = 0f//pos[it-1].toFloat() * (measure.lineSpace / 2f)
+            group.x = 0f
+            group.y = 0f
             totalHeight = lbl.height
             addActor(group)
             lbl
@@ -51,15 +50,9 @@ class KeySignatureActor(private val measure: MeasureActor) : WidgetGroup() {
 
 
     private fun getSymbolPositions(symbol: NoteAccidentalEnum, clef: ClefEnum) = when(symbol) {
-        NoteAccidentalEnum.Flat -> KeySignatureConfig.flatOrder
-        NoteAccidentalEnum.Sharp -> if(clef === ClefEnum.CClef4) KeySignatureConfig.cClef4Order else KeySignatureConfig.sharpOrder
+        NoteAccidentalEnum.Flat -> KeySignatureConfig.FLAT_ORDER
+        NoteAccidentalEnum.Sharp -> if(clef === ClefEnum.CClef4) KeySignatureConfig.CCLEF4_ORDER else KeySignatureConfig.SHARP_ORDER
         else -> gdxArrayOf()
-    }
-
-    private fun getIcon(symbol: NoteAccidentalEnum) = when(symbol) {
-        NoteAccidentalEnum.Sharp -> IconName.SharpAccidental
-        NoteAccidentalEnum.Flat -> IconName.FlatAccidental
-        NoteAccidentalEnum.Natural -> IconName.Empty
     }
 
 

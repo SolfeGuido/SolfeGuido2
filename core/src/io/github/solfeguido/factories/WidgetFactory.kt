@@ -1,4 +1,4 @@
-package io.github.solfeguido.ui
+package io.github.solfeguido.factories
 
 import com.badlogic.gdx.scenes.scene2d.ui.Label
 import com.badlogic.gdx.scenes.scene2d.ui.Skin
@@ -7,6 +7,8 @@ import io.github.solfeguido.actors.MeasureActor
 import io.github.solfeguido.enums.ClefEnum
 import io.github.solfeguido.enums.IconName
 import io.github.solfeguido.enums.KeySignatureEnum
+import io.github.solfeguido.ui.STextButton
+import io.github.solfeguido.ui.SlidingTable
 import ktx.collections.defaultLoadFactor
 import ktx.collections.defaultMapSize
 import ktx.collections.set

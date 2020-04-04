@@ -4,7 +4,7 @@ import com.badlogic.gdx.scenes.scene2d.Group
 import com.badlogic.gdx.scenes.scene2d.ui.Label
 import io.github.solfeguido.enums.ClefEnum
 import io.github.solfeguido.enums.IconName
-import io.github.solfeguido.utils.gCol
+import io.github.solfeguido.factories.gCol
 import ktx.scene2d.Scene2DSkin
 
 class ClefActor(val clef: ClefEnum) : Group() {
