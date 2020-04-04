@@ -10,6 +10,7 @@ import io.github.solfeguido.enums.ClefEnum
 import io.github.solfeguido.ui.UIScreen
 import io.github.solfeguido.ui.iconButton
 import io.github.solfeguido.enums.IconName
+import io.github.solfeguido.enums.KeySignatureEnum
 import io.github.solfeguido.ui.measure
 import ktx.actors.onClick
 import ktx.actors.plusAssign
@@ -58,7 +59,7 @@ class MenuScreen(context: Context) : UIScreen(context) {
             }
             row()
             val padding = 0f
-            measure(ClefEnum.FClef) {
+            measure(ClefEnum.CClef4, KeySignatureEnum.CSharpMajor) {
             }.inCell.grow().pad(padding, 0f, padding, 0f)
             row()
             slidingTable(Align.bottomLeft) {

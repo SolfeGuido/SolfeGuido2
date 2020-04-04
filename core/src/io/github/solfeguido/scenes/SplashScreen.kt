@@ -75,8 +75,7 @@ class SplashScreen(context: Context) : UIScreen(context) {
                 size = Gdx.graphics.height / 2
                 minFilter = Texture.TextureFilter.Linear
                 magFilter = Texture.TextureFilter.Linear
-                characters = IconName.values().joinToString("") { it.value }
-                kerning = false
+                characters = IconName.values().joinToString("") { icon -> icon.value }
             }
         })
 

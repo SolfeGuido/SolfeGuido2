@@ -76,4 +76,5 @@ enum class  IconName(val value: String) {
     CClef           (":"),
     CClef3          (";"),
     CClef4          ("<"),
+    Empty           ("")
 }

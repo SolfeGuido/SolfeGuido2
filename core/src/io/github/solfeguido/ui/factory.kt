@@ -3,6 +3,7 @@ package io.github.solfeguido.ui
 import com.badlogic.gdx.scenes.scene2d.ui.Label
 import com.badlogic.gdx.scenes.scene2d.ui.Skin
 import com.badlogic.gdx.utils.IntIntMap
+import io.github.solfeguido.actors.MeasureActor
 import io.github.solfeguido.enums.ClefEnum
 import io.github.solfeguido.enums.IconName
 import io.github.solfeguido.enums.KeySignatureEnum
@@ -34,8 +35,8 @@ inline fun <S> KWidget<S>.iconButton(
 inline fun <S> KWidget<S>.measure(
         clef: ClefEnum = ClefEnum.GClef,
         keySignature: KeySignatureEnum = KeySignatureEnum.CMajor,
-        init: (@Scene2dDsl Measure).(S) -> Unit = {}
-) = actor(Measure(clef, keySignature), init)
+        init: (@Scene2dDsl MeasureActor).(S) -> Unit = {}
+) = actor(MeasureActor(clef, keySignature), init)
 
 fun gdxIntIntMapOf(vararg keysToValues: Pair<Int, Int>,
                                  initialCapacity: Int = defaultMapSize,
