@@ -32,18 +32,15 @@ class MeasureActor(val clef: ClefEnum = ClefEnum.GClef, val keySignature: KeySig
         bottomLine = lineSpace * 3.5f
         topLine = bottomLine + (lineSpace * 5)
 
-        clefActor.setScale(lineSpace / clefActor.height * clefPosition.height)
+        val scale = (lineSpace / clefActor.height) * clefPosition.height
+        clefActor.setScale(scale)
         clefActor.y = lineSpace * clefPosition.baseLine
-        //signatureActor.setScale(lineSpace / signatureActor.height)
-        signatureActor.x = clefActor.width
+        signatureActor.x = clefActor.width * scale
         signatureActor.y = (bottomLine - lineSpace * 1.5f)  + KeySignatureConfig.ClefTranslate[clef] * (lineSpace / 2)
     }
 
     override fun draw(batch: Batch?, parentAlpha: Float) {
-        for(i in 0..4) {
-            line.draw(batch, x, y + bottomLine + (i*lineSpace), width, 2f)
-        }
-
+        for(i in 0..4) line.draw(batch, x, y + bottomLine + (i*lineSpace), width, 2f)
         super.draw(batch, parentAlpha)
     }
 }

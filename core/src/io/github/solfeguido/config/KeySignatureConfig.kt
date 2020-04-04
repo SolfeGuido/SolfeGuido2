@@ -16,6 +16,6 @@ object KeySignatureConfig {
             ClefEnum.GClef to 0,
             ClefEnum.FClef to -2,
             ClefEnum.CClef3 to -1,
-            ClefEnum.CClef4 to 0
+            ClefEnum.CClef4 to 1
     )
 }

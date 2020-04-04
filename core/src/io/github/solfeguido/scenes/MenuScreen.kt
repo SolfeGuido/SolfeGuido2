@@ -59,7 +59,7 @@ class MenuScreen(context: Context) : UIScreen(context) {
             }
             row()
             val padding = 0f
-            measure(ClefEnum.CClef4, KeySignatureEnum.CSharpMajor) {
+            measure(ClefEnum.CClef4, KeySignatureEnum.CFlatMajor) {
             }.inCell.grow().pad(padding, 0f, padding, 0f)
             row()
             slidingTable(Align.bottomLeft) {

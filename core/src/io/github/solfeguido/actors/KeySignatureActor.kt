@@ -23,7 +23,6 @@ class KeySignatureActor(private val measure: MeasureActor) : WidgetGroup() {
 
     init {
         val icon = getIcon(measure.keySignature.symbol)
-        val pos = getSymbolPositions(measure.keySignature.symbol, measure.clef)
         accidentals = (1..measure.keySignature.numberOf).map {
             val lbl = Label(icon.value, Scene2DSkin.defaultSkin, "bigIconStyle")
             val group = Group()

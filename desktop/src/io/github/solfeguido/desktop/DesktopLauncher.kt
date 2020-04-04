@@ -10,7 +10,7 @@ object DesktopLauncher {
         val config = LwjglApplicationConfiguration()
         config.title = "SolfeGuido"
         config.width = 1280
-        config.height = 800
+        config.height = 720
         config.resizable = false
         LwjglApplication(SolfeGuido(), config)
     }
