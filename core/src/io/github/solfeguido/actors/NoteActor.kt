@@ -27,8 +27,8 @@ class NoteActor : WidgetGroup(), Pool.Poolable {
     // Might be a bug here when changing the app's theme
     private var lineTexture: Drawable = colorDrawable(1, 1, gCol("font"))
 
-    override fun getHeight() = noteIcon.height
-    override fun getWidth() = noteIcon.width
+    override fun getHeight() = noteIcon.height * scaleY
+    override fun getWidth() = (noteIcon.width + accidentalIcon.width)  * scaleX
 
     private val accidentalIcon = Icon(IconName.Empty).also {
         addActor(it)
@@ -55,8 +55,8 @@ class NoteActor : WidgetGroup(), Pool.Poolable {
             NoteAccidentalEnum.Flat -> 1
             else -> 0
         }
-        relativeMeasurePosition = note!!.midiIndex - minNote + accidentalBump
-        return (accidentalBump + MidiNote.measurePosition(minNote, note!!.midiIndex)) * (measure!!.lineSpace / 2)
+        relativeMeasurePosition = accidentalBump + MidiNote.measurePosition(minNote, note!!.midiIndex)
+        return relativeMeasurePosition * (measure!!.lineSpace / 2)
     }
 
     override fun reset() {
@@ -86,7 +86,7 @@ class NoteActor : WidgetGroup(), Pool.Poolable {
     }
 
     private fun drawLine(batch: Batch, y: Float) {
-        lineTexture.draw(batch, x - width / 4, y, width, Constants.LINE_THICKNESS)
+        lineTexture.draw(batch, x - width / 4, y, width * 1.5f, Constants.LINE_THICKNESS)
     }
 
     override fun draw(batch: Batch, parentAlpha: Float) {
@@ -95,12 +95,12 @@ class NoteActor : WidgetGroup(), Pool.Poolable {
         val lineSpace = measure!!.lineSpace
         val bottom = measure!!.bottomLine
 
-        if(relativeMeasurePosition < 9) drawLine(batch, bottom - lineSpace)
-        if(relativeMeasurePosition < 6) drawLine(batch, bottom - lineSpace * 2)
-        if(relativeMeasurePosition < 2) drawLine(batch, bottom - lineSpace * 3)
-        if(relativeMeasurePosition > 27) drawLine(batch, topLine)
-        if(relativeMeasurePosition > 30) drawLine(batch, topLine + lineSpace)
-        if(relativeMeasurePosition > 34) drawLine(batch, topLine + lineSpace * 2)
+        if(relativeMeasurePosition <= 4) drawLine(batch, bottom - lineSpace)
+        if(relativeMeasurePosition <= 2) drawLine(batch, bottom - lineSpace * 2)
+        if(relativeMeasurePosition == 0) drawLine(batch, bottom - lineSpace * 3)
+        if(relativeMeasurePosition >= 16) drawLine(batch, topLine)
+        if(relativeMeasurePosition >= 18) drawLine(batch, topLine + lineSpace)
+        if(relativeMeasurePosition >= 20) drawLine(batch, topLine + lineSpace * 2)
 
         super.draw(batch, parentAlpha)
     }

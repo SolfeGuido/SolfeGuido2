@@ -34,7 +34,7 @@ class MeasureActor(val clef: ClefEnum = ClefEnum.GClef, val keySignature: KeySig
         val min = ClefConfig.ClefMinNote[clef]
         val test = NoteActorPool.generate(MidiNotePool.fromIndex(min), this)
         for(i in min until min + 36) {
-            schedule((1f + i - min) * 0.5f) {
+            schedule((1f + i - min) * 0.3f) {
                 test.reset()
                 test.create(this, MidiNotePool.fromIndex(i))
                 test.layout()
