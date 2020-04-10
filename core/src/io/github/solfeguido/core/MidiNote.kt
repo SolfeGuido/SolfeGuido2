@@ -18,7 +18,7 @@ data class MidiNote(
     // Idea: add 'preferFlat' boolean if use flat over sharp when possible
 
     companion object {
-        private val NOTE_NAMES = gdxArrayOf<PossibleNote>(
+        private val NOTE_NAMES = gdxArrayOf(
                 NaturalOrSharpNote(NoteNameEnum.C, NoteNameEnum.B),
                 FlatOrSharpNote(NoteNameEnum.D, NoteNameEnum.C),
                 ConstantNote(NoteNameEnum.D),
@@ -33,11 +33,20 @@ data class MidiNote(
                 NaturalOrFlatNote(NoteNameEnum.B, NoteNameEnum.C)
         )
 
+        fun measurePosition(index: Int) : Int {
+            var position = 0
+            for(i in 0 until index) {
+                val note = NOTE_NAMES[i% NOTE_NAMES.size]
+                if(note.hasNaturalNote()) position++
+            }
+            return position
+        }
+
         fun naturalIndexOf(name: NoteNameEnum) = NOTE_NAMES.indexOfFirst {  it.getNaturalNote() == name  }
 
-        fun accidentalOf(index: Int) = NOTE_NAMES[index].let {
-            if(it.getNaturalNote() != NoteNameEnum.None) NoteAccidentalEnum.Natural
-            NoteAccidentalEnum.Sharp
+        fun accidentalOf(index: Int): NoteAccidentalEnum = NOTE_NAMES[index].let {
+            if(it.getNaturalNote() != NoteNameEnum.None) return NoteAccidentalEnum.Natural
+            return NoteAccidentalEnum.Sharp
         }
     }
 

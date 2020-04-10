@@ -4,6 +4,8 @@ import io.github.solfeguido.enums.NoteNameEnum
 
 interface PossibleNote {
 
+    fun hasNaturalNote() = getNaturalNote() != NoteNameEnum.None
+
     fun getNaturalNote() : NoteNameEnum
 
     fun getFlatNote() : NoteNameEnum
