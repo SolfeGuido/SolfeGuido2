@@ -4,15 +4,15 @@ import com.badlogic.gdx.graphics.g2d.Batch
 import com.badlogic.gdx.scenes.scene2d.ui.WidgetGroup
 import com.badlogic.gdx.scenes.scene2d.utils.Drawable
 import com.badlogic.gdx.utils.Pools
+import com.badlogic.gdx.utils.Timer
 import io.github.solfeguido.config.ClefConfig
+import io.github.solfeguido.config.Constants
 import io.github.solfeguido.config.KeySignatureConfig
 import io.github.solfeguido.enums.ClefEnum
 import io.github.solfeguido.enums.KeySignatureEnum
-import io.github.solfeguido.factories.MidiNotePool
-import io.github.solfeguido.factories.NoteActorPool
-import io.github.solfeguido.factories.colorDrawable
-import io.github.solfeguido.factories.gCol
+import io.github.solfeguido.factories.*
 import ktx.collections.gdxListOf
+import ktx.log.info
 
 
 class MeasureActor(val clef: ClefEnum = ClefEnum.GClef, val keySignature: KeySignatureEnum = KeySignatureEnum.CMajor) : WidgetGroup() {
@@ -31,7 +31,15 @@ class MeasureActor(val clef: ClefEnum = ClefEnum.GClef, val keySignature: KeySig
     private val notes = gdxListOf<NoteActor>()
 
     init {
-        val test = NoteActorPool.generate(MidiNotePool.fromIndex(60), this)
+        val min = ClefConfig.ClefMinNote[clef]
+        val test = NoteActorPool.generate(MidiNotePool.fromIndex(min), this)
+        for(i in min until min + 36) {
+            schedule((1f + i - min) * 0.5f) {
+                test.reset()
+                test.create(this, MidiNotePool.fromIndex(i))
+                test.layout()
+            }
+        }
         notes.add(test)
         addActor(test)
     }
@@ -50,7 +58,7 @@ class MeasureActor(val clef: ClefEnum = ClefEnum.GClef, val keySignature: KeySig
     }
 
     override fun draw(batch: Batch?, parentAlpha: Float) {
-        for(i in 0..4) line.draw(batch, x, y + bottomLine + (i*lineSpace), width, 2f)
+        for(i in 0..4) line.draw(batch, x, y + bottomLine + (i*lineSpace), width, Constants.LINE_THICKNESS)
         super.draw(batch, parentAlpha)
     }
 }

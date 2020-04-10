@@ -33,10 +33,15 @@ data class MidiNote(
                 NaturalOrFlatNote(NoteNameEnum.B, NoteNameEnum.C)
         )
 
-        fun measurePosition(index: Int) : Int {
+        private val MIDI_OCTAVE: Int
+                get() = NOTE_NAMES.size
+
+        fun measurePosition(start: Int, target: Int) : Int {
+            val relativeStart = start % MIDI_OCTAVE
+            val diff = target - start
             var position = 0
-            for(i in 0 until index) {
-                val note = NOTE_NAMES[i% NOTE_NAMES.size]
+            for(i in 0 until diff) {
+                val note = NOTE_NAMES[(relativeStart + i) % MIDI_OCTAVE]
                 if(note.hasNaturalNote()) position++
             }
             return position

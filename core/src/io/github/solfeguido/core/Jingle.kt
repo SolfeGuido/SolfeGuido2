@@ -6,6 +6,7 @@ import com.badlogic.gdx.files.FileHandle
 import com.badlogic.gdx.utils.ObjectMap
 import com.badlogic.gdx.utils.Timer
 import io.github.solfeguido.config.Constants
+import io.github.solfeguido.factories.schedule
 import io.github.solfeguido.midi.MidiFile
 import io.github.solfeguido.midi.event.NoteOn
 import ktx.collections.gdxMapOf
@@ -23,15 +24,10 @@ class Jingles(
     fun playAllNotes() {
         var wait = 3000
         (33..90).forEach {
-            Gdx.app.postRunnable {
-
+            schedule(wait / 1000f){
+                println("Play $it")
+                context.inject<SoundHelper>().playNote(it)
             }
-            Timer.schedule(object: Timer.Task() {
-                override fun run() {
-                    println("Play $it")
-                    context.inject<SoundHelper>().playNote(it)
-                }
-            }, wait / 1000f)
             wait += 500
         }
     }
@@ -42,13 +38,11 @@ class Jingles(
         if(jingle.trackCount == 0) return false
         jingle.tracks.forEach {
             it.events.filterIsInstance<NoteOn>()
-                    .filter { it.velocity > 0 }
-                    .forEach {
-                        Timer.schedule(object: Timer.Task() {
-                            override fun run() {
-                                context.inject<SoundHelper>().playNote(it.noteValue)
-                            }
-                        }, it.tick / 1000f)
+                    .filter { note -> note.velocity > 0 }
+                    .forEach {note ->
+                        schedule(note.tick / 1000f) {
+                            context.inject<SoundHelper>().playNote(note.noteValue)
+                        }
                     }
         }
         return true

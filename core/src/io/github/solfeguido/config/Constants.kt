@@ -12,6 +12,7 @@ object Constants {
     const val ICONS_PATH = "$FONTS_PATH/Icons.woff"
     const val TITLE_FONT = "$FONTS_PATH/MarckScript.woff"
     const val PRIMARY_FONT = "$FONTS_PATH/Oswald.woff"
+    const val LINE_THICKNESS = 2f
 
     // Animations
     const val PRESSED_SCALING = 0.7f

@@ -20,9 +20,9 @@ class ClefConfig private constructor(val height: Float, val baseLine: Float) {
 
         val ClefMinNote = gdxMapOf(
                 ClefEnum.GClef to 53,
-                ClefEnum.FClef to 50,
-                ClefEnum.CClef3 to 50,
-                ClefEnum.CClef4 to 50
+                ClefEnum.FClef to 35,
+                ClefEnum.CClef3 to 42,
+                ClefEnum.CClef4 to 47
         )
     }
 
