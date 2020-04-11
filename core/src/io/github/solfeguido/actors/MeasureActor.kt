@@ -1,12 +1,10 @@
 package io.github.solfeguido.actors
 
+import com.badlogic.gdx.Gdx
 import com.badlogic.gdx.graphics.g2d.Batch
-import com.badlogic.gdx.scenes.scene2d.Event
-import com.badlogic.gdx.scenes.scene2d.EventListener
+import com.badlogic.gdx.math.Interpolation
 import com.badlogic.gdx.scenes.scene2d.ui.WidgetGroup
 import com.badlogic.gdx.scenes.scene2d.utils.Drawable
-import com.badlogic.gdx.utils.Pools
-import com.badlogic.gdx.utils.Timer
 import io.github.solfeguido.config.ClefConfig
 import io.github.solfeguido.config.Constants
 import io.github.solfeguido.config.KeySignatureConfig
@@ -34,6 +32,19 @@ class MeasureActor(val clef: ClefEnum = ClefEnum.GClef, val keySignature: KeySig
     private val currentNote = NoteActorPool.generate(MidiNotePool.fromIndex(60), this).also {
         notes.add(it)
         addActor(it)
+    }
+
+    override fun act(delta: Float) {
+        super.act(delta)
+        if(notes.isEmpty) return
+        val end = (signatureActor.x + signatureActor.width) + clefActor.width
+        val start = Gdx.graphics.width.toFloat()
+        val current = notes.first.x
+        val nwPos = Interpolation.pow4Out.apply(start, end, (start - current) / (start - end) )
+        val moveBy = (current - nwPos) * delta
+        notes.forEach {
+            it.x -= moveBy
+        }
     }
 
     fun nextNote(){

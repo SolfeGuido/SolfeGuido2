@@ -11,8 +11,8 @@ class ClefActor(val clef: ClefEnum) : Group() {
 
     private val label: Label
 
-    override fun getHeight(): Float = label.height
-    override fun getWidth(): Float = label.width
+    override fun getHeight(): Float = label.height * scaleY
+    override fun getWidth(): Float = label.width * scaleX
 
     init {
         label = when(clef) {

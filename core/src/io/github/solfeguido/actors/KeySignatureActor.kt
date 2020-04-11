@@ -11,14 +11,20 @@ import ktx.collections.GdxArray
 import ktx.collections.gdxArrayOf
 import ktx.collections.toGdxArray
 import ktx.scene2d.Scene2DSkin
+import kotlin.math.max
+import kotlin.math.min
 
 class KeySignatureActor(private val measure: MeasureActor) : WidgetGroup() {
 
     private var totalHeight = 0f
+    private var totalWidth = 0f
 
     private val accidentals: GdxArray<Label>
 
     override fun getHeight() = totalHeight
+    override fun getWidth(): Float {
+        return super.getWidth()
+    }
 
     init {
         val icon = KeySignatureConfig.getIcon(measure.keySignature.symbol)
@@ -39,13 +45,18 @@ class KeySignatureActor(private val measure: MeasureActor) : WidgetGroup() {
     override fun layout() {
         super.layout()
         val pos = getSymbolPositions(measure.keySignature.symbol, measure.clef)
+        var minX = Float.MAX_VALUE
+        var maxX = 0f
         accidentals.forEachIndexed {  idx: Int, lbl: Label ->
             val scale = (measure.lineSpace / lbl.height) * 3
             lbl.parent.x = (idx * lbl.width * scale)
+            maxX = max(maxX, lbl.parent.x)
+            minX = min(minX, lbl.parent.y)
             lbl.parent.y = pos[idx].toFloat() * (measure.lineSpace / 2)
             lbl.parent.setScale(scale)
             totalHeight = lbl.height
         }
+        totalWidth = maxX - minX
     }
 
 
