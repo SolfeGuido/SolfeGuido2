@@ -8,5 +8,7 @@ enum class NoteNameEnum(val value: String) {
     G("G"),
     A("A"),
     B("B"),
-    None("NONE")
+    None("NONE");
+
+    fun isNone() = this == None
 }

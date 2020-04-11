@@ -21,7 +21,8 @@ import ktx.log.info
 class NoteActor : WidgetGroup(), Pool.Poolable {
 
     private var measure: MeasureActor? = null
-    private var note: MidiNote? = null
+    var note: MidiNote? = null
+        private set
     private var accidental: NoteAccidentalEnum = NoteAccidentalEnum.Natural
     private var relativeMeasurePosition = 0
     // Might be a bug here when changing the app's theme
@@ -50,12 +51,7 @@ class NoteActor : WidgetGroup(), Pool.Poolable {
 
     private fun getYIndex(): Float{
         val minNote = ClefConfig.ClefMinNote[measure!!.clef]
-        val accidentalBump = when(accidental) {
-            NoteAccidentalEnum.Sharp -> -1
-            NoteAccidentalEnum.Flat -> 1
-            else -> 0
-        }
-        relativeMeasurePosition = accidentalBump + MidiNote.measurePosition(minNote, note!!.midiIndex)
+        relativeMeasurePosition = note!!.getMeasurePosition(minNote, measure!!.keySignature)
         return relativeMeasurePosition * (measure!!.lineSpace / 2)
     }
 

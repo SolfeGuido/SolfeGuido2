@@ -1,6 +1,7 @@
 package io.github.solfeguido.ui
 
 import com.badlogic.gdx.Gdx
+import com.badlogic.gdx.InputProcessor
 import com.badlogic.gdx.graphics.GL20
 import com.badlogic.gdx.graphics.g2d.SpriteBatch
 import com.badlogic.gdx.scenes.scene2d.Stage
@@ -13,7 +14,7 @@ import ktx.scene2d.KWidget
 import ktx.scene2d.Scene2DSkin
 import ktx.scene2d.actor
 
-abstract class UIScreen(protected val context: Context) : KtxScreen {
+abstract class UIScreen(protected val context: Context) : KtxScreen, InputProcessor {
 
     protected lateinit var stage: Stage
     private  lateinit var batch: SpriteBatch
@@ -23,7 +24,7 @@ abstract class UIScreen(protected val context: Context) : KtxScreen {
         super.show()
         batch = SpriteBatch()
         stage = stage(batch, FillViewport(Gdx.graphics.width.toFloat(), Gdx.graphics.height.toFloat()))
-        Gdx.input.inputProcessor = stage
+        Gdx.input.inputProcessor = this
     }
 
     override fun resize(width: Int, height: Int) {
@@ -48,4 +49,13 @@ abstract class UIScreen(protected val context: Context) : KtxScreen {
         stage.draw()
 
     }
+
+    override fun keyDown(keycode: Int)  = stage.keyDown(keycode)
+    override fun keyTyped(character: Char) = stage.keyTyped(character)
+    override fun keyUp(keycode: Int) = stage.keyUp(keycode)
+    override fun mouseMoved(screenX: Int, screenY: Int) = stage.mouseMoved(screenX, screenY)
+    override fun scrolled(amount: Int) = stage.scrolled(amount)
+    override fun touchDown(screenX: Int, screenY: Int, pointer: Int, button: Int) = stage.touchDown(screenX, screenY, pointer, button)
+    override fun touchDragged(screenX: Int, screenY: Int, pointer: Int) = stage.touchDragged(screenX, screenY, pointer)
+    override fun touchUp(screenX: Int, screenY: Int, pointer: Int, button: Int) = stage.touchUp(screenX, screenY, pointer, button)
 }

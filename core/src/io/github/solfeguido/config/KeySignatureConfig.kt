@@ -2,7 +2,6 @@ package io.github.solfeguido.config
 
 import io.github.solfeguido.core.MidiNote
 import io.github.solfeguido.enums.*
-import io.github.solfeguido.factories.MidiNotePool
 import ktx.collections.gdxArrayOf
 import ktx.collections.gdxMapOf
 import kotlin.math.sign
@@ -38,42 +37,49 @@ object KeySignatureConfig {
     )
 
     val MAJOR_SCALE_NOTES = gdxArrayOf(
-            NoteOrderEnum.F,
-            NoteOrderEnum.C,
-            NoteOrderEnum.G,
-            NoteOrderEnum.D,
-            NoteOrderEnum.B,
-            NoteOrderEnum.E,
-            NoteOrderEnum.A
+            NoteNameEnum.F,
+            NoteNameEnum.C,
+            NoteNameEnum.G,
+            NoteNameEnum.D,
+            NoteNameEnum.B,
+            NoteNameEnum.E,
+            NoteNameEnum.A
     )
 
     val MINOR_SCALE_NOTES = gdxArrayOf(
-        NoteOrderEnum.B,
-        NoteOrderEnum.E,
-        NoteOrderEnum.A,
-        NoteOrderEnum.D,
-        NoteOrderEnum.G,
-        NoteOrderEnum.C,
-        NoteOrderEnum.F
+            NoteNameEnum.B,
+            NoteNameEnum.E,
+            NoteNameEnum.A,
+            NoteNameEnum.D,
+            NoteNameEnum.G,
+            NoteNameEnum.C,
+            NoteNameEnum.F
     )
 
     fun getIcon(symbol: NoteAccidentalEnum) = when(symbol) {
         NoteAccidentalEnum.Sharp -> IconName.SharpAccidental
         NoteAccidentalEnum.Flat -> IconName.FlatAccidental
         NoteAccidentalEnum.Natural -> IconName.Empty
+        NoteAccidentalEnum.ForceNatural -> IconName.Natural
     }
 
-
-    fun getScaleNotes(scale: ScaleEnum) = when(scale) {
-        ScaleEnum.Major -> MAJOR_SCALE_NOTES
-        else -> MINOR_SCALE_NOTES
-    }
 
     fun getNoteAccidental(note: MidiNote, signature: KeySignatureEnum): NoteAccidentalEnum {
-        val orderIndex = note.midiIndex % 12
+        val noteName = note.getName(signature)
+        if(signature.changesNote(noteName)) {
+            if(note.canBeNatural()) return NoteAccidentalEnum.ForceNatural
+            return NoteAccidentalEnum.Natural
+        }
+        return note.getDefaultAccidental()
+        /*
         val scales = getScaleNotes(signature.scale)
-        val isNatural = scales.take(signature.numberOf).any { it.index == orderIndex }
+        val isNatural = scales.take(signature.numberOf).any { it.index == (orderIndex + signature.symbol.toneEffect) }
         if(isNatural) return NoteAccidentalEnum.Natural
-        return MidiNote.accidentalOf(orderIndex)
+        val accidental = MidiNote.accidentalOf(orderIndex, signature)
+        if(accidental == NoteAccidentalEnum.Natural) {
+            if(scales.take(signature.numberOf).any { it.index == orderIndex }) return NoteAccidentalEnum.ForceNatural
+        }
+        return accidental
+        */
     }
 }

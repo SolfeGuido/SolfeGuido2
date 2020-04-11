@@ -1,10 +1,12 @@
 package io.github.solfeguido.scenes
 
 import com.badlogic.gdx.Gdx
+import com.badlogic.gdx.InputAdapter
 import com.badlogic.gdx.assets.AssetManager
 import com.badlogic.gdx.audio.Sound
 import com.badlogic.gdx.scenes.scene2d.actions.Actions
 import com.badlogic.gdx.utils.Align
+import io.github.solfeguido.actors.MeasureActor
 import io.github.solfeguido.config.Constants
 import io.github.solfeguido.enums.ClefEnum
 import io.github.solfeguido.ui.UIScreen
@@ -21,6 +23,15 @@ import ktx.scene2d.table
 
 class MenuScreen(context: Context) : UIScreen(context) {
 
+    private lateinit var measure: MeasureActor
+
+    override fun keyTyped(character: Char): Boolean {
+        return when(character) {
+            '+' -> measure.nextNote().let { true }
+            '-' -> measure.prevNote().let { true }
+            else -> super.keyTyped(character)
+        }
+    }
 
     override fun show() {
         super.show()
@@ -55,12 +66,14 @@ class MenuScreen(context: Context) : UIScreen(context) {
                     pad(5f)
                 }.inCell.expandX().top().right()
                 pad(10f)
-                inCell.expandX().fillX()
+                it.expandX().fillX()
             }
             row()
             val padding = 0f
             measure(ClefEnum.GClef) {
-            }.inCell.grow().pad(padding, 0f, padding, 0f)
+                measure = this
+                it.grow().pad(padding, 0f, padding, 0f)
+            }
             row()
             slidingTable(Align.bottomLeft) {
                 debug = true
@@ -70,9 +83,10 @@ class MenuScreen(context: Context) : UIScreen(context) {
                         Gdx.app.exit()
                     }
                     pad(5f)
-                }.inCell.expandX().bottom().left()
+                    it.expandX().bottom().left()
+                }
                 pad(10f)
-                inCell.expandX().fillX()
+                it.expandX().fillX()
             }
         }
     }

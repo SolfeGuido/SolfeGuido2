@@ -5,17 +5,19 @@ import io.github.solfeguido.config.ConstantNote
 import io.github.solfeguido.config.FlatOrSharpNote
 import io.github.solfeguido.config.NaturalOrFlatNote
 import io.github.solfeguido.config.NaturalOrSharpNote
-import io.github.solfeguido.config.PossibleNote
+import io.github.solfeguido.enums.KeySignatureEnum
 import io.github.solfeguido.enums.NoteNameEnum
 import io.github.solfeguido.enums.NoteAccidentalEnum
 import ktx.collections.gdxArrayOf
-import ktx.log.info
+import kotlin.math.sign
 
 data class MidiNote(
         var midiIndex: Int = 60
 ) : Pool.Poolable {
 
     // Idea: add 'preferFlat' boolean if use flat over sharp when possible
+    private val noteName
+        get() = NOTE_NAMES[midiIndex % MIDI_OCTAVE]
 
     companion object {
         private val NOTE_NAMES = gdxArrayOf(
@@ -27,7 +29,7 @@ data class MidiNote(
                 NaturalOrSharpNote(NoteNameEnum.F, NoteNameEnum.E),
                 FlatOrSharpNote(NoteNameEnum.G, NoteNameEnum.F),
                 ConstantNote(NoteNameEnum.G),
-                FlatOrSharpNote(NoteNameEnum.F, NoteNameEnum.G),
+                FlatOrSharpNote(NoteNameEnum.A, NoteNameEnum.G),
                 ConstantNote(NoteNameEnum.A),
                 FlatOrSharpNote(NoteNameEnum.B, NoteNameEnum.A),
                 NaturalOrFlatNote(NoteNameEnum.B, NoteNameEnum.C)
@@ -36,22 +38,34 @@ data class MidiNote(
         private val MIDI_OCTAVE: Int
                 get() = NOTE_NAMES.size
 
-        fun measurePosition(start: Int, target: Int) : Int {
-            val relativeStart = start % MIDI_OCTAVE
-            val diff = target - start
-            var position = 0
-            for(i in 0 until diff) {
-                val note = NOTE_NAMES[(relativeStart + i) % MIDI_OCTAVE]
-                if(note.hasNaturalNote()) position++
-            }
-            return position
-        }
-
         fun naturalIndexOf(name: NoteNameEnum) = NOTE_NAMES.indexOfFirst {  it.getNaturalNote() == name  }
+    }
 
-        fun accidentalOf(index: Int): NoteAccidentalEnum = NOTE_NAMES[index].let {
-            if(it.getNaturalNote() != NoteNameEnum.None) return NoteAccidentalEnum.Natural
-            return NoteAccidentalEnum.Sharp
+    fun getMeasurePosition(base : Int, signature: KeySignatureEnum) : Int {
+        val relativeStart = base % MIDI_OCTAVE
+        val diff = midiIndex - base
+        var position = 0
+        var firstNote = signature.extractNoteName(NOTE_NAMES[relativeStart])
+        for(i in 1..diff){
+            val nwNote = signature.extractNoteName(NOTE_NAMES[(relativeStart + i) % MIDI_OCTAVE])
+            if(firstNote != nwNote) {
+                firstNote = nwNote
+                position++
+            }
+        }
+        return position
+    }
+
+    fun canBeNatural()  = noteName.hasNaturalNote()
+
+    fun getDefaultAccidental() = noteName.firstAccidental(NoteAccidentalEnum.Natural, NoteAccidentalEnum.Sharp, NoteAccidentalEnum.Flat)
+
+    fun getName(keySignature: KeySignatureEnum): NoteNameEnum {
+        val noteName = this.noteName
+        return when(keySignature.symbol) {
+            NoteAccidentalEnum.Flat -> noteName.firstName(NoteAccidentalEnum.Flat, NoteAccidentalEnum.Natural, NoteAccidentalEnum.Sharp)
+            NoteAccidentalEnum.Sharp -> noteName.firstName(NoteAccidentalEnum.Sharp, NoteAccidentalEnum.Natural, NoteAccidentalEnum.Flat)
+            else ->  noteName.firstName(NoteAccidentalEnum.Natural, NoteAccidentalEnum.Sharp, NoteAccidentalEnum.Flat)
         }
     }
 
@@ -80,7 +94,7 @@ data class MidiNote(
     operator fun compareTo(other: MidiNote) =  this.midiIndex - other.midiIndex
 
     override fun reset() {
-        midiIndex = 50
+        midiIndex = 60// Middle C
     }
 
     override fun toString(): String {
@@ -92,11 +106,7 @@ data class MidiNote(
             level: Int,
             accidental: NoteAccidentalEnum
         ) : MidiNote {
-        midiIndex = (level + 1) * 12 + naturalIndexOf(name) + when(accidental) {
-            NoteAccidentalEnum.Flat -> -1
-            NoteAccidentalEnum.Natural  -> 0
-            NoteAccidentalEnum.Sharp -> 1
-        }
+        midiIndex = (level + 1) * MIDI_OCTAVE + naturalIndexOf(name) +  accidental.toneEffect
         return this
     }
 

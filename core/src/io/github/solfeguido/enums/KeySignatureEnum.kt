@@ -1,6 +1,10 @@
 package io.github.solfeguido.enums
 
+import io.github.solfeguido.config.KeySignatureConfig
+import io.github.solfeguido.config.PossibleNote
+
 enum class KeySignatureEnum(val symbol: NoteAccidentalEnum, val numberOf: Int, val scale: ScaleEnum) {
+
     //Major scale
     CMajor(NoteAccidentalEnum.Sharp, 0, ScaleEnum.Major),
     GMajor(NoteAccidentalEnum.Sharp, 1, ScaleEnum.Major),
@@ -35,5 +39,19 @@ enum class KeySignatureEnum(val symbol: NoteAccidentalEnum, val numberOf: Int, v
     FMinor(NoteAccidentalEnum.Flat, 4, ScaleEnum.Minor),
     CMinor(NoteAccidentalEnum.Flat, 3, ScaleEnum.Minor),
     GMinor(NoteAccidentalEnum.Flat, 2, ScaleEnum.Minor),
-    DMinor(NoteAccidentalEnum.Flat, 1, ScaleEnum.Minor),
+    DMinor(NoteAccidentalEnum.Flat, 1, ScaleEnum.Minor);
+
+    val scaleNotes
+        get() = when(scale) {
+            ScaleEnum.Major -> KeySignatureConfig.MAJOR_SCALE_NOTES.take(numberOf)
+            ScaleEnum.Minor -> KeySignatureConfig.MINOR_SCALE_NOTES.take(numberOf)
+        }
+
+    fun changesNote(note: NoteNameEnum) = scaleNotes.contains(note)
+
+    fun extractNoteName(note: PossibleNote): NoteNameEnum {
+        if(!note.hasNaturalNote()) return note.firstName(symbol)
+        return note.getNaturalNote()
+    }
+
 }

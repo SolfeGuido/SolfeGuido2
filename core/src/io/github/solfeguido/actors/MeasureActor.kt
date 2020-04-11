@@ -1,6 +1,8 @@
 package io.github.solfeguido.actors
 
 import com.badlogic.gdx.graphics.g2d.Batch
+import com.badlogic.gdx.scenes.scene2d.Event
+import com.badlogic.gdx.scenes.scene2d.EventListener
 import com.badlogic.gdx.scenes.scene2d.ui.WidgetGroup
 import com.badlogic.gdx.scenes.scene2d.utils.Drawable
 import com.badlogic.gdx.utils.Pools
@@ -26,22 +28,26 @@ class MeasureActor(val clef: ClefEnum = ClefEnum.GClef, val keySignature: KeySig
         private set
     private val clefActor: ClefActor = ClefActor(clef).also { addActor(it) }
     private val clefPosition: ClefConfig = ClefConfig.ClefEquivalent[clef, ClefConfig.GClef]
-    private val signatureActor = KeySignatureActor(this).also { addActor(it) }
-
     private val notes = gdxListOf<NoteActor>()
 
-    init {
-        val min = ClefConfig.ClefMinNote[clef]
-        val test = NoteActorPool.generate(MidiNotePool.fromIndex(min), this)
-        for(i in min until min + 36) {
-            schedule((1f + i - min) * 0.3f) {
-                test.reset()
-                test.create(this, MidiNotePool.fromIndex(i))
-                test.layout()
-            }
-        }
-        notes.add(test)
-        addActor(test)
+    private val signatureActor = KeySignatureActor(this).also { addActor(it) }
+    private val currentNote = NoteActorPool.generate(MidiNotePool.fromIndex(60), this).also {
+        notes.add(it)
+        addActor(it)
+    }
+
+    fun nextNote(){
+        val idx =  (currentNote.note!!.midiIndex + 1)
+        currentNote.reset()
+        currentNote.create(this, MidiNotePool.fromIndex(idx))
+        currentNote.layout()
+    }
+
+    fun prevNote(){
+        val idx =  (currentNote.note!!.midiIndex - 1)
+        currentNote.reset()
+        currentNote.create(this, MidiNotePool.fromIndex(idx))
+        currentNote.layout()
     }
 
     override fun layout() {
