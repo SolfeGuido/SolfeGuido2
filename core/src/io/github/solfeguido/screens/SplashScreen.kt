@@ -1,4 +1,4 @@
-package io.github.solfeguido.scenes
+package io.github.solfeguido.screens
 
 import com.badlogic.gdx.Gdx
 import com.badlogic.gdx.assets.AssetManager

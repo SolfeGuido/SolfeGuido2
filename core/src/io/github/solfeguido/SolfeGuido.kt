@@ -6,8 +6,8 @@ import com.badlogic.gdx.assets.AssetManager
 import io.github.solfeguido.core.Jingles
 import io.github.solfeguido.core.SoundHelper
 import io.github.solfeguido.core.StateMachine
-import io.github.solfeguido.scenes.MenuScreen
-import io.github.solfeguido.scenes.SplashScreen
+import io.github.solfeguido.screens.MenuScreen
+import io.github.solfeguido.screens.SplashScreen
 import io.github.solfeguido.skins.getPreloadSkin
 import ktx.collections.gdxMapOf
 import ktx.inject.Context
@@ -23,7 +23,7 @@ class SolfeGuido : ApplicationListener {
         Scene2DSkin.defaultSkin = getPreloadSkin()
 
         stateMachine = StateMachine(gdxMapOf(
-                MenuScreen::class.java to {MenuScreen(context)},
+                MenuScreen::class.java to { MenuScreen(context) },
                 SplashScreen::class.java to { SplashScreen(context) }
         ), SplashScreen::class.java)
         context.register {
