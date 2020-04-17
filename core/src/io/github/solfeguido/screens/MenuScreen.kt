@@ -1,7 +1,6 @@
 package io.github.solfeguido.screens
 
 import com.badlogic.gdx.Gdx
-import com.badlogic.gdx.InputAdapter
 import com.badlogic.gdx.assets.AssetManager
 import com.badlogic.gdx.audio.Sound
 import com.badlogic.gdx.scenes.scene2d.actions.Actions
@@ -9,10 +8,8 @@ import com.badlogic.gdx.utils.Align
 import io.github.solfeguido.actors.MeasureActor
 import io.github.solfeguido.config.Constants
 import io.github.solfeguido.enums.ClefEnum
-import io.github.solfeguido.ui.UIScreen
 import io.github.solfeguido.factories.iconButton
 import io.github.solfeguido.enums.IconName
-import io.github.solfeguido.enums.KeySignatureEnum
 import io.github.solfeguido.factories.measure
 import ktx.actors.onClick
 import ktx.actors.plusAssign

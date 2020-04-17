@@ -6,6 +6,7 @@ import com.badlogic.gdx.assets.AssetManager
 import io.github.solfeguido.core.Jingles
 import io.github.solfeguido.core.SoundHelper
 import io.github.solfeguido.core.StateMachine
+import io.github.solfeguido.screens.NoteGuessScreen
 import io.github.solfeguido.screens.MenuScreen
 import io.github.solfeguido.screens.SplashScreen
 import io.github.solfeguido.skins.getPreloadSkin
@@ -24,7 +25,8 @@ class SolfeGuido : ApplicationListener {
 
         stateMachine = StateMachine(gdxMapOf(
                 MenuScreen::class.java to { MenuScreen(context) },
-                SplashScreen::class.java to { SplashScreen(context) }
+                SplashScreen::class.java to { SplashScreen(context) },
+                NoteGuessScreen::class.java to { NoteGuessScreen(context) }
         ), SplashScreen::class.java)
         context.register {
             bindSingleton(Jingles(context))

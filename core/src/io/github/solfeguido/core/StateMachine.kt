@@ -2,15 +2,12 @@ package io.github.solfeguido.core
 
 import com.badlogic.gdx.Screen
 import com.badlogic.gdx.utils.ObjectMap
-import ktx.app.KtxScreen
-import ktx.collections.toGdxMap
-import ktx.log.info
-import java.lang.Exception
+import io.github.solfeguido.screens.UIScreen
 
-typealias ScreenProvider = () -> KtxScreen
+typealias ScreenProvider = () -> UIScreen
 
-class StateMachine(private val constructors : ObjectMap<Class<out KtxScreen>, ScreenProvider>, current: Class<out KtxScreen>) : Screen {
-    private val stack = mutableListOf<Screen>()
+class StateMachine(private val constructors : ObjectMap<Class<out UIScreen>, ScreenProvider>, current: Class<out UIScreen>) : Screen {
+    private val stack = mutableListOf<UIScreen>()
 
     private val changes = mutableListOf<() -> Unit>()
 
@@ -24,20 +21,20 @@ class StateMachine(private val constructors : ObjectMap<Class<out KtxScreen>, Sc
         push(current)
     }
 
-    private fun <Type : KtxScreen>createScreen(type: Class<Type>): KtxScreen = constructors[type]().also { it.show() }
+    private fun <Type : UIScreen>createScreen(type: Class<Type>, param: StateParameter): UIScreen = constructors[type]().also { it.create(param) }
 
     fun peek() = stack.last()
 
     fun first() = stack.first()
 
-    fun <Type: KtxScreen> push(type: Class<Type>): StateMachine {
+    fun <Type: UIScreen> push(type: Class<Type>, param: StateParameter = StateParameter.empty()): StateMachine {
         changes.add {
-            stack.add(createScreen(type))
+            stack.add(createScreen(type, param))
         }
         return this
     }
 
-    internal inline fun <reified  Type : KtxScreen> push() = push(Type::class.java)
+    internal inline fun <reified  Type : UIScreen> push(param:  StateParameter) = push(Type::class.java, param)
 
     public fun pop() : StateMachine{
         changes.add {
@@ -49,12 +46,12 @@ class StateMachine(private val constructors : ObjectMap<Class<out KtxScreen>, Sc
         return this
     }
 
-    internal inline fun <reified  Type: KtxScreen>switch(): StateMachine {
+    internal inline fun <reified  Type: UIScreen>switch(param: StateParameter = StateParameter.empty()): StateMachine {
         changes.add {
             hide()
             dispose()
             stack.clear()
-            stack.add( createScreen(Type::class.java) )
+            stack.add( createScreen(Type::class.java, param) )
         }
         return this
     }

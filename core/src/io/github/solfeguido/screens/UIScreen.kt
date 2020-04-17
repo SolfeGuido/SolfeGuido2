@@ -1,4 +1,4 @@
-package io.github.solfeguido.ui
+package io.github.solfeguido.screens
 
 import com.badlogic.gdx.Gdx
 import com.badlogic.gdx.InputProcessor
@@ -7,6 +7,8 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch
 import com.badlogic.gdx.scenes.scene2d.Stage
 import com.badlogic.gdx.scenes.scene2d.ui.Skin
 import com.badlogic.gdx.utils.viewport.FillViewport
+import io.github.solfeguido.core.StateParameter
+import io.github.solfeguido.ui.SlidingTable
 import ktx.actors.stage
 import ktx.app.KtxScreen
 import ktx.inject.Context
@@ -25,6 +27,10 @@ abstract class UIScreen(protected val context: Context) : KtxScreen, InputProces
         batch = SpriteBatch()
         stage = stage(batch, FillViewport(Gdx.graphics.width.toFloat(), Gdx.graphics.height.toFloat()))
         Gdx.input.inputProcessor = this
+    }
+
+     open fun create(settings: StateParameter)  {
+        this.show()
     }
 
     override fun resize(width: Int, height: Int) {
