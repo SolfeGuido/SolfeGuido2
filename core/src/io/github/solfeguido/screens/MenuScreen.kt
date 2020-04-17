@@ -11,6 +11,8 @@ import io.github.solfeguido.enums.ClefEnum
 import io.github.solfeguido.factories.iconButton
 import io.github.solfeguido.enums.IconName
 import io.github.solfeguido.factories.measure
+import io.github.solfeguido.factories.timer
+import io.github.solfeguido.settings.TimeSettings
 import ktx.actors.onClick
 import ktx.actors.plusAssign
 import ktx.inject.Context
@@ -65,6 +67,8 @@ class MenuScreen(context: Context) : UIScreen(context) {
                 pad(10f)
                 it.expandX().fillX()
             }
+            row()
+            timer(TimeSettings())
             row()
             val padding = 0f
             measure(ClefEnum.GClef) {

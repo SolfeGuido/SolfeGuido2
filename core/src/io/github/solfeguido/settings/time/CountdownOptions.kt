@@ -6,9 +6,9 @@ import ktx.json.*
 
 class CountdownOptions : ITimeOptions {
 
-    var duration = 0f
+    var duration = 30f
     var timeBonus = 0f
-    var timePenalty = 0f
+    var timePenalty = 3f
 
     override fun read(json: Json, jsonData: JsonValue) {
         duration = json.readValue(jsonData, "duration")

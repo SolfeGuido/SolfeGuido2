@@ -12,6 +12,7 @@ fun getDefaultSkin(assetManager: AssetManager): Skin{
         val self = this
         color("font", 68f/255f, 68f/255f, 68f/255f,  1f)
         color("fontHover", 0.8f, 0.8f, 0.8f, 1f)
+        color("correct", 125 / 255f,220 / 255f,31 / 255f, 1f)
         label {
             font = assetManager.get<BitmapFont>(Constants.TITLE_FONT)
             fontColor = Color(self.getColor("font"))

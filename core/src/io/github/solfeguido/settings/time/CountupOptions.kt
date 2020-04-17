@@ -6,9 +6,9 @@ import ktx.json.*
 
 class CountupOptions : ITimeOptions {
 
-    var limit = 0f
-    var timeBonus = 0f
-    var timePenalty = 0f
+    var limit = 30f
+    var timeBonus = 1f
+    var timePenalty = 3f
 
     override fun read(json: Json, jsonData: JsonValue) {
         limit = json.readValue(jsonData, "limit")

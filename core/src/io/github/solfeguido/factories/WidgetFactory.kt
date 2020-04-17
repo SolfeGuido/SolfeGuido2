@@ -4,9 +4,11 @@ import com.badlogic.gdx.scenes.scene2d.ui.Label
 import com.badlogic.gdx.scenes.scene2d.ui.Skin
 import com.badlogic.gdx.utils.IntIntMap
 import io.github.solfeguido.actors.MeasureActor
+import io.github.solfeguido.actors.TimerActor
 import io.github.solfeguido.enums.ClefEnum
 import io.github.solfeguido.enums.IconName
 import io.github.solfeguido.enums.KeySignatureEnum
+import io.github.solfeguido.settings.TimeSettings
 import io.github.solfeguido.ui.STextButton
 import io.github.solfeguido.ui.SlidingTable
 import ktx.collections.defaultLoadFactor
@@ -40,10 +42,7 @@ inline fun <S> KWidget<S>.measure(
         init: (@Scene2dDsl MeasureActor).(S) -> Unit = {}
 ) = actor(MeasureActor(clef, keySignature), init)
 
-fun gdxIntIntMapOf(vararg keysToValues: Pair<Int, Int>,
-                                 initialCapacity: Int = defaultMapSize,
-                                 loadFactor: Float = defaultLoadFactor): IntIntMap {
-    val map = IntIntMap(initialCapacity, loadFactor)
-    keysToValues.forEach { map[it.first] = it.second }
-    return map
-}
+inline  fun <S> KWidget<S>.timer(
+        settings: TimeSettings,
+        init: (@Scene2dDsl TimerActor).(S) -> Unit = {}
+) = actor(TimerActor(settings), init)

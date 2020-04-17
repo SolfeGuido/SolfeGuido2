@@ -2,6 +2,7 @@ package io.github.solfeguido.actors
 
 import com.badlogic.gdx.Gdx
 import com.badlogic.gdx.graphics.g2d.Batch
+import com.badlogic.gdx.graphics.g2d.ParticleEffect
 import com.badlogic.gdx.math.Interpolation
 import com.badlogic.gdx.scenes.scene2d.ui.WidgetGroup
 import com.badlogic.gdx.scenes.scene2d.utils.Drawable
@@ -33,6 +34,7 @@ class MeasureActor(val clef: ClefEnum = ClefEnum.GClef, val keySignature: KeySig
         notes.add(it)
         addActor(it)
     }
+
 
     override fun act(delta: Float) {
         super.act(delta)

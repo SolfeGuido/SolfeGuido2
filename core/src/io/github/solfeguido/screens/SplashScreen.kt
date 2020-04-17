@@ -7,6 +7,7 @@ import com.badlogic.gdx.audio.Sound
 import com.badlogic.gdx.graphics.Texture
 import com.badlogic.gdx.graphics.g2d.freetype.FreeTypeFontGenerator
 import com.badlogic.gdx.graphics.g2d.freetype.FreetypeFontLoader
+import com.badlogic.gdx.scenes.scene2d.ui.Image
 import com.badlogic.gdx.scenes.scene2d.ui.Label
 import com.badlogic.gdx.scenes.scene2d.ui.ProgressBar
 import io.github.solfeguido.config.Constants
@@ -57,13 +58,21 @@ class SplashScreen(context: Context) : UIScreen(context) {
             assetManager.load<MidiFile>(it.path())
         }
 
+        //Images loading (TOOD: use a texture packer later)
+        assetManager.load<Texture>("images/particle.png")
+        assetManager.load<Texture>("images/appIcon.png")
 
+        // Particles loading
+
+
+        //Sound loading
         soundHelper.existingSounds.forEach {
             assetManager.load<Sound>("sounds/notes/${it.key}.mp3")
         }
         assetManager.load<Sound>(Constants.CLICK_SOUND)
 
 
+        //Font loading
         FreeTypeFontGenerator.setMaxTextureSize(2048)
         assetManager.registerFreeTypeFontLoaders(replaceDefaultBitmapFontLoader = true)
 
