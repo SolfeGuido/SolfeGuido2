@@ -9,7 +9,7 @@ import ktx.json.*
 class GeneratorSettings : Json.Serializable {
 
     var type: GeneratorTypeEnum = GeneratorTypeEnum.Constant
-    var options : IGeneratorOptions = EmptyOptions()
+    var options : IGeneratorOptions = ConstantOptions()
 
 
     override fun write(json: Json) {
@@ -24,7 +24,7 @@ class GeneratorSettings : Json.Serializable {
             GeneratorTypeEnum.CustomMidi -> json.readValue<CustomMidiOptions>(jsonData, "options")
             GeneratorTypeEnum.MidiFile -> json.readValue<MidiFileOptions>(jsonData, "options")
             GeneratorTypeEnum.RangedRandom -> json.readValue<RangedRandomOptions>(jsonData, "options")
-            else -> EmptyOptions()
+            GeneratorTypeEnum.Random -> json.readValue<RandomOptions>(jsonData, "options")
         }
     }
 

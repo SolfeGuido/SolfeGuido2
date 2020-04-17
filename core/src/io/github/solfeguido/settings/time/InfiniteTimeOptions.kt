@@ -1,4 +1,4 @@
 package io.github.solfeguido.settings.time
 
-class EmptyTimeOptions : ITimeOptions {
+class InfiniteTimeOptions : ITimeOptions {
 }

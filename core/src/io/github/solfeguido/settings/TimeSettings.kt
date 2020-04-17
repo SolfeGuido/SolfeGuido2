@@ -3,22 +3,23 @@ package io.github.solfeguido.settings
 import com.badlogic.gdx.utils.Json
 import com.badlogic.gdx.utils.JsonValue
 import io.github.solfeguido.enums.TimeModeEnum
+import io.github.solfeguido.settings.time.CountdownOptions
 import io.github.solfeguido.settings.time.CountupOptions
-import io.github.solfeguido.settings.time.EmptyTimeOptions
 import io.github.solfeguido.settings.time.ITimeOptions
+import io.github.solfeguido.settings.time.InfiniteTimeOptions
 import ktx.json.*
 
 class TimeSettings : Json.Serializable {
 
     var type = TimeModeEnum.Countdown
-    var options: ITimeOptions = EmptyTimeOptions()
+    var options: ITimeOptions = CountdownOptions()
 
     override fun read(json: Json, jsonData: JsonValue) {
         type = json.readValue(jsonData, "type")
         options = when(type) {
             TimeModeEnum.Countdown -> json.readValue<CountupOptions>(jsonData, "options")
             TimeModeEnum.Countup -> json.readValue<CountupOptions>(jsonData, "options")
-            else -> EmptyTimeOptions()
+            TimeModeEnum.Infinite -> json.readValue<InfiniteTimeOptions>(jsonData, "options")
         }
     }
 
