@@ -23,4 +23,5 @@ object Constants {
 
     // Animations
     const val PRESSED_SCALING = 0.7f
+    const val PIANO_PRESSED_SCALING = 0.9f
 }

@@ -11,6 +11,7 @@ import io.github.solfeguido.enums.ClefEnum
 import io.github.solfeguido.factories.iconButton
 import io.github.solfeguido.enums.IconName
 import io.github.solfeguido.factories.measure
+import io.github.solfeguido.factories.pianoAnswer
 import io.github.solfeguido.factories.timer
 import io.github.solfeguido.settings.TimeSettings
 import ktx.actors.onClick
@@ -75,6 +76,8 @@ class MenuScreen(context: Context) : UIScreen(context) {
                 measure = this
                 it.grow().pad(padding, 0f, padding, 0f)
             }
+            row()
+            pianoAnswer()
             row()
             slidingTable(Align.bottomLeft) {
                 debug = true

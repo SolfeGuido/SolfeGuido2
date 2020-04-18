@@ -100,10 +100,6 @@ class TimerActor(context: Context, private val settings: TimeSettings) : WidgetG
         current += delta * direction
         defaultParticles.update(delta)
         wrongParticles.update(delta)
-
-        if(MathUtils.random() <= 0.005f) {
-            wrong()
-        }
     }
 
     override fun getPrefHeight(): Float = 4f

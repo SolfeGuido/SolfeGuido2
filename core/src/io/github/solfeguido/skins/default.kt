@@ -11,6 +11,7 @@ import ktx.style.*
 fun getDefaultSkin(assetManager: AssetStorage): Skin{
     return skin {
         val self = this
+        color("background", 245 / 255f,245 / 255f,245 / 255f)
         color("font", 68f/255f, 68f/255f, 68f/255f,  1f)
         color("fontHover", 0.8f, 0.8f, 0.8f, 1f)
         color("correct", 125 / 255f,220 / 255f,31 / 255f, 1f)
@@ -28,6 +29,14 @@ fun getDefaultSkin(assetManager: AssetStorage): Skin{
         }
         textButton( name=  "iconButtonStyle") {
             font = assetManager.get<BitmapFont>("icon.woff")
+            fontColor = self.getColor("font")
+        }
+        textButton(name = "blackPianoKey")  {
+            font = assetManager.get<BitmapFont>(Constants.PRIMARY_FONT)
+            fontColor = self.getColor("background")
+        }
+        textButton(name = "whitePianoKey") {
+            font = assetManager.get<BitmapFont>(Constants.PRIMARY_FONT)
             fontColor = self.getColor("font")
         }
     }

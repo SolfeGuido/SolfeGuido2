@@ -10,8 +10,8 @@ max: 30
 - Emission - 
 lowMin: 0.0
 lowMax: 0.0
-highMin: 20.0
-highMax: 20.0
+highMin: 50.0
+highMax: 50.0
 relative: false
 scalingCount: 1
 scaling0: 0.3265306
@@ -21,7 +21,7 @@ timeline0: 0.0
 lowMin: 0.0
 lowMax: 0.0
 highMin: 500.0
-highMax: 1000.0
+highMax: 800.0
 relative: true
 scalingCount: 3
 scaling0: 1.0
@@ -39,8 +39,8 @@ independent: false
 active: false
 - Y Offset - 
 active: true
-lowMin: 0.0
-lowMax: 20.0
+lowMin: -40.0
+lowMax: -40.0
 highMin: 0.0
 highMax: 0.0
 relative: false

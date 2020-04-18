@@ -4,6 +4,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.Label
 import com.badlogic.gdx.scenes.scene2d.ui.Skin
 import com.badlogic.gdx.utils.IntIntMap
 import io.github.solfeguido.actors.MeasureActor
+import io.github.solfeguido.actors.PianoAnswerActor
 import io.github.solfeguido.actors.TimerActor
 import io.github.solfeguido.enums.ClefEnum
 import io.github.solfeguido.enums.IconName
@@ -48,3 +49,7 @@ inline  fun <S> KWidget<S>.timer(
         settings: TimeSettings,
         init: (@Scene2dDsl TimerActor).(S) -> Unit = {}
 ) = actor(TimerActor(context, settings), init)
+
+inline fun <S> KWidget<S>.pianoAnswer(
+        init: (@Scene2dDsl PianoAnswerActor).(S) -> Unit = {}
+) = actor(PianoAnswerActor(), init)

@@ -4,11 +4,13 @@ import com.badlogic.gdx.ApplicationListener
 import com.badlogic.gdx.Gdx
 import com.badlogic.gdx.Preferences
 import com.badlogic.gdx.assets.AssetManager
+import com.badlogic.gdx.graphics.GL20
 import io.github.solfeguido.config.Constants
 import io.github.solfeguido.core.Jingles
 import io.github.solfeguido.core.SoundHelper
 import io.github.solfeguido.core.StateMachine
 import io.github.solfeguido.factories.ParticlePool
+import io.github.solfeguido.factories.gCol
 import io.github.solfeguido.screens.NoteGuessScreen
 import io.github.solfeguido.screens.MenuScreen
 import io.github.solfeguido.screens.SplashScreen
@@ -46,6 +48,9 @@ class SolfeGuido : ApplicationListener {
     }
 
     override fun render() {
+        val bg = gCol("background")
+        Gdx.gl.glClearColor(bg.r, bg.b, bg.b, bg.a)
+        Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT)
         stateMachine.render(Gdx.graphics.deltaTime)
     }
 

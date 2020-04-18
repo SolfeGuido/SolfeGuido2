@@ -39,8 +39,8 @@ independent: false
 active: false
 - Y Offset - 
 active: true
-lowMin: 0.0
-lowMax: 20.0
+lowMin: -50.0
+lowMax: -50.0
 highMin: 0.0
 highMax: 0.0
 relative: false
@@ -137,7 +137,7 @@ timelineCount: 1
 timeline0: 0.0
 - Options - 
 attached: false
-continuous: true
+continuous: false
 aligned: false
 additive: false
 behind: false

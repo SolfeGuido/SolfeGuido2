@@ -7,6 +7,7 @@ import ktx.style.label
 import ktx.style.progressBar
 import ktx.style.skin
 import io.github.solfeguido.factories.colorDrawable
+import ktx.style.color
 
 
 const val PROGRESS_BAR_HEIGHT = 2
@@ -17,10 +18,13 @@ fun getPreloadSkin() : Skin {
             font = BitmapFont()
             fontColor = Color.BLACK
         }
+        color("background", 245 / 255f,245 / 255f,245 / 255f)
+        color("font", 68f/255f, 68f/255f, 68f/255f,  1f)
+        val self = this
 
         progressBar("default-horizontal") {
-            background = colorDrawable(1, PROGRESS_BAR_HEIGHT, Color.WHITE)
-            knob = colorDrawable(10, PROGRESS_BAR_HEIGHT, Color.BLACK)
+            background = colorDrawable(1, PROGRESS_BAR_HEIGHT, self.getColor("background") )
+            knob = colorDrawable(10, PROGRESS_BAR_HEIGHT, self.getColor("font") )
             knobBefore = colorDrawable(10, PROGRESS_BAR_HEIGHT, Color(0.1f, 0.1f, 0.1f, 1f))
         }
     }
