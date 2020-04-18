@@ -14,6 +14,7 @@ import io.github.solfeguido.ui.SlidingTable
 import ktx.collections.defaultLoadFactor
 import ktx.collections.defaultMapSize
 import ktx.collections.set
+import ktx.inject.Context
 import ktx.scene2d.*
 
 inline fun <S> KWidget<S>.slidingTable(
@@ -43,6 +44,7 @@ inline fun <S> KWidget<S>.measure(
 ) = actor(MeasureActor(clef, keySignature), init)
 
 inline  fun <S> KWidget<S>.timer(
+        context: Context,
         settings: TimeSettings,
         init: (@Scene2dDsl TimerActor).(S) -> Unit = {}
-) = actor(TimerActor(settings), init)
+) = actor(TimerActor(context, settings), init)

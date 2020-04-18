@@ -4,6 +4,7 @@ object Constants {
 
 
     const val TITLE_SIZE = 50
+    const val PREFERENCES_NAME = "solfeguido"
     const val JINGLES_PATH = "midi/jingles"
     const val SOUNDS_PATH = "sounds"
     const val FONTS_PATH = "fonts"
@@ -13,9 +14,6 @@ object Constants {
     // Actual values
     const val MUSICALNOTES_PATH = "$SOUNDS_PATH/notes"
     const val CLICK_SOUND = "$SOUNDS_PATH/click.mp3"
-
-    // Particles
-    const val SPARKLE_PARTICLE = "$PARTICLES_PATH/sparkles.p"
 
     //Fonts
     const val ICONS_PATH = "$FONTS_PATH/Icons.woff"

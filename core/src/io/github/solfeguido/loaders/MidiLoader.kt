@@ -1,4 +1,4 @@
-package io.github.solfeguido.midi
+package io.github.solfeguido.loaders
 
 import com.badlogic.gdx.assets.AssetDescriptor
 import com.badlogic.gdx.assets.AssetLoaderParameters
@@ -7,6 +7,7 @@ import com.badlogic.gdx.assets.loaders.AsynchronousAssetLoader
 import com.badlogic.gdx.assets.loaders.FileHandleResolver
 import com.badlogic.gdx.files.FileHandle
 import com.badlogic.gdx.utils.Array
+import io.github.solfeguido.midi.MidiFile
 import ktx.collections.gdxArrayOf
 
 class MidiLoader(fileHandleResolver: FileHandleResolver)  : AsynchronousAssetLoader<MidiFile, MidiLoader.MidiLoaderParameter>(fileHandleResolver){
@@ -16,7 +17,7 @@ class MidiLoader(fileHandleResolver: FileHandleResolver)  : AsynchronousAssetLoa
     class MidiLoaderParameter() : AssetLoaderParameters<MidiFile>()
 
     override fun loadSync(manager: AssetManager?, fileName: String?, file: FileHandle?, parameter: MidiLoaderParameter?): MidiFile {
-        midiFile = MidiFile(if(fileName == null) file!!.read() else resolve(fileName).read())
+        midiFile = MidiFile(if (fileName == null) file!!.read() else resolve(fileName).read())
         return midiFile!!
     }
 
@@ -25,6 +26,6 @@ class MidiLoader(fileHandleResolver: FileHandleResolver)  : AsynchronousAssetLoa
     }
 
     override fun loadAsync(manager: AssetManager?, fileName: String?, file: FileHandle?, parameter: MidiLoaderParameter?) {
-        midiFile = MidiFile(if(fileName == null) file!!.read() else resolve(fileName).read())
+
     }
 }

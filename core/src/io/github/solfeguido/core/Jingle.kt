@@ -2,6 +2,7 @@ package io.github.solfeguido.core
 
 import com.badlogic.gdx.Gdx
 import com.badlogic.gdx.assets.AssetManager
+import com.badlogic.gdx.audio.Sound
 import com.badlogic.gdx.files.FileHandle
 import com.badlogic.gdx.utils.ObjectMap
 import com.badlogic.gdx.utils.Timer
@@ -9,6 +10,7 @@ import io.github.solfeguido.config.Constants
 import io.github.solfeguido.factories.schedule
 import io.github.solfeguido.midi.MidiFile
 import io.github.solfeguido.midi.event.NoteOn
+import ktx.assets.async.AssetStorage
 import ktx.collections.gdxMapOf
 import ktx.inject.Context
 
@@ -33,7 +35,10 @@ class Jingles(
     }
 
     fun playJingle(name: String): Boolean {
-        if(!jingles.containsKey(name)) return false
+        if(!jingles.containsKey(name)) {
+            ktx.log.error { "Jingle $name not found" }
+            return false
+        }
         val jingle = jingles[name]
         if(jingle.trackCount == 0) return false
         jingle.tracks.forEach {
@@ -48,10 +53,11 @@ class Jingles(
         return true
     }
 
-    fun registerJingles(assetManager: AssetManager) {
-        allJingles.filter { assetManager.contains(it.path()) }.forEach {
-            jingles.put(it.nameWithoutExtension(), assetManager.get(it.path()))
-        }
+    fun registerJingles(assetManager: AssetStorage) {
+        allJingles.filter { assetManager.contains<MidiFile>(it.path())}
+                .forEach {
+                    jingles.put(it.nameWithoutExtension(), assetManager[it.path()])
+                }
     }
 
 }

@@ -8,7 +8,7 @@ class CountupOptions : ITimeOptions {
 
     var limit = 30f
     var timeBonus = 1f
-    var timePenalty = 3f
+    var timePenalty = 0.5f
 
     override fun read(json: Json, jsonData: JsonValue) {
         limit = json.readValue(jsonData, "limit")

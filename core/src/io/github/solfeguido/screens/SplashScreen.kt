@@ -1,13 +1,10 @@
 package io.github.solfeguido.screens
 
 import com.badlogic.gdx.Gdx
-import com.badlogic.gdx.assets.AssetManager
-import com.badlogic.gdx.assets.loaders.resolvers.InternalFileHandleResolver
 import com.badlogic.gdx.audio.Sound
 import com.badlogic.gdx.graphics.Texture
+import com.badlogic.gdx.graphics.g2d.BitmapFont
 import com.badlogic.gdx.graphics.g2d.freetype.FreeTypeFontGenerator
-import com.badlogic.gdx.graphics.g2d.freetype.FreetypeFontLoader
-import com.badlogic.gdx.scenes.scene2d.ui.Image
 import com.badlogic.gdx.scenes.scene2d.ui.Label
 import com.badlogic.gdx.scenes.scene2d.ui.ProgressBar
 import io.github.solfeguido.config.Constants
@@ -15,27 +12,31 @@ import io.github.solfeguido.core.Jingles
 import io.github.solfeguido.core.SoundHelper
 import io.github.solfeguido.core.StateMachine
 import io.github.solfeguido.enums.IconName
+import io.github.solfeguido.loaders.FontLoader
 import io.github.solfeguido.midi.MidiFile
+import io.github.solfeguido.loaders.MidiLoader
 import io.github.solfeguido.skins.getDefaultSkin
-import io.github.solfeguido.midi.MidiLoader
+import kotlinx.coroutines.Deferred
+import kotlinx.coroutines.launch
 import ktx.actors.plusAssign
-import ktx.assets.load
-import ktx.freetype.loadFreeTypeFont
-import ktx.freetype.registerFreeTypeFontLoaders
+import ktx.assets.async.AssetStorage
 import ktx.inject.Context
-import ktx.scene2d.Scene2DSkin
 import ktx.scene2d.label
 import ktx.scene2d.table
-import ktx.assets.setLoader
+import ktx.async.KtxAsync
+import ktx.collections.gdxListOf
+import ktx.log.info
+import ktx.scene2d.Scene2DSkin
 import ktx.scene2d.progressBar
 
 
 class SplashScreen(context: Context) : UIScreen(context) {
 
-    private var totalAssets : Int = 0
-    private var assetManager : AssetManager = context.inject()
+    private var assetManager: AssetStorage = context.inject()
     private lateinit var progressLabel: Label
-    private lateinit var pBar : ProgressBar
+    private lateinit var pBar: ProgressBar
+
+    private var toLoad = 0
 
     override fun show() {
         super.show()
@@ -50,78 +51,88 @@ class SplashScreen(context: Context) : UIScreen(context) {
             pBar.inCell.expandX().fillX()
         }
 
-        val soundHelper: SoundHelper = context.inject()
+        toLoad = 7
         val jingles: Jingles = context.inject()
 
-        assetManager.setLoader<MidiFile, MidiLoader.MidiLoaderParameter>(MidiLoader(InternalFileHandleResolver()))
-        jingles.allJingles.forEach {
-            assetManager.load<MidiFile>(it.path())
-        }
 
-        //Images loading (TOOD: use a texture packer later)
-        assetManager.load<Texture>("images/particle.png")
-        assetManager.load<Texture>("images/appIcon.png")
+        KtxAsync.launch {
+            val soundHelper: SoundHelper = context.inject()
+            toLoad += jingles.allJingles.size + soundHelper.existingSounds.size
 
-        // Particles loading
+            // Set midi file loader
+            assetManager.setLoader(".mid") { MidiLoader(assetManager.fileResolver) }
+
+            // Freetype font loader
+            FreeTypeFontGenerator.setMaxTextureSize(2048)
+            assetManager.setLoader<BitmapFont>(".woff") { FontLoader(assetManager.fileResolver) }
+
+            //Load
+            assetManager.apply {
+                load<Texture>("images/particle.png")
+                load<Texture>("images/appIcon.png")
 
 
-        //Sound loading
-        soundHelper.existingSounds.forEach {
-            assetManager.load<Sound>("sounds/notes/${it.key}.mp3")
-        }
-        assetManager.load<Sound>(Constants.CLICK_SOUND)
+                jingles.allJingles.map { loadAsync<MidiFile>(it.path()) }.toTypedArray()
 
 
-        //Font loading
-        FreeTypeFontGenerator.setMaxTextureSize(2048)
-        assetManager.registerFreeTypeFontLoaders(replaceDefaultBitmapFontLoader = true)
+                soundHelper.existingSounds.map {
+                    load<Sound>("sounds/notes/${it.key}.mp3")
+                }.toTypedArray()
 
-        assetManager.load("bigIcon.ttf", FreetypeFontLoader.FreeTypeFontLoaderParameter().also {
+                load<Sound>(Constants.CLICK_SOUND)
 
-            it.fontFileName = Constants.ICONS_PATH
-            with(it.fontParameters){
-                size = Gdx.graphics.height / 2
-                minFilter = Texture.TextureFilter.Linear
-                magFilter = Texture.TextureFilter.Linear
-                characters = IconName.values().joinToString("") { icon -> icon.value }
+
+                load("bigIcon.woff", FontLoader.FontLoaderParameter().also {
+                    it.fontFileName = Constants.ICONS_PATH
+                    it.fontParameters.apply {
+                        size = (Gdx.graphics.height / 2.7f).toInt()
+                        minFilter = Texture.TextureFilter.Linear
+                        magFilter = Texture.TextureFilter.Linear
+                        characters = IconName.values().joinToString("") { icon -> icon.value }
+                    }
+                })
+                load<BitmapFont>(Constants.PRIMARY_FONT, FontLoader.FontLoaderParameter().also {
+                    it.fontFileName = Constants.PRIMARY_FONT
+                    it.fontParameters.apply {
+                        size = Constants.TITLE_SIZE
+                        minFilter = Texture.TextureFilter.Linear
+                        magFilter = Texture.TextureFilter.Linear
+                    }
+                })
+                load<BitmapFont>("icon.woff", FontLoader.FontLoaderParameter().also {
+                    it.fontFileName = Constants.ICONS_PATH
+                    it.fontParameters.apply {
+                        size = Constants.TITLE_SIZE
+                        minFilter = Texture.TextureFilter.Linear
+                        magFilter = Texture.TextureFilter.Linear
+                    }
+                })
+                load<BitmapFont>(Constants.TITLE_FONT, FontLoader.FontLoaderParameter().also {
+                    it.fontFileName = Constants.TITLE_FONT
+                    it.fontParameters.apply {
+                        size = Constants.TITLE_SIZE
+                        minFilter = Texture.TextureFilter.Linear
+                        magFilter = Texture.TextureFilter.Linear
+                    }
+                })
             }
-        })
 
-        assetManager.loadFreeTypeFont(Constants.PRIMARY_FONT) {
-            size = Constants.TITLE_SIZE
-            minFilter = Texture.TextureFilter.Linear
-            magFilter = Texture.TextureFilter.Linear
-        }
-
-        assetManager.load("icon.ttf", FreetypeFontLoader.FreeTypeFontLoaderParameter().also {
-            it.fontFileName = Constants.ICONS_PATH
-            it.fontParameters.size = Constants.TITLE_SIZE
-            it.fontParameters.minFilter = Texture.TextureFilter.Linear
-            it.fontParameters.magFilter = Texture.TextureFilter.Linear
-        })
-
-        assetManager.loadFreeTypeFont(Constants.TITLE_FONT) {
-            size = Constants.TITLE_SIZE
-            minFilter = Texture.TextureFilter.Linear
-            magFilter = Texture.TextureFilter.Linear
-        }
-
-
-        totalAssets = assetManager.queuedAssets
-    }
-
-    override fun render(delta: Float) {
-        super.render(delta)
-        if(assetManager.update()){
-            assetManager.finishLoading()
-            Scene2DSkin.defaultSkin = getDefaultSkin(context.inject())
-            val jingles : Jingles = context.inject()
+            Scene2DSkin.defaultSkin = getDefaultSkin(assetManager)
             jingles.registerJingles(assetManager)
             jingles.playJingle("Startup")
             context.inject<StateMachine>().switch<MenuScreen>()
         }
-        val progress = (( (totalAssets - assetManager.queuedAssets) / totalAssets.toFloat()) * 100).toInt()
-        progressLabel.setText("$progress%")
-        pBar.value = progress.toFloat()
+    }
+
+    override fun render(delta: Float) {
+        super.render(delta)
+        val prog = assetManager.progress
+        if (prog.isFailed) {
+            Gdx.app.exit()
+        } else {
+            val progress = (  (prog.loaded * 100f) / toLoad)
+            progressLabel.setText("${progress.toInt()}%")
+            pBar.value = progress
+        }
     }
 }

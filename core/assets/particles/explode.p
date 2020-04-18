@@ -1,4 +1,4 @@
-confetti
+explode
 - Delay -
 active: false
 - Duration - 
@@ -6,7 +6,7 @@ lowMin: 1000.0
 lowMax: 1000.0
 - Count - 
 min: 0
-max: 30
+max: 100
 - Emission - 
 lowMin: 0.0
 lowMax: 0.0
@@ -81,8 +81,8 @@ active: false
 active: true
 lowMin: 0.0
 lowMax: 0.0
-highMin: -30.0
-highMax: -100.0
+highMin: -200.0
+highMax: 200.0
 relative: false
 scalingCount: 2
 scaling0: 0.4489796
@@ -91,20 +91,7 @@ timelineCount: 2
 timeline0: 0.0
 timeline1: 0.6232877
 - Angle - 
-active: true
-lowMin: 90.0
-lowMax: 90.0
-highMin: -45.0
-highMax: 135.0
-relative: false
-scalingCount: 3
-scaling0: 1.0
-scaling1: 0.0
-scaling2: 0.0
-timelineCount: 3
-timeline0: 0.0
-timeline1: 0.5
-timeline2: 1.0
+active: false
 - Rotation - 
 active: false
 - Wind - 
@@ -113,9 +100,9 @@ active: false
 active: false
 - Tint - 
 colorsCount: 3
-colors0: 0.047058824
-colors1: 1.0
-colors2: 0.0627451
+colors0: 1.0
+colors1: 0.047058824
+colors2: 0.047058824
 timelineCount: 1
 timeline0: 0.0
 - Transparency - 
@@ -130,7 +117,7 @@ timelineCount: 1
 timeline0: 0.0
 - Options - 
 attached: false
-continuous: true
+continuous: false
 aligned: false
 additive: false
 behind: false

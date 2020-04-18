@@ -68,7 +68,7 @@ class MenuScreen(context: Context) : UIScreen(context) {
                 it.expandX().fillX()
             }
             row()
-            timer(TimeSettings())
+            timer(context, TimeSettings())
             row()
             val padding = 0f
             measure(ClefEnum.GClef) {

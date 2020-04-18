@@ -8,7 +8,7 @@ class CountdownOptions : ITimeOptions {
 
     var duration = 30f
     var timeBonus = 0f
-    var timePenalty = 3f
+    var timePenalty = 0.5f
 
     override fun read(json: Json, jsonData: JsonValue) {
         duration = json.readValue(jsonData, "duration")

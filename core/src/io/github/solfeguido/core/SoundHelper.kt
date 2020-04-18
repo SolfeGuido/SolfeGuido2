@@ -4,6 +4,7 @@ import com.badlogic.gdx.assets.AssetManager
 import com.badlogic.gdx.audio.Sound
 import io.github.solfeguido.config.Constants
 import io.github.solfeguido.factories.MidiNotePool
+import ktx.assets.async.AssetStorage
 import ktx.collections.*
 import ktx.inject.Context
 
@@ -61,6 +62,6 @@ class SoundHelper(private val context: Context) {
     fun playNote(note: MidiNote, volume: Float = 1f) {
         ensureNoteExists(note)
         val assetData = existingSounds[note]!!
-        context.inject<AssetManager>().get<Sound>(toAssetName(assetData.first)).play(volume, assetData.second, 0f)
+        context.inject<AssetStorage>().get<Sound>(toAssetName(assetData.first)).play(volume, assetData.second, 0f)
     }
 }
