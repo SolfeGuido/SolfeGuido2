@@ -28,19 +28,28 @@ class PianoKey(text: String = "", private val type : PianoKeyTypeEnum = PianoKey
 
     init {
         this.isTransform = true
-        this.setOrigin(Align.center)
         setupListeners()
+    }
+
+    override fun layout() {
+        super.layout()
+        setOrigin(width /2f, height)
     }
 
     private val borderDrawable = colorDrawable(1, 1,gCol("font"))
     private val backgroundDrawable = colorDrawable(1, 1, backgroundColor)
 
     override fun draw(batch: Batch, parentAlpha: Float) {
-        backgroundDrawable.draw(batch, x, y, width * scaleX, height * scaleY )
-        borderDrawable.draw(batch, x, y, width, BORDER_TICKNESS)
-        borderDrawable.draw(batch, x, y + height - BORDER_TICKNESS, width, BORDER_TICKNESS)
-        borderDrawable.draw(batch, x , y, BORDER_TICKNESS, height)
-        borderDrawable.draw(batch, x + width - BORDER_TICKNESS, y, BORDER_TICKNESS, height)
+        if(isTransform) applyTransform(batch, computeTransform())
+
+        backgroundDrawable.draw(batch, 0f, 0f, width, height )
+        borderDrawable.draw(batch, 0f, 0f, width, BORDER_TICKNESS)
+        borderDrawable.draw(batch, 0f, 0f + height - BORDER_TICKNESS, width, BORDER_TICKNESS)
+        borderDrawable.draw(batch, 0f, 0f, BORDER_TICKNESS, height)
+        borderDrawable.draw(batch, 0f + width - BORDER_TICKNESS, 0f, BORDER_TICKNESS, height)
+
+        if(isTransform) resetTransform(batch)
+
         super.draw(batch, parentAlpha)
     }
 
