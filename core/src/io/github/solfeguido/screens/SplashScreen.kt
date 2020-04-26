@@ -5,6 +5,7 @@ import com.badlogic.gdx.audio.Sound
 import com.badlogic.gdx.graphics.Texture
 import com.badlogic.gdx.graphics.g2d.BitmapFont
 import com.badlogic.gdx.graphics.g2d.freetype.FreeTypeFontGenerator
+import com.badlogic.gdx.scenes.scene2d.Stage
 import com.badlogic.gdx.scenes.scene2d.ui.Label
 import com.badlogic.gdx.scenes.scene2d.ui.ProgressBar
 import io.github.solfeguido.config.Constants
@@ -16,18 +17,12 @@ import io.github.solfeguido.loaders.FontLoader
 import io.github.solfeguido.midi.MidiFile
 import io.github.solfeguido.loaders.MidiLoader
 import io.github.solfeguido.skins.getDefaultSkin
-import kotlinx.coroutines.Deferred
 import kotlinx.coroutines.launch
 import ktx.actors.plusAssign
 import ktx.assets.async.AssetStorage
 import ktx.inject.Context
-import ktx.scene2d.label
-import ktx.scene2d.table
 import ktx.async.KtxAsync
-import ktx.collections.gdxListOf
-import ktx.log.info
-import ktx.scene2d.Scene2DSkin
-import ktx.scene2d.progressBar
+import ktx.scene2d.*
 
 
 class SplashScreen(context: Context) : UIScreen(context) {
@@ -40,15 +35,15 @@ class SplashScreen(context: Context) : UIScreen(context) {
 
     override fun show() {
         super.show()
-        stage += table {
+        stage += scene2d.table {
             setFillParent(true)
             progressLabel = label("0%")
             row()
             pBar = progressBar {
                 this.setRange(0f, 100f)
                 this.setAnimateDuration(0.1f)
+                it.expandX().fillX()
             }
-            pBar.inCell.expandX().fillX()
         }
 
         toLoad = 7

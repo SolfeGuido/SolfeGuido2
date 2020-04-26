@@ -22,6 +22,6 @@ object Constants {
     const val LINE_THICKNESS = 2f
 
     // Animations
-    const val PRESSED_SCALING = 0.7f
+    const val PRESSED_SCALING = 0.8f
     const val PIANO_PRESSED_SCALING = 0.9f
 }

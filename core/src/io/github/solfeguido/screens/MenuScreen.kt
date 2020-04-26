@@ -8,17 +8,16 @@ import com.badlogic.gdx.utils.Align
 import io.github.solfeguido.actors.MeasureActor
 import io.github.solfeguido.config.Constants
 import io.github.solfeguido.enums.ClefEnum
-import io.github.solfeguido.factories.iconButton
 import io.github.solfeguido.enums.IconName
-import io.github.solfeguido.factories.measure
-import io.github.solfeguido.factories.pianoAnswer
-import io.github.solfeguido.factories.timer
+import io.github.solfeguido.factories.*
+import io.github.solfeguido.factories.iconButton
 import io.github.solfeguido.settings.TimeSettings
 import ktx.actors.onClick
 import ktx.actors.plusAssign
 import ktx.inject.Context
 import ktx.log.info
 import ktx.scene2d.label
+import ktx.scene2d.scene2d
 import ktx.scene2d.table
 
 class MenuScreen(context: Context) : UIScreen(context) {
@@ -37,7 +36,7 @@ class MenuScreen(context: Context) : UIScreen(context) {
         super.show()
         info { "Init stage" }
 
-        stage += table {
+        stage += scene2d.table {
             debug = true
             setFillParent(true)
             setPosition(0f, 0f)
@@ -51,9 +50,10 @@ class MenuScreen(context: Context) : UIScreen(context) {
                             context.inject<AssetManager>().get<Sound>(Constants.CLICK_SOUND).play()
                         }
                         pad(5f)
-                    }.inCell.expandX().top().left()
+                        it.expandX().top().left()
+                    }
 
-                 label("SolfeGuido") {
+                label("SolfeGuido") {
                 }
 
                 iconButton(IconName.Cog) {
@@ -64,7 +64,8 @@ class MenuScreen(context: Context) : UIScreen(context) {
                         info { "Show options" }
                     }
                     pad(5f)
-                }.inCell.expandX().top().right()
+                    it.expandX().top().right()
+                }
                 pad(10f)
                 it.expandX().fillX()
             }
@@ -77,7 +78,7 @@ class MenuScreen(context: Context) : UIScreen(context) {
                 it.grow().pad(padding, 0f, padding, 0f)
             }
             row()
-            pianoAnswer()
+            buttonAnswer()
             row()
             slidingTable(Align.bottomLeft) {
                 debug = true

@@ -16,10 +16,10 @@ import ktx.scene2d.KTable
 import ktx.scene2d.Scene2DSkin
 import ktx.style.get
 
-const val BORDER_TICKNESS = 4f
-
 class PianoKey(text: String = "", private val type : PianoKeyTypeEnum = PianoKeyTypeEnum.White) :
         Button(Scene2DSkin.defaultSkin.get<TextButton.TextButtonStyle>(type.style) ), KTable {
+
+    val BORDER_TICKNESS = 4f
 
 
     private val backgroundColor

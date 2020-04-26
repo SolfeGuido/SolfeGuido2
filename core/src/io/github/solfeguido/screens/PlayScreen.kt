@@ -37,12 +37,12 @@ class PlayScreen : KtxScreen {
 
         info { "Init stage" }
 
-        val root = table {
+        val root = scene2d.table {
             debug = true
             setFillParent(true)
             setPosition(0f, 0f)
             align(Align.top)
-            label("SolfeGuido") {
+            scene2d.label("SolfeGuido") {
                 setPosition(this.x, this.y - this.height)
                 addAction(
                         Actions.sequence(
@@ -55,7 +55,7 @@ class PlayScreen : KtxScreen {
                 )
             }
             row()
-            label("Another text")
+            scene2d.label("Another text")
         }
         stage.addActor(root)
 

@@ -82,7 +82,7 @@ class NoteActor : WidgetGroup(), Pool.Poolable {
     }
 
     private fun drawLine(batch: Batch, y: Float) {
-        lineTexture.draw(batch, x - width / 4, y, width * 1.5f, Constants.LINE_THICKNESS)
+        lineTexture.draw(batch, x-width / 4, y, width * 1.5f, Constants.LINE_THICKNESS)
     }
 
     override fun draw(batch: Batch, parentAlpha: Float) {
@@ -97,6 +97,7 @@ class NoteActor : WidgetGroup(), Pool.Poolable {
         if(relativeMeasurePosition >= 16) drawLine(batch, topLine)
         if(relativeMeasurePosition >= 18) drawLine(batch, topLine + lineSpace)
         if(relativeMeasurePosition >= 20) drawLine(batch, topLine + lineSpace * 2)
+
 
         super.draw(batch, parentAlpha)
     }

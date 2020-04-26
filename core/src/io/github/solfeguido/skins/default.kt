@@ -3,8 +3,11 @@ package io.github.solfeguido.skins
 import com.badlogic.gdx.assets.AssetManager
 import com.badlogic.gdx.graphics.Color
 import com.badlogic.gdx.graphics.g2d.BitmapFont
+import com.badlogic.gdx.scenes.scene2d.ui.Label
 import com.badlogic.gdx.scenes.scene2d.ui.Skin
 import io.github.solfeguido.config.Constants
+import io.github.solfeguido.factories.colorDrawable
+import io.github.solfeguido.factories.gCol
 import ktx.assets.async.AssetStorage
 import ktx.style.*
 
@@ -36,6 +39,22 @@ fun getDefaultSkin(assetManager: AssetStorage): Skin{
             fontColor = self.getColor("background")
         }
         textButton(name = "whitePianoKey") {
+            font = assetManager.get<BitmapFont>(Constants.PRIMARY_FONT)
+            fontColor = self.getColor("font")
+        }
+
+        textButton(name= "borderButtonStyle") {
+            font = assetManager.get<BitmapFont>(Constants.PRIMARY_FONT)
+            fontColor = self.getColor("font")
+        }
+
+        //TODO : for border style:  border thickness, and border color
+        label(name = "borderButtonTopIconStyle") {
+            font = assetManager.get<BitmapFont>("icon.woff")
+            fontColor = self.getColor("font")
+        }
+
+        label(name = "borderLabelStyle") {
             font = assetManager.get<BitmapFont>(Constants.PRIMARY_FONT)
             fontColor = self.getColor("font")
         }

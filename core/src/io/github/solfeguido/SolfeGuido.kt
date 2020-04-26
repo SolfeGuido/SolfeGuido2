@@ -2,8 +2,6 @@ package io.github.solfeguido
 
 import com.badlogic.gdx.ApplicationListener
 import com.badlogic.gdx.Gdx
-import com.badlogic.gdx.Preferences
-import com.badlogic.gdx.assets.AssetManager
 import com.badlogic.gdx.graphics.GL20
 import io.github.solfeguido.config.Constants
 import io.github.solfeguido.core.Jingles
@@ -20,6 +18,7 @@ import ktx.async.KtxAsync
 import ktx.async.newAsyncContext
 import ktx.collections.gdxMapOf
 import ktx.inject.Context
+import ktx.inject.register
 import ktx.scene2d.Scene2DSkin
 
 class SolfeGuido : ApplicationListener {

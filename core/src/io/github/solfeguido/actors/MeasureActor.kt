@@ -12,9 +12,7 @@ import io.github.solfeguido.config.KeySignatureConfig
 import io.github.solfeguido.enums.ClefEnum
 import io.github.solfeguido.enums.KeySignatureEnum
 import io.github.solfeguido.factories.*
-import ktx.collections.gdxListOf
-import ktx.log.info
-
+import ktx.collections.gdxArrayOf
 
 class MeasureActor(val clef: ClefEnum = ClefEnum.GClef, val keySignature: KeySignatureEnum = KeySignatureEnum.CMajor) : WidgetGroup() {
 
@@ -27,7 +25,7 @@ class MeasureActor(val clef: ClefEnum = ClefEnum.GClef, val keySignature: KeySig
         private set
     private val clefActor: ClefActor = ClefActor(clef).also { addActor(it) }
     private val clefPosition: ClefConfig = ClefConfig.ClefEquivalent[clef, ClefConfig.GClef]
-    private val notes = gdxListOf<NoteActor>()
+    private val notes = gdxArrayOf<NoteActor>()
 
     private val signatureActor = KeySignatureActor(this).also { addActor(it) }
     private val currentNote = NoteActorPool.generate(MidiNotePool.fromIndex(60), this).also {
@@ -41,7 +39,7 @@ class MeasureActor(val clef: ClefEnum = ClefEnum.GClef, val keySignature: KeySig
         if(notes.isEmpty) return
         val end = (signatureActor.x + signatureActor.width) + clefActor.width
         val start = Gdx.graphics.width.toFloat()
-        val current = notes.first.x
+        val current = notes.first().x
         val nwPos = Interpolation.pow4Out.apply(start, end, (start - current) / (start - end) )
         val moveBy = (current - nwPos) * delta
         notes.forEach {
@@ -77,7 +75,10 @@ class MeasureActor(val clef: ClefEnum = ClefEnum.GClef, val keySignature: KeySig
     }
 
     override fun draw(batch: Batch?, parentAlpha: Float) {
-        for(i in 0..4) line.draw(batch, x, y + bottomLine + (i*lineSpace), width, Constants.LINE_THICKNESS)
+        if(isTransform) applyTransform(batch, computeTransform())
+        for(i in 0..4) line.draw(batch, 0f, 0f + bottomLine + (i*lineSpace), width, Constants.LINE_THICKNESS)
+        if(isTransform) resetTransform(batch)
+
         super.draw(batch, parentAlpha)
     }
 }

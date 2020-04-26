@@ -10,7 +10,7 @@ class NoteGuessScreen(context: Context) : UIScreen(context) {
 
     override fun create(settings: StateParameter) {
         val options: NoteGuessOptions = settings.getValue()
-        stage += table {
+        stage += scene2d.table {
 
         }
     }
