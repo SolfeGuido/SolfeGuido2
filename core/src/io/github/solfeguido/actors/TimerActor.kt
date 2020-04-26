@@ -107,6 +107,8 @@ class TimerActor(context: Context, private val settings: TimeSettings) : WidgetG
 
 
     override fun draw(batch: Batch, parentAlpha: Float) {
+        val c = color
+        batch.setColor(c.r, c.g, c.b, c.a * parentAlpha)
         defaultParticles.emitters.first().setPosition(progress, y)
         timeLine.draw(batch, x, y, progress, height)
         defaultParticles.draw(batch)

@@ -17,8 +17,10 @@ class BorderLabel(text: String, style: String, skin: Skin) : Label(text, skin, s
         this.style.background = colorDrawable(1, 1, gCol("background"))
     }
 
-    override fun draw(batch: Batch, parentAlpha: Float) {
 
+    override fun draw(batch: Batch, parentAlpha: Float) {
+        val c = color
+        batch.setColor(c.r, c.g, c.b, c.a * parentAlpha)
         borderDrawable.draw(batch, x - LABEL_BORDER_THICKNESS, y - LABEL_BORDER_THICKNESS, width + (LABEL_BORDER_THICKNESS * 2), height + LABEL_BORDER_THICKNESS *2)
 
         super.draw(batch, parentAlpha)

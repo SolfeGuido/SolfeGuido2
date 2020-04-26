@@ -41,6 +41,8 @@ class PianoKey(text: String = "", private val type : PianoKeyTypeEnum = PianoKey
 
     override fun draw(batch: Batch, parentAlpha: Float) {
         if(isTransform) applyTransform(batch, computeTransform())
+        val c = color
+        batch.setColor(c.r, c.g, c.b, c.a * parentAlpha)
 
         backgroundDrawable.draw(batch, 0f, 0f, width, height )
         borderDrawable.draw(batch, 0f, 0f, width, BORDER_TICKNESS)

@@ -55,8 +55,9 @@ class BorderButton(text: String, style: TextButton.TextButtonStyle): Button(), K
 
     override fun draw(batch: Batch, parentAlpha: Float) {
         applyTransform(batch, computeTransform())
-        batch.color.a *= parentAlpha
-        backgroundDrawable.draw(batch, 0f, 0f, width, height )
+        val mC = color
+        batch.setColor(mC.r, mC.g, mC.b, mC.a * parentAlpha)
+        //backgroundDrawable.draw(batch, 0f, 0f, width, height )
         borderDrawable.draw(batch, 0f, 0f, width, BUTTON_BORDER)
         borderDrawable.draw(batch, 0f, 0f + height - BUTTON_BORDER, width, BUTTON_BORDER)
         borderDrawable.draw(batch, 0f, 0f, BUTTON_BORDER, height)

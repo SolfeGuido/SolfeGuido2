@@ -1,38 +1,122 @@
 package io.github.solfeguido.ui
 
+import com.badlogic.gdx.math.Interpolation
+import com.badlogic.gdx.scenes.scene2d.Action
+import com.badlogic.gdx.scenes.scene2d.Actor
+import com.badlogic.gdx.scenes.scene2d.InputEvent
 import com.badlogic.gdx.scenes.scene2d.actions.Actions
-import com.badlogic.gdx.scenes.scene2d.ui.Container
 import com.badlogic.gdx.scenes.scene2d.ui.Label
 import com.badlogic.gdx.scenes.scene2d.ui.Stack
+import com.badlogic.gdx.scenes.scene2d.utils.ClickListener
+import com.badlogic.gdx.scenes.scene2d.utils.Disableable
 import com.badlogic.gdx.utils.Align
+import io.github.solfeguido.config.Constants
 import io.github.solfeguido.enums.IconName
-import io.github.solfeguido.factories.borderButton
 import io.github.solfeguido.factories.borderContainer
 import io.github.solfeguido.factories.borderLabel
 import io.github.solfeguido.factories.gCol
-import ktx.actors.onClick
 import ktx.scene2d.*
+import  ktx.actors.*
 
-class AnswerButton(note: String): Stack(), KGroup {
+class AnswerButton(note: String): Stack(), KGroup, Disableable {
+
+    private var _disabled = false
+    private var disableOnPressed = false
+    private val isIconShown
+            get() = currentIcon != IconName.Empty
+    private var currentIcon: IconName = IconName.Empty
+    private val accidentalLabel: Label
+    private val labelParent: BorderContainer<Actor>
 
     init {
         isTransform = true
 
         container {
-            borderButton(note) {
-                onClick { print("inside button clicked") }
+            borderLabel(note) {
+                setAlignment(Align.center)
             }
         }.fill().pad(10f)
+        currentIcon = IconName.FlatAccidental
+        val icon = currentIcon.value
+        container {
+            this@AnswerButton.labelParent = borderContainer {
+                isTransform = true
+                this@AnswerButton.accidentalLabel = label(icon, "iconStyle") {
+                    color = gCol("font")
+                }
+                pad(5f)
+            }
+            top().right().padTop(5f)
+        }
 
-        val icon = IconName.SharpAccidental.value
-        val parent = Container<BorderContainer<Label>>()
-        val child = BorderContainer<Label>()
-        val label = Label(icon, Scene2DSkin.defaultSkin, "iconStyle")
-        child.actor = label
-        label.color = gCol("font")
-        child.pad(5f)
-        parent.actor = child
-        parent.top().right().padTop(5f)
-        add(parent)
+        initialize()
     }
+
+    private fun hideIcon(delay: Float = 0f) {
+        if(!isIconShown) return
+        labelParent += Actions.delay(delay) then Actions.scaleTo(0f, 0f, 0.2f, Interpolation.exp10In) then Actions.run {
+            currentIcon = IconName.Empty
+        }
+    }
+
+    fun toggleIcon(icon: IconName, delay: Float = 0f): IconName {
+        if(icon == currentIcon) {
+            hideIcon(delay)
+            return IconName.Empty
+        }
+        if(isIconShown) {
+            labelParent += Actions.delay(delay) then Actions.scaleTo(0f, 0f, 0.2f, Interpolation.exp10In)  then Actions.run {
+                accidentalLabel.setText(icon.value)
+            } then Actions.scaleTo(1f, 1f, 0.4f, Interpolation.swingOut)
+        } else {
+            accidentalLabel.setText(icon.value)
+            labelParent += Actions.delay(delay) then Actions.scaleTo(1f, 1f, 0.4f, Interpolation.swingOut)
+        }
+        currentIcon = icon
+        return icon
+    }
+
+    override fun layout() {
+        super.layout()
+        setOrigin(width / 2, height / 2)
+    }
+
+    private fun initialize(){
+        val self = this
+        addListener(object: ClickListener() {
+            override fun enter(event: InputEvent?, x: Float, y: Float, pointer: Int, fromActor: Actor?) {
+                super.enter(event, x, y, pointer, fromActor)
+                if(self.isDisabled) return
+                self.addAction(Actions.color(gCol("fontHover"), 0.2f))
+            }
+
+            override fun exit(event: InputEvent?, x: Float, y: Float, pointer: Int, toActor: Actor?) {
+                super.exit(event, x, y, pointer, toActor)
+                self.addAction(Actions.color(gCol("font"), 0.2f))
+            }
+
+            override fun clicked(event: InputEvent?, x: Float, y: Float) {
+                super.clicked(event, x, y)
+                self.isDisabled = self.disableOnPressed
+            }
+
+            override fun touchDown(event: InputEvent?, x: Float, y: Float, pointer: Int, button: Int): Boolean {
+                val res = super.touchDown(event, x, y, pointer, button)
+                if(self.isDisabled) return res
+                self.addAction(Actions.scaleTo(Constants.PRESSED_SCALING, Constants.PRESSED_SCALING, .2f, Interpolation.exp10Out))
+                return res
+            }
+
+            override fun touchUp(event: InputEvent?, x: Float, y: Float, pointer: Int, button: Int) {
+                super.touchUp(event, x, y, pointer, button)
+                self.addAction(Actions.scaleTo(1f, 1f, .2f, Interpolation.exp10Out))
+            }
+        })
+    }
+
+    override fun setDisabled(isDisabled: Boolean) {
+        _disabled = isDisabled
+    }
+
+    override fun isDisabled() = _disabled
 }

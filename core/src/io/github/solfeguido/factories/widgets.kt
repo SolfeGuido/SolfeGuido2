@@ -19,6 +19,9 @@ import ktx.collections.defaultMapSize
 import ktx.collections.set
 import ktx.inject.Context
 import ktx.scene2d.*
+import kotlin.contracts.ExperimentalContracts
+import kotlin.contracts.InvocationKind
+import kotlin.contracts.contract
 
 inline fun <S> KWidget<S>.slidingTable(
         align: Int,
@@ -81,5 +84,9 @@ inline fun <S> KWidget<S>.answerButton (
         init: (@Scene2dDsl AnswerButton).(S) -> Unit
 ) = actor(AnswerButton(text), init)
 
+@OptIn(ExperimentalContracts::class)
 inline fun <S> KWidget<S>.borderContainer(
-        init: BorderContainer<Actor>.(S) -> Unit = {}) = actor(BorderContainer(), init)
+        init: BorderContainer<Actor>.(S) -> Unit = {}) : BorderContainer<Actor> {
+    contract { callsInPlace(init, InvocationKind.EXACTLY_ONCE) }
+    return actor(BorderContainer(), init)
+}
