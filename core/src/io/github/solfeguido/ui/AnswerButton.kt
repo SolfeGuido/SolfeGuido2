@@ -52,26 +52,37 @@ class AnswerButton(note: String): Stack(), KGroup, Disableable {
         initialize()
     }
 
+    private fun queueActions(action: Action) {
+        val currentActions = labelParent.actions
+        if(currentActions.size == 0) {
+            labelParent += action
+            return
+        }
+        val first = currentActions.removeIndex(0)
+        labelParent += (first + action)
+    }
+
     private fun hideIcon(delay: Float = 0f) {
         if(!isIconShown) return
-        labelParent += Actions.delay(delay) then Actions.scaleTo(0f, 0f, 0.2f, Interpolation.exp10In) then Actions.run {
-            currentIcon = IconName.Empty
-        }
+        currentIcon = IconName.Empty
+        val hideAnim = Actions.delay(delay) then Actions.scaleTo(0f, 0f, 0.2f, Interpolation.exp10In)
+        queueActions(hideAnim)
     }
 
     fun toggleIcon(icon: IconName, delay: Float = 0f): IconName {
         if(icon == currentIcon) {
             hideIcon(delay)
-            return IconName.Empty
+            return currentIcon
         }
-        if(isIconShown) {
-            labelParent += Actions.delay(delay) then Actions.scaleTo(0f, 0f, 0.2f, Interpolation.exp10In)  then Actions.run {
+        val showAnim = if(isIconShown) {
+            Actions.delay(delay) then Actions.scaleTo(0f, 0f, 0.2f, Interpolation.exp10In)  then Actions.run {
                 accidentalLabel.setText(icon.value)
-            } then Actions.scaleTo(1f, 1f, 0.4f, Interpolation.swingOut)
+            } then Actions.scaleTo(1f, 1f, 0.25f, Interpolation.swingOut)
         } else {
             accidentalLabel.setText(icon.value)
-            labelParent += Actions.delay(delay) then Actions.scaleTo(1f, 1f, 0.4f, Interpolation.swingOut)
+            Actions.delay(delay) then Actions.scaleTo(1f, 1f, 0.25f, Interpolation.swingOut)
         }
+        queueActions(showAnim)
         currentIcon = icon
         return icon
     }

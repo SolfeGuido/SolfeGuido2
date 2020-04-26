@@ -38,7 +38,7 @@ class ButtonAnswerActor : Table(), KTable {
     }
 
     private fun switchButtonIcons(icon: IconName) = noteList.forEachIndexed { index, answerButton ->
-        answerButton.toggleIcon(icon, index / 20f)
+        answerButton.toggleIcon(icon, index / 40f)
     }
 
     private fun noteButton(note: String) = answerButton(note) {
