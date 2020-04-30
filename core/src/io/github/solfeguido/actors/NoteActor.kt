@@ -26,7 +26,7 @@ class NoteActor : WidgetGroup(), Pool.Poolable {
     private var accidental: NoteAccidentalEnum = NoteAccidentalEnum.Natural
     private var relativeMeasurePosition = 0
     // Might be a bug here when changing the app's theme
-    private var lineTexture: Drawable = colorDrawable(1, 1, gCol("font"))
+    private var lineTexture: Drawable = colorDrawable(gCol("font"))
 
     override fun getHeight() = noteIcon.height * scaleY
     override fun getWidth() = (noteIcon.width + accidentalIcon.width)  * scaleX

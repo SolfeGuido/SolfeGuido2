@@ -18,7 +18,7 @@ class TimerActor(context: Context, private val settings: TimeSettings) : WidgetG
 
     private val frontColor = gCol("correct")
     private val errorColor = gCol("error")
-    private val timeLine = colorDrawable(1, 1, frontColor)
+    private val timeLine = colorDrawable(frontColor)
     private val max : Float
     private var current: Float
     private var timeBonus: Float

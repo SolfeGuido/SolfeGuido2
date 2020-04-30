@@ -23,9 +23,9 @@ fun getPreloadSkin() : Skin {
         val self = this
 
         progressBar("default-horizontal") {
-            background = colorDrawable(1, PROGRESS_BAR_HEIGHT, self.getColor("background") )
-            knob = colorDrawable(10, PROGRESS_BAR_HEIGHT, self.getColor("font") )
-            knobBefore = colorDrawable(10, PROGRESS_BAR_HEIGHT, Color(0.1f, 0.1f, 0.1f, 1f))
+            background = colorDrawable(self.getColor("background") )
+            knob = colorDrawable(self.getColor("font") )
+            knobBefore = colorDrawable(Color(0.1f, 0.1f, 0.1f, 1f))
         }
     }
 }

@@ -40,7 +40,14 @@ inline fun <S> KWidget<S>.iconButton(
         style: String = "iconButtonStyle",
         skin: Skin = Scene2DSkin.defaultSkin,
         init: (@Scene2dDsl STextButton).(S) -> Unit = {}) =
-        actor(STextButton(icon.value, style, skin), init)
+       sTextButton(icon.value, style, skin, init)
+
+inline fun <S> KWidget<S>.sTextButton(
+        text: String,
+        style: String = defaultStyle,
+        skin: Skin = Scene2DSkin.defaultSkin,
+        init: (@Scene2dDsl STextButton).(S) -> Unit = {}) =
+        actor(STextButton(text, style, skin), init)
 
 
 inline fun <S> KWidget<S>.measure(
@@ -66,16 +73,9 @@ inline fun <S> KWidget<S>.buttonAnswer(
 inline fun <S> KWidget<S>.borderButton(
         text: String,
         style: String = "borderButtonStyle",
-        skin: Skin = Scene2DSkin.defaultSkin,
-        init: (@Scene2dDsl BorderButton).(S) -> Unit = {}
-) = actor(BorderButton(text, style, skin), init)
-
-inline fun <S> KWidget<S>.borderLabel (
-        text: String,
-        style: String = "borderLabelStyle",
-        skin: Skin = Scene2DSkin.defaultSkin,
-        init: (@Scene2dDsl BorderLabel).(S) -> Unit = {}
-) = actor(BorderLabel(text, style, skin), init)
+        skin: Skin = Scene2DSkin.defaultSkin, 
+        init: (@Scene2dDsl STextButton).(S) -> Unit = {}
+) = actor(STextButton(text, style, skin), init)
 
 inline fun <S> KWidget<S>.answerButton (
         text: String,

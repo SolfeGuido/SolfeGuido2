@@ -16,7 +16,7 @@ import ktx.collections.gdxArrayOf
 
 class MeasureActor(val clef: ClefEnum = ClefEnum.GClef, val keySignature: KeySignatureEnum = KeySignatureEnum.CMajor) : WidgetGroup() {
 
-    private val line: Drawable = colorDrawable(1, 1, gCol("font"))
+    private val line: Drawable = colorDrawable(gCol("font"))
     var lineSpace = 0f
         private set
     var bottomLine = 0f

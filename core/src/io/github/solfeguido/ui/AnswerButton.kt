@@ -13,7 +13,6 @@ import com.badlogic.gdx.utils.Align
 import io.github.solfeguido.config.Constants
 import io.github.solfeguido.enums.IconName
 import io.github.solfeguido.factories.borderContainer
-import io.github.solfeguido.factories.borderLabel
 import io.github.solfeguido.factories.gCol
 import ktx.scene2d.*
 import  ktx.actors.*
@@ -30,13 +29,14 @@ class AnswerButton(note: String): Stack(), KGroup, Disableable {
 
     init {
         isTransform = true
-
         container {
-            borderLabel(note) {
-                setAlignment(Align.center)
-            }
+            borderContainer {
+                label(note, "contentLabelStyle") {
+                    setAlignment(Align.center)
+                }
+            }.fill()
         }.fill().pad(10f)
-        currentIcon = IconName.FlatAccidental
+        currentIcon = IconName.Empty
         val icon = currentIcon.value
         container {
             this@AnswerButton.labelParent = borderContainer {
@@ -48,6 +48,7 @@ class AnswerButton(note: String): Stack(), KGroup, Disableable {
             }
             top().right().padTop(5f)
         }
+        this.labelParent.setScale(0f)
 
         initialize()
     }

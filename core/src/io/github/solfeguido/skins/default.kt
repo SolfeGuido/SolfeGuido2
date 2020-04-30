@@ -1,9 +1,7 @@
 package io.github.solfeguido.skins
 
-import com.badlogic.gdx.assets.AssetManager
 import com.badlogic.gdx.graphics.Color
 import com.badlogic.gdx.graphics.g2d.BitmapFont
-import com.badlogic.gdx.scenes.scene2d.ui.Label
 import com.badlogic.gdx.scenes.scene2d.ui.Skin
 import io.github.solfeguido.config.Constants
 import io.github.solfeguido.factories.colorDrawable
@@ -23,6 +21,11 @@ fun getDefaultSkin(assetManager: AssetStorage): Skin{
             font = assetManager.get<BitmapFont>(Constants.TITLE_FONT)
             fontColor = Color(self.getColor("font"))
         }
+        label(name = "contentLabelStyle") {
+            font = assetManager.get<BitmapFont>(Constants.PRIMARY_FONT)
+            fontColor = gCol("font")
+        }
+
         label(name = "iconStyle") {
             font = assetManager.get<BitmapFont>("icon.woff")
             font.data.setScale(.9f)
@@ -30,10 +33,19 @@ fun getDefaultSkin(assetManager: AssetStorage): Skin{
         label(name = "bigIconStyle") {
             font = assetManager.get<BitmapFont>("bigIcon.woff")
         }
-        textButton( name=  "iconButtonStyle") {
-            font = assetManager.get<BitmapFont>("icon.woff")
-            fontColor = self.getColor("font")
+
+        borderButton( name=  "iconButtonStyle") {
+            labelStyle = "iconStyle"
+            borderThickness = 0f
+            borderColor = gCol("background")
         }
+
+        borderButton(name = "iconBorderButtonStyle") {
+            labelStyle = "iconStyle"
+            borderThickness = 1.3f
+            borderColor = gCol("font")
+        }
+
         textButton(name = "blackPianoKey")  {
             font = assetManager.get<BitmapFont>(Constants.PRIMARY_FONT)
             fontColor = self.getColor("background")
@@ -54,9 +66,6 @@ fun getDefaultSkin(assetManager: AssetStorage): Skin{
             fontColor = self.getColor("font")
         }
 
-        label(name = "borderLabelStyle") {
-            font = assetManager.get<BitmapFont>(Constants.PRIMARY_FONT)
-            fontColor = self.getColor("font")
-        }
+
     }
 }

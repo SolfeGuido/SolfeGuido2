@@ -11,11 +11,11 @@ import ktx.scene2d.progressBar
 
 class BorderContainer<T : Actor> : Container<T>(), KGroup {
 
-    private val border = colorDrawable(1, 1, gCol("font"))
+    private val border = colorDrawable(gCol("font"))
     private val borderThickness = 1f
 
     init {
-        background = colorDrawable(1, 1, gCol("background"))
+        background = colorDrawable(gCol("background"))
     }
 
     override fun addActor(actor: Actor?) {
