@@ -1,8 +1,10 @@
 package io.github.solfeguido.screens
 
 import com.badlogic.gdx.Gdx
+import com.badlogic.gdx.Input
 import com.badlogic.gdx.assets.AssetManager
 import com.badlogic.gdx.audio.Sound
+import com.badlogic.gdx.math.Interpolation
 import com.badlogic.gdx.scenes.scene2d.actions.Actions
 import com.badlogic.gdx.utils.Align
 import io.github.solfeguido.actors.MeasureActor
@@ -12,13 +14,13 @@ import io.github.solfeguido.enums.IconName
 import io.github.solfeguido.factories.*
 import io.github.solfeguido.factories.iconButton
 import io.github.solfeguido.settings.TimeSettings
+import io.github.solfeguido.ui.STextButton
 import ktx.actors.onClick
 import ktx.actors.plusAssign
+import ktx.assets.async.AssetStorage
 import ktx.inject.Context
 import ktx.log.info
-import ktx.scene2d.label
-import ktx.scene2d.scene2d
-import ktx.scene2d.table
+import ktx.scene2d.*
 
 class MenuScreen(context: Context) : UIScreen(context) {
 
@@ -30,6 +32,21 @@ class MenuScreen(context: Context) : UIScreen(context) {
             '-' -> measure.prevNote().let { true }
             else -> super.keyTyped(character)
         }
+    }
+
+    private fun showCreditsDialog(){
+        scene2d.zoomDialog {
+            title("Credits")
+            line("Made by : Azarias").align(Align.left)
+            line("Made with : LibGdx & ktx").align(Align.left)
+            line("Sounds : University of Iowa").align(Align.left)
+            line("Icons : IconMoonApp").align(Align.left)
+            this.borderButton("Ok")
+            key(Input.Keys.ENTER, true)
+            key(Input.Keys.ESCAPE, false)
+            setOrigin(Align.center)
+            contentTable.pad(10f)
+        }.show(this@MenuScreen.stage)
     }
 
     override fun show() {
@@ -47,19 +64,19 @@ class MenuScreen(context: Context) : UIScreen(context) {
                     iconButton(IconName.Info) {
                         onClick {
                             //Slide to other state
-                            context.inject<AssetManager>().get<Sound>(Constants.CLICK_SOUND).play()
+                            context.inject<AssetStorage>().get<Sound>(Constants.CLICK_SOUND).play()
+                            showCreditsDialog()
                         }
                         pad(5f)
                         it.expandX().top().left()
                     }
 
-                label("SolfeGuido") {
-                }
+                label("SolfeGuido")
 
                 iconButton(IconName.Cog) {
                     label.setAlignment(Align.topRight)
                     onClick {
-                        setOrigin(Align.center)
+                        context.inject<AssetStorage>().get<Sound>(Constants.CLICK_SOUND).play()
                         this.addAction(Actions.rotateBy(360f, 0.3f))
                         info { "Show options" }
                     }
@@ -70,15 +87,19 @@ class MenuScreen(context: Context) : UIScreen(context) {
                 it.expandX().fillX()
             }
             row()
-            timer(context, TimeSettings())
-            row()
             val padding = 0f
-            measure(ClefEnum.GClef) {
-                measure = this
-                it.grow().pad(padding, 0f, padding, 0f)
+            stack {
+                measure(ClefEnum.GClef) {
+                    measure = this
+                    //it.grow().pad(padding, 0f, padding, 0f)
+                }
+                table {
+                    iconButton(IconName.Music, "iconBorderButtonStyle") {
+
+                    }.pad(5f)
+                }
+                it.grow()
             }
-            row()
-            buttonAnswer()
             row()
             slidingTable(Align.bottomLeft) {
                 debug = true

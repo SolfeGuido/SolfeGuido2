@@ -8,14 +8,18 @@ import com.badlogic.gdx.scenes.scene2d.utils.Drawable
 import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable
 import ktx.scene2d.Scene2DSkin
 
-fun colorDrawable(color: Color): Drawable {
-    val pixmap = Pixmap(1, 1, Pixmap.Format.RGBA8888)
-    pixmap.setColor(color)
-    pixmap.fill()
+fun colorDrawable(color: Color) = Pixmap(1, 1, Pixmap.Format.RGBA8888).let {
+        it.setColor(color)
+        it.fill()
+        TextureRegionDrawable(TextureRegion(Texture(it))).also { _ -> it.dispose() }
+}
 
-    val drawable = TextureRegionDrawable(TextureRegion(Texture(pixmap)))
-    pixmap.dispose()
-    return drawable
+fun borderColorDrawable(width : Int, height: Int, borderWidth: Int, borderColor: Color, bgColor: Color) = Pixmap(width, height, Pixmap.Format.RGBA8888).let {
+    it.setColor(borderColor)
+    it.fill()
+    it.setColor(bgColor)
+    it.fillRectangle(borderWidth, borderWidth, width - (borderWidth * 2), height - (borderWidth * 2))
+    TextureRegionDrawable(TextureRegion(Texture(it))).also { _ -> it.dispose()  }
 }
 
 fun gCol(name: String) = Color(Scene2DSkin.defaultSkin.getColor(name))

@@ -90,3 +90,15 @@ inline fun <S> KWidget<S>.borderContainer(
     contract { callsInPlace(init, InvocationKind.EXACTLY_ONCE) }
     return actor(BorderContainer(), init)
 }
+
+
+@Scene2dDsl
+@OptIn(ExperimentalContracts::class)
+inline fun RootWidget.zoomDialog(
+        style: String = defaultStyle,
+        skin: Skin = Scene2DSkin.defaultSkin,
+        init: ZoomDialog.() -> Unit = {}
+): ZoomDialog {
+    contract { callsInPlace(init, InvocationKind.EXACTLY_ONCE) }
+    return storeActor(ZoomDialog(style, skin)).apply(init)
+}
