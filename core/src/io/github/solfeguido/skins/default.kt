@@ -4,12 +4,15 @@ import com.badlogic.gdx.graphics.Color
 import com.badlogic.gdx.graphics.g2d.BitmapFont
 import com.badlogic.gdx.scenes.scene2d.ui.Skin
 import io.github.solfeguido.config.Constants
+import io.github.solfeguido.factories.TRANSPARENT
 import io.github.solfeguido.factories.borderColorDrawable
 import io.github.solfeguido.factories.colorDrawable
 import io.github.solfeguido.factories.gCol
 import ktx.assets.async.AssetStorage
 import ktx.scene2d.dialog
 import ktx.style.*
+
+fun copyFont(font: BitmapFont) = BitmapFont(font.data, font.region, font.usesIntegerPositions())
 
 fun getDefaultSkin(assetManager: AssetStorage): Skin{
     val primaryFont: BitmapFont = assetManager[Constants.PRIMARY_FONT]
@@ -30,15 +33,11 @@ fun getDefaultSkin(assetManager: AssetStorage): Skin{
         }
 
         label(name = "contentLabelStyle") {
-            font = primaryFont
-            fontColor = gCol("font")
-        }
-
-        label(name = "contentLabelStyle") {
-            font = primaryFont
+            font = copyFont(primaryFont)
             font.data.setScale(0.7f)
             fontColor = gCol("font")
         }
+
 
         label(name = "iconStyle") {
             font = iconFont
@@ -79,9 +78,11 @@ fun getDefaultSkin(assetManager: AssetStorage): Skin{
             fontColor = self.getColor("font")
         }
 
-        textButton(name= "borderButtonStyle") {
-            font = primaryFont
+        borderButton(name= "borderButtonStyle") {
+            labelStyle = "contentLabelStyle"
             fontColor = self.getColor("font")
+            borderThickness = 1.3f
+            borderColor = gCol("font")
         }
 
         //TODO : for border style:  border thickness, and border color
@@ -103,6 +104,11 @@ fun getDefaultSkin(assetManager: AssetStorage): Skin{
             font = primaryFont
         }
 
+        scrollPane {
+            background = colorDrawable(TRANSPARENT)
+            vScroll = colorDrawable(self.getColor("fontHover"), 10)
+            vScrollKnob = colorDrawable(self.getColor("font"),10)
+        }
 
     }
 }

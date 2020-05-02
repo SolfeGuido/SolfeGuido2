@@ -8,7 +8,7 @@ import com.badlogic.gdx.scenes.scene2d.utils.Drawable
 import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable
 import ktx.scene2d.Scene2DSkin
 
-fun colorDrawable(color: Color) = Pixmap(1, 1, Pixmap.Format.RGBA8888).let {
+fun colorDrawable(color: Color, width: Int = 1, height: Int = 1) = Pixmap(width, height, Pixmap.Format.RGBA8888).let {
         it.setColor(color)
         it.fill()
         TextureRegionDrawable(TextureRegion(Texture(it))).also { _ -> it.dispose() }

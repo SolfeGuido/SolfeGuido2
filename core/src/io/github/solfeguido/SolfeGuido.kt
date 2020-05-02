@@ -2,6 +2,8 @@ package io.github.solfeguido
 
 import com.badlogic.gdx.ApplicationListener
 import com.badlogic.gdx.Gdx
+import com.badlogic.gdx.Input
+import com.badlogic.gdx.Net
 import com.badlogic.gdx.graphics.GL20
 import io.github.solfeguido.config.Constants
 import io.github.solfeguido.core.Jingles
@@ -14,11 +16,14 @@ import io.github.solfeguido.screens.MenuScreen
 import io.github.solfeguido.screens.SplashScreen
 import io.github.solfeguido.skins.getPreloadSkin
 import ktx.assets.async.AssetStorage
+import ktx.async.HttpRequestResult
 import ktx.async.KtxAsync
 import ktx.async.newAsyncContext
 import ktx.collections.gdxMapOf
 import ktx.inject.Context
 import ktx.inject.register
+import ktx.log.error
+import ktx.log.info
 import ktx.scene2d.Scene2DSkin
 
 class SolfeGuido : ApplicationListener {
@@ -44,6 +49,9 @@ class SolfeGuido : ApplicationListener {
             bindSingleton(SoundHelper(context))
             bindSingleton(stateMachine)
         }
+
+        Gdx.input.setCatchKey(Input.Keys.BACK, true)
+        Gdx.input.setCatchKey(Input.Keys.MENU, true)
     }
 
     override fun render() {

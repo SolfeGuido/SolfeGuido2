@@ -8,10 +8,7 @@ import com.badlogic.gdx.scenes.scene2d.Actor
 import com.badlogic.gdx.scenes.scene2d.Group
 import com.badlogic.gdx.scenes.scene2d.InputEvent
 import com.badlogic.gdx.scenes.scene2d.actions.Actions
-import com.badlogic.gdx.scenes.scene2d.ui.Button
-import com.badlogic.gdx.scenes.scene2d.ui.Label
-import com.badlogic.gdx.scenes.scene2d.ui.Skin
-import com.badlogic.gdx.scenes.scene2d.ui.TextButton
+import com.badlogic.gdx.scenes.scene2d.ui.*
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener
 import com.badlogic.gdx.scenes.scene2d.utils.Drawable
 import com.badlogic.gdx.utils.Align
@@ -41,7 +38,7 @@ class STextButton(text: String, buttonStyle: STextButtonStyle) : Button(buttonSt
         this += Actions.color(color, 0.5f, Interpolation.exp10Out)
     }
 
-    fun icon(icon: IconName){
+    fun icon(icon: IconName, scale: Float = 1f) : Cell<Group>{
         this.clearChildren()
         val grp = Group()
         val lbl = label(icon.value, "iconStyle") {
@@ -50,11 +47,12 @@ class STextButton(text: String, buttonStyle: STextButtonStyle) : Button(buttonSt
         }
         grp.setSize(lbl.width, lbl.height)
         grp.addActor(lbl)
-        grp.setScale(0.5f)
-        add(grp).grow().center()
-        lbl.setPosition(grp.width / 2, grp.height / 2)
+        grp.setScale(scale)
+        val cell = add(grp).grow().center()
+        lbl.setPosition(lbl.width - grp.width * scale, lbl.height - grp.height * scale)
 
         add(this.label).pad(0f, 5f, 0f, 5f).grow()
+        return cell
     }
 
     init {
