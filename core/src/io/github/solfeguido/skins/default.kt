@@ -42,8 +42,12 @@ fun getDefaultSkin(assetManager: AssetStorage): Skin{
 
         label(name = "iconStyle") {
             font = iconFont
-            font.data.setScale(.9f)
         }
+
+        label(name = "smallIconStyle") {
+            font = primaryFont
+        }
+
         label(name = "bigIconStyle") {
             font = bigIconFont
         }

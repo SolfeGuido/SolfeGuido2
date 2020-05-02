@@ -41,7 +41,7 @@ class MenuScreen(context: Context) : UIScreen(context) {
             line("Made with : LibGdx & ktx").align(Align.left)
             line("Sounds : University of Iowa").align(Align.left)
             line("Icons : IconMoonApp").align(Align.left)
-            this.borderButton("Ok")
+            this.borderButton("Ok").actor.icon(IconName.Check)
             key(Input.Keys.ENTER, true)
             key(Input.Keys.ESCAPE, false)
             setOrigin(Align.center)

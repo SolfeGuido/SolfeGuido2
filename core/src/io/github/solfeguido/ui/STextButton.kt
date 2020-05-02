@@ -5,6 +5,7 @@ import com.badlogic.gdx.graphics.g2d.Batch
 import com.badlogic.gdx.math.Interpolation
 import com.badlogic.gdx.scenes.scene2d.Action
 import com.badlogic.gdx.scenes.scene2d.Actor
+import com.badlogic.gdx.scenes.scene2d.Group
 import com.badlogic.gdx.scenes.scene2d.InputEvent
 import com.badlogic.gdx.scenes.scene2d.actions.Actions
 import com.badlogic.gdx.scenes.scene2d.ui.Button
@@ -15,14 +16,13 @@ import com.badlogic.gdx.scenes.scene2d.utils.ClickListener
 import com.badlogic.gdx.scenes.scene2d.utils.Drawable
 import com.badlogic.gdx.utils.Align
 import io.github.solfeguido.config.Constants
+import io.github.solfeguido.enums.IconName
 import io.github.solfeguido.factories.colorDrawable
 import io.github.solfeguido.factories.gCol
+import io.github.solfeguido.skins.getPreloadSkin
 import ktx.actors.plusAssign
-import ktx.scene2d.KTable
+import ktx.scene2d.*
 import  ktx.style.get
-import ktx.scene2d.Scene2dDsl
-import ktx.scene2d.label
-import ktx.scene2d.progressBar
 import ktx.style.defaultStyle
 
 @Scene2dDsl
@@ -40,10 +40,27 @@ class STextButton(text: String, buttonStyle: STextButtonStyle) : Button(buttonSt
     fun setBackgroundColor(color: Color) {
         this += Actions.color(color, 0.5f, Interpolation.exp10Out)
     }
+
+    fun icon(icon: IconName){
+        this.clearChildren()
+        val grp = Group()
+        val lbl = label(icon.value, "iconStyle") {
+            setAlignment(Align.center)
+            this += Actions.color(gCol("font"))
+        }
+        grp.setSize(lbl.width, lbl.height)
+        grp.addActor(lbl)
+        grp.setScale(0.5f)
+        add(grp).grow().center()
+        lbl.setPosition(grp.width / 2, grp.height / 2)
+
+        add(this.label).pad(0f, 5f, 0f, 5f).grow()
+    }
+
     init {
         this.label = label(text, style.labelStyle) {
             setAlignment(Align.center)
-            it.expand().fill()
+            it.grow()
             this += Actions.color(style.fontColor ?: gCol("font"))
         }
         setSize(prefWidth, prefHeight)
