@@ -106,8 +106,8 @@ fun getDefaultSkin(assetManager: AssetStorage): Skin{
 
         scrollPane {
             background = colorDrawable(TRANSPARENT)
-            vScroll = colorDrawable(self.getColor("fontHover"), 10)
-            vScrollKnob = colorDrawable(self.getColor("font"),10)
+            vScroll = colorDrawable(TRANSPARENT)// colorDrawable(self.getColor("fontHover"), 10)
+            vScrollKnob =  colorDrawable(TRANSPARENT)// colorDrawable(self.getColor("font"),10)
         }
 
     }

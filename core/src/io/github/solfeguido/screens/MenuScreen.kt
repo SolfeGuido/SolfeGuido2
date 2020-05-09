@@ -24,6 +24,7 @@ import ktx.actors.onClick
 import ktx.actors.plus
 import ktx.actors.plusAssign
 import ktx.assets.async.AssetStorage
+import ktx.collections.gdxArrayOf
 import ktx.inject.Context
 import ktx.log.info
 import ktx.scene2d.*
@@ -31,11 +32,8 @@ import ktx.scene2d.*
 class MenuScreen(context: Context) : UIScreen(context) {
 
     private lateinit var measure: MeasureActor
-    private lateinit var playMenu: Table
-    private lateinit var playOptions: ScrollPane
 
-    private val showingOptions
-        get() = playOptions.x in -10f..10f
+    private val widgetStack = gdxArrayOf<Actor>()
 
     override fun keyTyped(character: Char): Boolean {
         return when(character) {
@@ -60,25 +58,36 @@ class MenuScreen(context: Context) : UIScreen(context) {
         }.show(this@MenuScreen.stage)
     }
 
-    private fun showPlayOptions() {
-        playMenu.clearActions()
-        playOptions.clearActions()
-        playMenu += Actions.scaleTo(0f, 0f, 0.4f, Interpolation.exp10Out) / Actions.moveTo(-stage.width, 0f, 0.4f, Interpolation.exp10Out)
-        playOptions += (Actions.moveTo(stage.width,0f) / Actions.scaleTo(0f, 1f)) +
+    private fun pushActor(actor: Actor) {
+        val top = widgetStack.last()
+        top.clearActions()
+        actor.clearActions()
+        top += Actions.moveTo(-stage.width, 0f, 0.4f, Interpolation.exp10Out)
+        actor += (Actions.moveTo(stage.width, 0f) / Actions.scaleTo(0f, 1f)) +
                 Actions.moveTo(0f, 0f, 0.4f, Interpolation.swingOut) /
                 Actions.scaleTo(1f, 1f, 0.4f, Interpolation.swingOut)
+        widgetStack.add(actor)
     }
 
-    private fun showPlayMenu() {
-        playMenu.clearActions()
-        playOptions.clearActions()
-        playOptions += Actions.moveTo(playOptions.width, 0f, 0.8f, Interpolation.exp10Out)
-        playMenu +=  Actions.moveTo(0f, 0f, 0.4f, Interpolation.swingOut) /
-                Actions.scaleTo(1f, 1f, 0.4f, Interpolation.swingOut)
+    private fun popActor(): Boolean {
+        if(widgetStack.size < 2) return false
+        val top = widgetStack.pop()
+        val current = widgetStack.last()
+        top.clearActions()
+        current.clearActions()
+        top += Actions.moveTo(stage.width, 0f, 0.8f, Interpolation.exp10Out)
+        current += (Actions.moveTo(-stage.width, 0f) / Actions.scaleTo(0f, 1f)) +
+                (Actions.scaleTo(1f, 1f, 0.4f, Interpolation.swingOut) /
+                    Actions.moveTo(0f, 0f, 0.4f, Interpolation.swingOut) )
+        return true
     }
+
 
     override fun show() {
         super.show()
+        lateinit var playMenu: Table
+        lateinit var classicOptions: Group
+        lateinit var playOptions: ScrollPane
         stage += scene2d.table {
             setFillParent(true)
             setPosition(0f, 0f)
@@ -122,7 +131,7 @@ class MenuScreen(context: Context) : UIScreen(context) {
                             }
                             borderButton("Play") {
                                 icon(IconName.Play, 0.9f).pad(5f)
-                                onClick { showPlayOptions() }
+                                onClick { pushActor(playOptions) }
                                 pad(25f)
                                 it.pad(10f)
                             }
@@ -132,31 +141,45 @@ class MenuScreen(context: Context) : UIScreen(context) {
                                 it.pad(10f)
                             }
                         }
+                        classicOptions = scrollPane {
+                            setScale(0f)
+                            verticalGroup {
+                                setOrigin(Align.center)
+                                fill()
+                                center()
+                                this.space(10f)
+                                borderButton("Clé de sol") {
+                                    icon(IconName.GClef, 0.9f).pad(5f)
+                                    pad(5f)
+                                }
+                                borderButton("Clé de Fa") {
+                                    icon(IconName.FClef, 0.9f).pad(5f)
+                                    pad(5f)
+                                }
+                                borderButton("Clé d'UT3") {
+                                    icon(IconName.CClef3, 0.9f).pad(5f)
+                                    pad(5f)
+                                }
+                                borderButton("Clé d'UT4") {
+                                    icon(IconName.CClef3, 0.9f).pad(5f)
+                                    pad(5f)
+                                }
+                            }
+                        }
+                        widgetStack.add(playMenu)
                         it.grow()
                     }
-                    row()
-                    slidingTable(Align.bottomLeft) {
-                        iconButton(IconName.Off) {
-                            label.setAlignment(Align.topRight)
-                            onClick { Gdx.app.exit() }
-                            pad(5f)
-                            it.expandX().bottom().left()
-                        }
-                        it.expandX().fillX()
-                        pad(10f)
-                    }
                 }
-                scrollPane {
-                    playOptions = this
+                playOptions = scrollPane {
+                    this.setScrollbarsVisible(false)
+                    fadeScrollBars = false
                     verticalGroup {
                         borderButton("Classic") {
                             icon(IconName.Music, 0.9f).left()
                             label.setAlignment(Align.right)
                             left()
                             pad(10f)
-                            onClick {
-                                info { "Doing classic mode" }
-                            }
+                            onClick { pushActor(classicOptions) }
                         }
                         borderButton("Levels") {
                             icon(IconName.FullStar, 0.9f).left()
@@ -214,14 +237,6 @@ class MenuScreen(context: Context) : UIScreen(context) {
                                 info { "Playing Guess the accidental" }
                             }
                         }
-                        borderButton("Back") {
-                            icon(IconName.Home, 0.9f).left()
-                            label.setAlignment(Align.right)
-                            pad(10f)
-                            onClick {
-                                showPlayMenu()
-                            }
-                        }
                         fill()
                         center()
                         padTop(10f)
@@ -241,15 +256,14 @@ class MenuScreen(context: Context) : UIScreen(context) {
         val isBackKey : (Int) -> Boolean = { it == Input.Keys.ESCAPE || it == Input.Keys.BACK}
         stage.addListener(object: InputListener() {
             override fun keyTyped(event: InputEvent, character: Char): Boolean {
-                if(!showingOptions) {
+                if(widgetStack.size == 1) {
                     if(isBackKey(event.keyCode)) {
                         Gdx.app.exit()
                         return true
                     }
                     return false
                 }
-                if(isBackKey(event.keyCode)) {
-                    showPlayMenu()
+                if(isBackKey(event.keyCode) && !popActor()) {
                     return true
                 }
                 return false
