@@ -3,13 +3,16 @@ package io.github.solfeguido.core
 import com.badlogic.gdx.Screen
 import com.badlogic.gdx.utils.ObjectMap
 import io.github.solfeguido.screens.UIScreen
+import ktx.collections.gdxMapOf
+import ktx.collections.set
+import ktx.inject.Context
 
-typealias ScreenProvider = () -> UIScreen
+typealias ScreenProvider= () -> UIScreen
 
-class StateMachine(private val constructors : ObjectMap<Class<out UIScreen>, ScreenProvider>, current: Class<out UIScreen>) : Screen {
+class StateMachine(val context: Context) : Screen {
     private val stack = mutableListOf<UIScreen>()
-
     private val changes = mutableListOf<() -> Unit>()
+    val constructors: ObjectMap<Class<out UIScreen>, ScreenProvider> = gdxMapOf()
 
 
     private fun performChanges() {
@@ -17,8 +20,15 @@ class StateMachine(private val constructors : ObjectMap<Class<out UIScreen>, Scr
         changes.clear()
     }
 
-    init {
-        push(current)
+    internal inline fun<reified Type : UIScreen> addScreen() : StateMachine {
+        val constructor = Type::class.java.getDeclaredConstructor(Context::class.java)
+        constructors[Type::class.java] = { constructor.newInstance(context) }
+        return this
+    }
+
+    internal inline fun<reified Type : UIScreen> addCurrentScreen() : StateMachine {
+        addScreen<Type>()
+        return push(Type::class.java)
     }
 
     private fun <Type : UIScreen>createScreen(type: Class<Type>, param: StateParameter): UIScreen = constructors[type]().also { it.create(param) }
@@ -36,7 +46,7 @@ class StateMachine(private val constructors : ObjectMap<Class<out UIScreen>, Scr
 
     internal inline fun <reified  Type : UIScreen> push(param:  StateParameter) = push(Type::class.java, param)
 
-    public fun pop() : StateMachine{
+    internal fun pop() : StateMachine{
         changes.add {
             stack.last().hide()
             stack.last().dispose()

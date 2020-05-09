@@ -91,3 +91,46 @@ project(":core") {
         implementation "io.github.libktx:ktx-style:$ktxVersion"
     }
 }
+
+task nls{
+    def project = 'core'
+    def source = 'src'
+    def pack = 'io.github.solfeguido.enums'
+    def name = 'Nls'
+    def fileName = 'nls.kt'
+    def bundle = 'core/assets/i18n/nls.properties'
+
+    println("Processing i18n bundle file at ${bundle}...")
+    def builder = new StringBuilder()
+    builder.append("""package ${pack}
+import ktx.i18n.BundleLine
+/** Generated from ${bundle} file. */
+enum class ${name}(private val key: String) : BundleLine {
+""")
+    def newLine = System.getProperty("line.separator")
+    file(bundle).eachLine {
+        def data = it.trim()
+        def separator = data.indexOf('=')
+        if (!data.isEmpty() && separator > 0 && !data.startsWith('#')) {
+            def id = data.substring(0, separator).trim()
+            def decl = id.split('[._]').collect{str -> str.capitalize()}.join('')
+            builder.append('    ').append(decl).append('("').append(id).append('")').append(',').append(newLine)
+        }
+    }
+    // If you want a custom enum body, replace the following append:
+    builder.append('    ;').append(newLine).append("""
+    override fun toString() = key
+""").append('}').append(newLine)
+
+    source = source.replace('/', File.separator)
+    pack = pack.replace('.', File.separator)
+    def path = project + File.separator + source + File.separator + pack +
+            File.separator + fileName
+    println("Saving i18n bundle enum at ${path}...")
+    def enumFile = file(path)
+    delete enumFile
+    enumFile.getParentFile().mkdirs()
+    enumFile.createNewFile()
+    enumFile << builder << newLine
+    println("Done. I18n bundle enum generated.")
+}

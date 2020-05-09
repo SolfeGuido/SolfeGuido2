@@ -3,7 +3,7 @@ package io.github.solfeguido
 import com.badlogic.gdx.ApplicationListener
 import com.badlogic.gdx.Gdx
 import com.badlogic.gdx.Input
-import com.badlogic.gdx.Net
+import com.badlogic.gdx.graphics.Color
 import com.badlogic.gdx.graphics.GL20
 import io.github.solfeguido.config.Constants
 import io.github.solfeguido.core.Jingles
@@ -11,36 +11,32 @@ import io.github.solfeguido.core.SoundHelper
 import io.github.solfeguido.core.StateMachine
 import io.github.solfeguido.factories.ParticlePool
 import io.github.solfeguido.factories.gCol
-import io.github.solfeguido.screens.NoteGuessScreen
-import io.github.solfeguido.screens.MenuScreen
-import io.github.solfeguido.screens.SplashScreen
+import io.github.solfeguido.screens.*
 import io.github.solfeguido.skins.getPreloadSkin
 import ktx.assets.async.AssetStorage
-import ktx.async.HttpRequestResult
 import ktx.async.KtxAsync
 import ktx.async.newAsyncContext
-import ktx.collections.gdxMapOf
 import ktx.inject.Context
 import ktx.inject.register
-import ktx.log.error
-import ktx.log.info
 import ktx.scene2d.Scene2DSkin
 
 class SolfeGuido : ApplicationListener {
 
     private lateinit var context: Context;
     private lateinit var stateMachine: StateMachine
+    private val bgColor: Color by lazy { gCol("background") }
 
     override fun create() {
         KtxAsync.initiate()
         context = Context()
         Scene2DSkin.defaultSkin = getPreloadSkin()
 
-        stateMachine = StateMachine(gdxMapOf(
-                MenuScreen::class.java to { MenuScreen(context) },
-                SplashScreen::class.java to { SplashScreen(context) },
-                NoteGuessScreen::class.java to { NoteGuessScreen(context) }
-        ), SplashScreen::class.java)
+        stateMachine = StateMachine(context)
+                .addCurrentScreen<SplashScreen>()
+                .addScreen<MenuScreen>()
+                .addScreen<GameCreationScreen>()
+                .addScreen<LevelSelectionScreen>()
+                .addScreen<OptionScreen>()
         context.register {
             bindSingleton(Gdx.app.getPreferences(Constants.PREFERENCES_NAME))
             bindSingleton(ParticlePool(context))
@@ -55,7 +51,7 @@ class SolfeGuido : ApplicationListener {
     }
 
     override fun render() {
-        val bg = gCol("background")
+        val bg = bgColor
         Gdx.gl.glClearColor(bg.r, bg.b, bg.b, bg.a)
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT)
         stateMachine.render(Gdx.graphics.deltaTime)
