@@ -28,10 +28,12 @@ import ktx.collections.gdxArrayOf
 import ktx.inject.Context
 import ktx.log.info
 import ktx.scene2d.*
+import kotlin.math.abs
 
 class MenuScreen(context: Context) : UIScreen(context) {
 
     private lateinit var measure: MeasureActor
+    private lateinit var backButton: Actor
 
     private val widgetStack = gdxArrayOf<Actor>()
 
@@ -62,10 +64,14 @@ class MenuScreen(context: Context) : UIScreen(context) {
         val top = widgetStack.last()
         top.clearActions()
         actor.clearActions()
-        top += Actions.moveTo(-stage.width, 0f, 0.4f, Interpolation.exp10Out)
-        actor += (Actions.moveTo(stage.width, 0f) / Actions.scaleTo(0f, 1f)) +
+        top += Actions.moveTo(-stage.width, 0f, 0.4f, Interpolation.exp10Out) + Actions.visible(false)
+        actor += (Actions.moveTo(stage.width, 0f) / Actions.scaleTo(0f, 1f)) + Actions.visible(true) +
                 Actions.moveTo(0f, 0f, 0.4f, Interpolation.swingOut) /
                 Actions.scaleTo(1f, 1f, 0.4f, Interpolation.swingOut)
+        if(widgetStack.size == 1) {
+            backButton.clearActions()
+            backButton += (Actions.moveTo(-backButton.width, backButton.y) + Actions.visible(true)) + Actions.moveTo(5f, backButton.y, 0.4f, Interpolation.fade)
+        }
         widgetStack.add(actor)
     }
 
@@ -75,10 +81,14 @@ class MenuScreen(context: Context) : UIScreen(context) {
         val current = widgetStack.last()
         top.clearActions()
         current.clearActions()
-        top += Actions.moveTo(stage.width, 0f, 0.8f, Interpolation.exp10Out)
-        current += (Actions.moveTo(-stage.width, 0f) / Actions.scaleTo(0f, 1f)) +
+        top += Actions.moveTo(stage.width, 0f, 0.8f, Interpolation.exp10Out) + Actions.visible(false)
+        current += (Actions.moveTo(-stage.width, 0f) / Actions.scaleTo(0f, 1f)) + Actions.visible(true) +
                 (Actions.scaleTo(1f, 1f, 0.4f, Interpolation.swingOut) /
                     Actions.moveTo(0f, 0f, 0.4f, Interpolation.swingOut) )
+        if(widgetStack.size == 1) {
+            backButton.clearActions()
+            backButton += Actions.moveTo(-backButton.width, backButton.y, 0.4f, Interpolation.fade) + Actions.visible(false)
+        }
         return true
     }
 
@@ -93,15 +103,18 @@ class MenuScreen(context: Context) : UIScreen(context) {
             setPosition(0f, 0f)
             align(Align.center)
             slidingTable(Align.top) {
-                    iconButton(IconName.Info) {
+                    backButton = iconButton(IconName.ChevronLeft) {
                         onClick {
-                            //Slide to other state
+                            popActor()
+                            /*
                             context.inject<AssetStorage>().get<Sound>(Constants.CLICK_SOUND).play()
-                            showCreditsDialog()
+                            showCreditsDialog()*/
                         }
                         pad(5f)
                         it.expandX().top().left()
+                        isVisible = false
                     }
+
 
                 label("SolfeGuido")
 
@@ -142,7 +155,7 @@ class MenuScreen(context: Context) : UIScreen(context) {
                             }
                         }
                         classicOptions = scrollPane {
-                            setScale(0f)
+                            isVisible = false
                             verticalGroup {
                                 setOrigin(Align.center)
                                 fill()
@@ -173,6 +186,8 @@ class MenuScreen(context: Context) : UIScreen(context) {
                 playOptions = scrollPane {
                     this.setScrollbarsVisible(false)
                     fadeScrollBars = false
+                    setOrigin(Align.center)
+                    isVisible = false
                     verticalGroup {
                         borderButton("Classic") {
                             icon(IconName.Music, 0.9f).left()
@@ -243,14 +258,14 @@ class MenuScreen(context: Context) : UIScreen(context) {
                         padBottom(10f)
                         this.space(10f)
                     }
-                    setOrigin(Align.center)
-                    setScale(0f)
                 }
                 it.grow()
             }
         }
         addListeners()
     }
+
+    override fun fling(velocityX: Float, velocityY: Float, button: Int) =  velocityX > 1000f && popActor()
 
     private fun addListeners(){
         val isBackKey : (Int) -> Boolean = { it == Input.Keys.ESCAPE || it == Input.Keys.BACK}
