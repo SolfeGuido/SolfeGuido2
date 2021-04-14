@@ -29,8 +29,8 @@ class STextButton(text: String, buttonStyle: STextButtonStyle) : Button(buttonSt
     var disableOnPressed = false
 
     private val style: STextButtonStyle = buttonStyle
-    private var borderDrawable: Drawable
-    private var backgroundDrawable: Drawable
+    private val mBorderDrawable: Drawable
+    private val mBackgroundDrawable: Drawable
 
     constructor(text: String, style: String, skin: Skin): this(text, skin.get<STextButtonStyle>(style))
 
@@ -64,8 +64,8 @@ class STextButton(text: String, buttonStyle: STextButtonStyle) : Button(buttonSt
         setSize(prefWidth, prefHeight)
         initialize()
         this.isTransform = true
-        borderDrawable = colorDrawable(style.borderColor ?: gCol("background"))
-        backgroundDrawable = colorDrawable(style.backgroundColor ?: gCol("background"))
+        mBorderDrawable = colorDrawable(style.borderColor ?: gCol("background"))
+        mBackgroundDrawable = colorDrawable(style.backgroundColor ?: gCol("background"))
     }
 
     override fun layout() {
@@ -78,10 +78,10 @@ class STextButton(text: String, buttonStyle: STextButtonStyle) : Button(buttonSt
         val c= color
         batch.setColor(c.r, c.g, c.b, c.a * parentAlpha)
         if(style.borderThickness > 0f) {
-            borderDrawable.draw(batch, -style.borderThickness, -style.borderThickness, width + (style.borderThickness * 2), height + (style.borderThickness * 2))
+            mBorderDrawable.draw(batch, -style.borderThickness, -style.borderThickness, width + (style.borderThickness * 2), height + (style.borderThickness * 2))
         }
 
-        backgroundDrawable.draw(batch, 0f, 0f, width, height)
+        mBackgroundDrawable.draw(batch, 0f, 0f, width, height)
 
         resetTransform(batch)
 

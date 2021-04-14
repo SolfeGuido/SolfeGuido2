@@ -60,7 +60,7 @@ abstract class UIScreen(protected val context: Context) : KtxScreen, InputProces
     override fun keyTyped(character: Char) = stage.keyTyped(character)
     override fun keyUp(keycode: Int) = stage.keyUp(keycode)
     override fun mouseMoved(screenX: Int, screenY: Int) = stage.mouseMoved(screenX, screenY)
-    override fun scrolled(amount: Int) = stage.scrolled(amount)
+    override fun scrolled(amountX: Float, amountY: Float) = stage.scrolled(amountX, amountY)
     override fun touchDown(screenX: Int, screenY: Int, pointer: Int, button: Int) = stage.touchDown(screenX, screenY, pointer, button)
     override fun touchDragged(screenX: Int, screenY: Int, pointer: Int) = stage.touchDragged(screenX, screenY, pointer)
     override fun touchUp(screenX: Int, screenY: Int, pointer: Int, button: Int) = stage.touchUp(screenX, screenY, pointer, button)
