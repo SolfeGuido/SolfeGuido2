@@ -6,6 +6,7 @@ import io.github.solfeguido.screens.UIScreen
 import ktx.collections.gdxMapOf
 import ktx.collections.set
 import ktx.inject.Context
+import java.lang.Exception
 
 typealias ScreenProvider= () -> UIScreen
 
@@ -57,6 +58,11 @@ class StateMachine(val context: Context) : Screen {
     }
 
     internal inline fun <reified  Type: UIScreen>switch(param: StateParameter = StateParameter.empty()): StateMachine {
+        val typeClass = Type::class.java
+        if(!constructors.containsKey(typeClass)) {
+            throw Exception("The constructor $typeClass is not configured in the state machine")
+        }
+
         changes.add {
             hide()
             dispose()

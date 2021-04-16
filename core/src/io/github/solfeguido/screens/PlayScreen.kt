@@ -15,17 +15,24 @@ import com.badlogic.gdx.scenes.scene2d.utils.ClickListener
 import com.badlogic.gdx.utils.Align
 import com.badlogic.gdx.utils.viewport.FitViewport
 import com.badlogic.gdx.utils.viewport.Viewport
+import io.github.solfeguido.core.StateParameter
+import io.github.solfeguido.enums.ClefEnum
 import ktx.actors.alpha
 import ktx.actors.stage
 import ktx.app.KtxScreen
+import ktx.inject.Context
 import ktx.log.info
 import ktx.scene2d.*
 
-class PlayScreen : KtxScreen {
+class PlayScreen(context: Context) : UIScreen(context) {
 
-    private lateinit var stage: Stage
     private lateinit var batch: SpriteBatch
+    private lateinit var clef : ClefEnum
 
+    override fun create(settings: StateParameter) {
+        clef = settings.getValue()
+        super.create(settings)
+    }
 
     override fun show() {
         Gdx.input.inputProcessor = null

@@ -2,12 +2,9 @@ package io.github.solfeguido.core
 
 import java.lang.Error
 
-class StateParameter(val data: Any? = null, val clazz: Class<*>? = null) {
-
-    val hasValue: Boolean = data != null
+class StateParameter(val data: Any = Object(), val clazz: Class<*>? = Object::class.java) {
 
     inline fun <reified Type: Any>getValue(): Type {
-        if(!hasValue) throw Error("No parameter")
         if(data !is Type) throw Error("Expected type ${Type::class.java} is not the contained type $clazz")
         return data
     }

@@ -13,6 +13,7 @@ import io.github.solfeguido.actors.MeasureActor
 import io.github.solfeguido.config.Constants
 import io.github.solfeguido.config.KeySignatureConfig
 import io.github.solfeguido.core.StateMachine
+import io.github.solfeguido.core.StateParameter
 import io.github.solfeguido.enums.ClefEnum
 import io.github.solfeguido.enums.IconName
 import io.github.solfeguido.enums.KeySignatureEnum
@@ -163,6 +164,11 @@ class MenuScreen(context: Context) : UIScreen(context) {
                             borderButton(clef.name) {
                                 icon(clef.icon, 0.9f).pad(5f)
                                 pad(5f)
+
+                                onClick {
+                                    info { "Play with clef $clef" }
+                                    context.inject<StateMachine>().switch<PlayScreen>(StateParameter.witType(clef))
+                                }
                             }
                         }
                     }

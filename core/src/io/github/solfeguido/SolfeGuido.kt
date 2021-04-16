@@ -37,6 +37,7 @@ class SolfeGuido : ApplicationListener {
                 .addScreen<GameCreationScreen>()
                 .addScreen<LevelSelectionScreen>()
                 .addScreen<OptionScreen>()
+                .addScreen<PlayScreen>()
         context.register {
             bindSingleton(Gdx.app.getPreferences(Constants.PREFERENCES_NAME))
             bindSingleton(ParticlePool(context))
