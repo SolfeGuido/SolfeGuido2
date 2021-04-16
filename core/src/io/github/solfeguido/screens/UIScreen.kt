@@ -53,7 +53,6 @@ abstract class UIScreen(protected val context: Context) : KtxScreen, InputProces
     override fun render(delta: Float) {
         stage.act()
         stage.draw()
-
     }
 
     override fun keyDown(keycode: Int)  = stage.keyDown(keycode)

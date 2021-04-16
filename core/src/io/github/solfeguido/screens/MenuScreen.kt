@@ -166,7 +166,6 @@ class MenuScreen(context: Context) : UIScreen(context) {
                                 pad(5f)
 
                                 onClick {
-                                    info { "Play with clef $clef" }
                                     context.inject<StateMachine>().switch<PlayScreen>(StateParameter.witType(clef))
                                 }
                             }

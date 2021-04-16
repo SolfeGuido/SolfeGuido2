@@ -67,6 +67,7 @@ class MeasureActor(val clef: ClefEnum = ClefEnum.GClef, val keySignature: KeySig
         bottomLine = lineSpace * 3.5f
         topLine = bottomLine + (lineSpace * 5)
 
+
         val scale = (lineSpace / clefActor.height) * clefPosition.height
         clefActor.setScale(scale)
         clefActor.y = lineSpace * clefPosition.baseLine
