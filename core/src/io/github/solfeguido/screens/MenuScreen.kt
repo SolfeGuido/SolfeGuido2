@@ -202,51 +202,52 @@ class MenuScreen(context: Context) : UIScreen(context) {
                                 context.inject<StateMachine>().switch<LevelSelectionScreen>()
                             }
                         }
-                        borderButton("Competitive") {
-                            icon(IconName.Speedometer, 0.9f).left()
-                            label.setAlignment(Align.right)
-                            pad(10f)
-                            onClick { pushActor(classicOptions)  }
-                        }
-                        borderButton("Ear training") {
-                            icon(IconName.Eacute, 0.9f).left()
-                            label.setAlignment(Align.right)
-                            pad(10f)
-                            onClick {
-                                //TODO go to play scene
-                                info { "Doing ear training" }
-                            }
-                        }
-                        borderButton("Custom") {
-                            icon(IconName.Road, 0.9f).left()
-                            label.setAlignment(Align.right)
-                            pad(10f)
-                            onClick {
-                                // TODO: load list of custom games
-                                info { "Playing custom gamemode" }
-                            }
-                        }
-                        borderButton("Create custom") {
-                            icon(IconName.Direction, 0.9f).left()
-                            label.setAlignment(Align.right)
-                            pad(10f)
-                            onClick {
-                                //TODO: smooth transition
-                                context.inject<StateMachine>().switch<GameCreationScreen>()
-                            }
-                        }
                         borderButton("FreePlay") {
                             icon(IconName.Infinity, 0.9f).left()
                             label.setAlignment(Align.right)
                             pad(10f)
                             onClick { pushActor(classicOptions) }
                         }
-                        borderButton("Key Signature") {
-                            icon(IconName.SharpAccidental, 0.9f).left()
-                            label.setAlignment(Align.right)
-                            pad(10f)
-                            onClick { pushActor(keyOptions) }
-                        }
+                        // Later
+                        // borderButton("Competitive") {
+                        //     icon(IconName.Speedometer, 0.9f).left()
+                        //     label.setAlignment(Align.right)
+                        //     pad(10f)
+                        //     onClick { pushActor(classicOptions)  }
+                        // }
+                        // borderButton("Ear training") {
+                        //     icon(IconName.Eacute, 0.9f).left()
+                        //     label.setAlignment(Align.right)
+                        //     pad(10f)
+                        //     onClick {
+                        //         //TODO go to play scene
+                        //         info { "Doing ear training" }
+                        //     }
+                        // }
+                        // borderButton("Custom") {
+                        //     icon(IconName.Road, 0.9f).left()
+                        //     label.setAlignment(Align.right)
+                        //     pad(10f)
+                        //     onClick {
+                        //         // TODO: load list of custom games
+                        //         info { "Playing custom gamemode" }
+                        //     }
+                        // }
+                        // borderButton("Create custom") {
+                        //     icon(IconName.Direction, 0.9f).left()
+                        //     label.setAlignment(Align.right)
+                        //     pad(10f)
+                        //     onClick {
+                        //         //TODO: smooth transition
+                        //         context.inject<StateMachine>().switch<GameCreationScreen>()
+                        //     }
+                        // }
+                        // borderButton("Key Signature") {
+                        //     icon(IconName.SharpAccidental, 0.9f).left()
+                        //     label.setAlignment(Align.right)
+                        //     pad(10f)
+                        //     onClick { pushActor(keyOptions) }
+                        // }
                         fill()
                         center()
                         padTop(10f)
