@@ -9,6 +9,9 @@ import io.github.solfeguido.actors.MeasureActor
 import io.github.solfeguido.core.StateParameter
 import io.github.solfeguido.enums.ClefEnum
 import io.github.solfeguido.factories.measure
+import io.github.solfeguido.factories.onAnswer
+import io.github.solfeguido.factories.pianoAnswer
+import ktx.actors.onClick
 import ktx.actors.plusAssign
 import ktx.actors.stage
 import ktx.inject.Context
@@ -49,6 +52,16 @@ class PlayScreen(context: Context) : UIScreen(context) {
             row()
             stack {
                 measure = measure(clef)
+                it.grow()
+            }
+            row()
+            container {
+                align(Align.bottom)
+                pianoAnswer {
+                    onAnswer { note ->
+                        // Handle answer based on what was generated
+                    }
+                }
                 it.grow()
             }
         }
