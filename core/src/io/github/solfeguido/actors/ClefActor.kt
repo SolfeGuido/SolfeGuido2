@@ -11,22 +11,24 @@ class ClefActor(val clef: ClefEnum) : Group() {
 
     private val label: Label
 
+    val absoluteHeight get() = label.height
+
     override fun getHeight(): Float = label.height * scaleY
     override fun getWidth(): Float = label.width * scaleX
 
     init {
-        label = when(clef) {
+        label = when (clef) {
             ClefEnum.GClef -> getClefLabel(IconName.GClef)
             ClefEnum.FClef -> getClefLabel(IconName.FClef)
             ClefEnum.CClef3 -> getClefLabel(IconName.CClef)
             ClefEnum.CClef4 -> getClefLabel(IconName.CClef)
-            else -> Label("", Scene2DSkin.defaultSkin)
         }
     }
 
 
-    private fun getClefLabel(icon: IconName) = Label(icon.value, Scene2DSkin.defaultSkin, "bigIconStyle").also {
-        this.addActor(it)
-        it.color = gCol("font")
-    }
+    private fun getClefLabel(icon: IconName) =
+        Label(icon.value, Scene2DSkin.defaultSkin, "bigIconStyle").also {
+            this.addActor(it)
+            it.color = gCol("font")
+        }
 }

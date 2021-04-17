@@ -24,7 +24,7 @@ class NoteActor : WidgetGroup(), Pool.Poolable {
     var note: MidiNote? = null
         private set
     private var accidental: NoteAccidentalEnum = NoteAccidentalEnum.Natural
-    private var relativeMeasurePosition = 0
+    private var relativeMeasurePosition = 10 // Middle of the
     // Might be a bug here when changing the app's theme
     private var lineTexture: Drawable = colorDrawable(gCol("font"))
 
@@ -59,7 +59,7 @@ class NoteActor : WidgetGroup(), Pool.Poolable {
         note?.let { Pools.free(it) }
         note = null
         measure = null
-        relativeMeasurePosition = 0
+        relativeMeasurePosition = 10
         accidental = NoteAccidentalEnum.Natural
         noteIcon.color = TRANSPARENT
         accidentalIcon.color = TRANSPARENT
@@ -78,7 +78,7 @@ class NoteActor : WidgetGroup(), Pool.Poolable {
         noteIcon.setIcon(IconName.QuarterNote)
         noteIcon.pack()
         noteIcon.x = accidentalIcon.width
-        this.x = Gdx.graphics.width.toFloat() - 100f
+        this.x = Gdx.graphics.width.toFloat()
     }
 
     private fun drawLine(batch: Batch, y: Float) {
@@ -91,9 +91,9 @@ class NoteActor : WidgetGroup(), Pool.Poolable {
         val lineSpace = measure!!.lineSpace
         val bottom = measure!!.bottomLine
 
-        if(relativeMeasurePosition <= 4) drawLine(batch, bottom - lineSpace)
-        if(relativeMeasurePosition <= 2) drawLine(batch, bottom - lineSpace * 2)
         if(relativeMeasurePosition == 0) drawLine(batch, bottom - lineSpace * 3)
+        if(relativeMeasurePosition <= 2) drawLine(batch, bottom - lineSpace * 2)
+        if(relativeMeasurePosition <= 4) drawLine(batch, bottom - lineSpace)
         if(relativeMeasurePosition >= 16) drawLine(batch, topLine)
         if(relativeMeasurePosition >= 18) drawLine(batch, topLine + lineSpace)
         if(relativeMeasurePosition >= 20) drawLine(batch, topLine + lineSpace * 2)

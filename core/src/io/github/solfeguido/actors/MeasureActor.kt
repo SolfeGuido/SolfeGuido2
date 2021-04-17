@@ -13,8 +13,13 @@ import io.github.solfeguido.enums.ClefEnum
 import io.github.solfeguido.enums.KeySignatureEnum
 import io.github.solfeguido.factories.*
 import ktx.collections.gdxArrayOf
+import kotlin.math.max
+import kotlin.random.Random
 
-class MeasureActor(val clef: ClefEnum = ClefEnum.GClef, val keySignature: KeySignatureEnum = KeySignatureEnum.CMajor) : WidgetGroup() {
+class MeasureActor(
+    val clef: ClefEnum = ClefEnum.GClef,
+    val keySignature: KeySignatureEnum = KeySignatureEnum.CMajor
+) : WidgetGroup() {
 
     private val line: Drawable = colorDrawable(gCol("font"))
     var lineSpace = 0f
@@ -36,26 +41,39 @@ class MeasureActor(val clef: ClefEnum = ClefEnum.GClef, val keySignature: KeySig
 
     override fun act(delta: Float) {
         super.act(delta)
-        if(notes.isEmpty) return
+        if (notes.isEmpty) return
+        var maxLeft = 0f
         val end = (signatureActor.x + signatureActor.width) + clefActor.width
-        val start = Gdx.graphics.width.toFloat()
+        val start = Gdx.graphics.width.toFloat() + 100f
         val current = notes.first().x
-        val nwPos = Interpolation.pow4Out.apply(start, end, (start - current) / (start - end) )
+        val nwPos = Interpolation.pow4Out.apply(start, end, (start - current) / (start - end))
         val moveBy = (current - nwPos) * delta
         notes.forEach {
             it.x -= moveBy
+            maxLeft = max(maxLeft, it.x)
+        }
+        if (maxLeft < (this.width - (currentNote.width * 4))) {
+            generateNoe()
         }
     }
 
-    fun nextNote(){
-        val idx =  (currentNote.note!!.midiIndex + 1)
+    private fun generateNoe() =
+        NoteActorPool.generate(MidiNotePool.fromIndex(Random.nextInt(60, 80)), this).also {
+            notes.add(it)
+            addActor(it)
+        }
+
+    // Used only for testing, move the current note to the next semi-tone
+    fun nextNote() {
+        val idx = (currentNote.note!!.midiIndex + 1)
         currentNote.reset()
         currentNote.create(this, MidiNotePool.fromIndex(idx))
         currentNote.layout()
     }
 
-    fun prevNote(){
-        val idx =  (currentNote.note!!.midiIndex - 1)
+    // Used only for testing, move the current note to the previous semi-tone
+    fun prevNote() {
+        val idx = (currentNote.note!!.midiIndex - 1)
         currentNote.reset()
         currentNote.create(this, MidiNotePool.fromIndex(idx))
         currentNote.layout()
@@ -68,17 +86,24 @@ class MeasureActor(val clef: ClefEnum = ClefEnum.GClef, val keySignature: KeySig
         topLine = bottomLine + (lineSpace * 5)
 
 
-        val scale = (lineSpace / clefActor.height) * clefPosition.height
+        val scale = (lineSpace / clefActor.absoluteHeight) * clefPosition.height
         clefActor.setScale(scale)
         clefActor.y = lineSpace * clefPosition.baseLine
         signatureActor.x = clefActor.width * scale
-        signatureActor.y = (bottomLine - lineSpace * 1.5f)  + KeySignatureConfig.CLEF_TRANSLATE[clef] * (lineSpace / 2)
+        signatureActor.y =
+            (bottomLine - lineSpace * 1.5f) + KeySignatureConfig.CLEF_TRANSLATE[clef] * (lineSpace / 2)
     }
 
     override fun draw(batch: Batch?, parentAlpha: Float) {
-        if(isTransform) applyTransform(batch, computeTransform())
-        for(i in 0..4) line.draw(batch, 0f, 0f + bottomLine + (i*lineSpace), width, Constants.LINE_THICKNESS)
-        if(isTransform) resetTransform(batch)
+        if (isTransform) applyTransform(batch, computeTransform())
+        for (i in 0..4) line.draw(
+            batch,
+            0f,
+            0f + bottomLine + (i * lineSpace),
+            width,
+            Constants.LINE_THICKNESS
+        )
+        if (isTransform) resetTransform(batch)
 
         super.draw(batch, parentAlpha)
     }

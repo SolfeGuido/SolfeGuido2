@@ -51,7 +51,8 @@ class PlayScreen(context: Context) : UIScreen(context) {
             }
             row()
             stack {
-                measure = measure(clef)
+                measure = measure(clef) {
+                }
                 it.grow()
             }
             row()
