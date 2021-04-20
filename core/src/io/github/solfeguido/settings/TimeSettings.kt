@@ -9,14 +9,20 @@ import io.github.solfeguido.settings.time.ITimeOptions
 import io.github.solfeguido.settings.time.InfiniteTimeOptions
 import ktx.json.*
 
-class TimeSettings : Json.Serializable {
+class TimeSettings(type: TimeModeEnum = TimeModeEnum.Countdown, options: ITimeOptions = CountdownOptions()) : Json.Serializable {
 
     var type = TimeModeEnum.Countdown
     var options: ITimeOptions = CountdownOptions()
 
+
+    init {
+        this.type = type
+        this.options = options
+    }
+
     override fun read(json: Json, jsonData: JsonValue) {
         type = json.readValue(jsonData, "type")
-        options = when(type) {
+        options = when (type) {
             TimeModeEnum.Countdown -> json.readValue<CountupOptions>(jsonData, "options")
             TimeModeEnum.Countup -> json.readValue<CountupOptions>(jsonData, "options")
             TimeModeEnum.Infinite -> json.readValue<InfiniteTimeOptions>(jsonData, "options")

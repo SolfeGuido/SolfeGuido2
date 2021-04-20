@@ -7,10 +7,8 @@ import com.badlogic.gdx.utils.Align
 import io.github.solfeguido.actors.MeasureActor
 import io.github.solfeguido.core.StateParameter
 import io.github.solfeguido.enums.ClefEnum
-import io.github.solfeguido.factories.measure
-import io.github.solfeguido.factories.onAnswer
-import io.github.solfeguido.factories.onResult
-import io.github.solfeguido.factories.pianoAnswer
+import io.github.solfeguido.factories.*
+import io.github.solfeguido.settings.TimeSettings
 import ktx.actors.plusAssign
 import ktx.inject.Context
 import ktx.log.info
@@ -38,20 +36,15 @@ class PlayScreen(context: Context) : UIScreen(context) {
             setFillParent(true)
             setPosition(0f, 0f)
             align(Align.center)
-            label("SolfeGuido") {
-                setPosition(this.x, this.y - this.height)
-                addAction(
-                    Actions.parallel(
-                        Actions.fadeOut(0.2f, Interpolation.exp10Out),
-                        Actions.moveBy(0f, this.height, 0.2f, Interpolation.exp10Out)
-                    ),
-                )
+            timer(context, TimeSettings()) {
+
             }
             row()
             stack {
                 measure = measure(clef) {
                     onResult {
-
+                        if(!it.isCorrect) {
+                        }
                     }
                 }
                 it.grow()

@@ -5,6 +5,8 @@ import com.badlogic.gdx.Preferences
 import com.badlogic.gdx.graphics.g2d.ParticleEffect
 import io.github.solfeguido.config.Constants
 import ktx.inject.Context
+import kotlin.system.measureNanoTime
+import kotlin.system.measureTimeMillis
 
 class ParticlePool(context: Context) {
 
