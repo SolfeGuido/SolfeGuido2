@@ -1,12 +1,12 @@
 buildscript {
-    ext.kotlinVersion = '1.4.30'
+    ext.kotlinVersion = '1.4.32'
 
     repositories {
         mavenLocal()
         mavenCentral()
         maven { url "https://plugins.gradle.org/m2/" }
         maven { url "https://oss.sonatype.org/content/repositories/snapshots/" }
-        jcenter()
+        gradlePluginPortal()
         google()
     }
     dependencies {
@@ -16,6 +16,11 @@ buildscript {
     }
 }
 
+plugins {
+    id "org.jetbrains.kotlin.jvm" version "1.4.32"
+    id 'java'
+}
+
 allprojects {
 
     version = '2.0'
@@ -23,7 +28,7 @@ allprojects {
     repositories {
         mavenLocal()
         mavenCentral()
-        jcenter()
+        gradlePluginPortal()
         google()
         maven { url "https://oss.sonatype.org/content/repositories/snapshots/" }
         maven { url "https://oss.sonatype.org/content/repositories/releases/" }
@@ -31,8 +36,7 @@ allprojects {
 }
 
 project(":desktop") {
-    apply plugin: "kotlin"
-
+    apply plugin: 'java-library'
 
     dependencies {
         implementation project(":core")
@@ -70,8 +74,7 @@ project(":android") {
  */
 
 project(":core") {
-    apply plugin: "kotlin"
-
+    apply plugin: 'java-library'
 
     dependencies {
         implementation group: 'org.jetbrains.kotlinx', name: 'kotlinx-coroutines-core', version: coroutinesVersion
@@ -94,7 +97,7 @@ project(":core") {
     }
 }
 
-task nls{
+task nls {
     def project = 'core'
     def source = 'src'
     def pack = 'io.github.solfeguido.enums'
@@ -115,7 +118,7 @@ enum class ${name}(private val key: String) : BundleLine {
         def separator = data.indexOf('=')
         if (!data.isEmpty() && separator > 0 && !data.startsWith('#')) {
             def id = data.substring(0, separator).trim()
-            def decl = id.split('[._]').collect{str -> str.capitalize()}.join('')
+            def decl = id.split('[._]').collect { str -> str.capitalize() }.join('')
             builder.append('    ').append(decl).append('("').append(id).append('")').append(',').append(newLine)
         }
     }

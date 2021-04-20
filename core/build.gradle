@@ -2,4 +2,5 @@ apply plugin: "kotlin"
 
 [compileJava, compileTestJava]*.options*.encoding = 'UTF-8'
 
+sourceCompatibility = 11
 sourceSets.main.java.srcDirs = [ "src/" ]
