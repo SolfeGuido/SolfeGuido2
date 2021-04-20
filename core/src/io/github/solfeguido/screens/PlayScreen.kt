@@ -60,8 +60,9 @@ class PlayScreen(context: Context) : UIScreen(context) {
             container {
                 align(Align.top)
                 pianoAnswer {
-                    onAnswer { note ->
+                    onAnswer {
                         // Handle answer based on what was generated
+                        measure.checkNote(it.note)
                     }
                 }
             }

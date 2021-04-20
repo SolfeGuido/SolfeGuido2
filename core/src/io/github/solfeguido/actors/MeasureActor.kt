@@ -2,7 +2,6 @@ package io.github.solfeguido.actors
 
 import com.badlogic.gdx.Gdx
 import com.badlogic.gdx.graphics.g2d.Batch
-import com.badlogic.gdx.graphics.g2d.ParticleEffect
 import com.badlogic.gdx.math.Interpolation
 import com.badlogic.gdx.scenes.scene2d.ui.WidgetGroup
 import com.badlogic.gdx.scenes.scene2d.utils.Drawable
@@ -13,6 +12,7 @@ import io.github.solfeguido.enums.ClefEnum
 import io.github.solfeguido.enums.KeySignatureEnum
 import io.github.solfeguido.enums.NoteOrderEnum
 import io.github.solfeguido.factories.*
+import io.github.solfeguido.ui.events.ResultEvent
 import ktx.collections.gdxArrayOf
 import kotlin.math.max
 import kotlin.random.Random
@@ -34,14 +34,20 @@ class MeasureActor(
     private val notes = gdxArrayOf<NoteActor>()
 
     private val signatureActor = KeySignatureActor(this).also { addActor(it) }
-    private val currentNote = NoteActorPool.generate(MidiNotePool.fromIndex(60), this).also {
+    private var currentNote = NoteActorPool.generate(MidiNotePool.fromIndex(60), this).also {
         notes.add(it)
         addActor(it)
     }
 
     fun checkNote(note: NoteOrderEnum) {
-        // Check if not is the same as the current one
-        // Then switch to the next one and emit event based on the result
+        val expected = currentNote.note?.noteOrder ?: return
+
+        // TODO: add an effect
+        this.currentNote.reset()
+        this.removeActor(this.currentNote)
+        this.notes.removeIndex(0)
+        this.currentNote = if(this.notes.isEmpty) generateNote() else this.notes.first()
+        this.fire(ResultEvent(expected, note))
     }
 
     override fun act(delta: Float) {
@@ -51,18 +57,18 @@ class MeasureActor(
         val end = (signatureActor.x + signatureActor.width) + clefActor.width
         val start = Gdx.graphics.width.toFloat() + 100f
         val current = notes.first().x
-        val nwPos = Interpolation.pow4Out.apply(start, end, (start - current) / (start - end))
+        val nwPos = Interpolation.exp10Out.apply(start, end, (start - current) / (start - end))
         val moveBy = (current - nwPos) * delta
         notes.forEach {
             it.x -= moveBy
             maxLeft = max(maxLeft, it.x)
         }
-        if (maxLeft < (this.width - (currentNote.width * 4))) {
-            generateNoe()
+        if (maxLeft < (this.width - (currentNote.width * 3))) {
+            generateNote()
         }
     }
 
-    private fun generateNoe() =
+    private fun generateNote() =
         NoteActorPool.generate(MidiNotePool.fromIndex(Random.nextInt(60, 80)), this).also {
             notes.add(it)
             addActor(it)

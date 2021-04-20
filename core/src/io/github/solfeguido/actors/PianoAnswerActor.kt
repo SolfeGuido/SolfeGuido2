@@ -8,6 +8,7 @@ import io.github.solfeguido.enums.NoteOrderEnum
 import io.github.solfeguido.enums.PianoKeyTypeEnum
 import io.github.solfeguido.factories.onAnswer
 import io.github.solfeguido.ui.PianoKey
+import io.github.solfeguido.ui.events.AnswerGivenEvent
 import ktx.actors.onClick
 import kotlin.math.max
 import kotlin.math.min

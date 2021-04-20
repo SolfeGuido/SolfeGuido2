@@ -87,9 +87,9 @@ class NoteActor : WidgetGroup(), Pool.Poolable {
 
     override fun draw(batch: Batch, parentAlpha: Float) {
         //Draw bars
-        val topLine = measure!!.topLine
-        val lineSpace = measure!!.lineSpace
-        val bottom = measure!!.bottomLine
+        val topLine = measure?.topLine ?: 0f
+        val lineSpace = measure?.lineSpace ?: 0f
+        val bottom = measure?.bottomLine ?: 0f
 
         if(relativeMeasurePosition == 0) drawLine(batch, bottom - lineSpace * 3)
         if(relativeMeasurePosition <= 2) drawLine(batch, bottom - lineSpace * 2)
