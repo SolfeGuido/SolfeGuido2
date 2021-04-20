@@ -7,7 +7,6 @@ import com.badlogic.gdx.scenes.scene2d.actions.Actions
 import com.badlogic.gdx.scenes.scene2d.ui.Button
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener
-import com.badlogic.gdx.utils.Align
 import io.github.solfeguido.config.Constants
 import io.github.solfeguido.enums.PianoKeyTypeEnum
 import io.github.solfeguido.factories.colorDrawable
@@ -46,9 +45,9 @@ class PianoKey(text: String = "", private val type: PianoKeyTypeEnum = PianoKeyT
 
         backgroundDrawable.draw(batch, 0f, 0f, width, height)
         borderDrawable.draw(batch, 0f, 0f, width, BORDER_TICKNESS)
-        borderDrawable.draw(batch, 0f, 0f + height - BORDER_TICKNESS, width, BORDER_TICKNESS)
+        borderDrawable.draw(batch, 0f,  height - BORDER_TICKNESS, width, BORDER_TICKNESS)
         borderDrawable.draw(batch, 0f, 0f, BORDER_TICKNESS, height)
-        borderDrawable.draw(batch, 0f + width - BORDER_TICKNESS, 0f, BORDER_TICKNESS, height)
+        borderDrawable.draw(batch, width - BORDER_TICKNESS, 0f, BORDER_TICKNESS, height)
 
         if (isTransform) resetTransform(batch)
 
@@ -58,7 +57,6 @@ class PianoKey(text: String = "", private val type: PianoKeyTypeEnum = PianoKeyT
     private fun setupListeners() {
         val self = this
         addListener(object : ClickListener() {
-
 
             override fun touchDown(
                 event: InputEvent?,

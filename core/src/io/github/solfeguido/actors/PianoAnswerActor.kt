@@ -61,6 +61,6 @@ class PianoAnswerActor : Stack() {
 
 
     override fun getPrefWidth() = Gdx.graphics.width.toFloat()
-    override fun getPrefHeight() = min(Gdx.graphics.height / 4f, 100f)
+    override fun getPrefHeight() = Gdx.graphics.height / 4f
 
 }

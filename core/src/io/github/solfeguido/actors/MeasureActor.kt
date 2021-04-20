@@ -11,6 +11,7 @@ import io.github.solfeguido.config.Constants
 import io.github.solfeguido.config.KeySignatureConfig
 import io.github.solfeguido.enums.ClefEnum
 import io.github.solfeguido.enums.KeySignatureEnum
+import io.github.solfeguido.enums.NoteOrderEnum
 import io.github.solfeguido.factories.*
 import ktx.collections.gdxArrayOf
 import kotlin.math.max
@@ -38,6 +39,10 @@ class MeasureActor(
         addActor(it)
     }
 
+    fun checkNote(note: NoteOrderEnum) {
+        // Check if not is the same as the current one
+        // Then switch to the next one and emit event based on the result
+    }
 
     override fun act(delta: Float) {
         super.act(delta)
