@@ -26,7 +26,7 @@ class SolfeGuido : ApplicationListener {
     private lateinit var stateMachine: StateMachine
     private val bgColor: Color by lazy { gCol("background") }
 
-    override fun create() {
+    override fun create() { 
         KtxAsync.initiate()
         context = Context()
         Scene2DSkin.defaultSkin = getPreloadSkin()

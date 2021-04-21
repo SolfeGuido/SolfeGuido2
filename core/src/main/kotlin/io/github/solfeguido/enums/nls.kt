@@ -1,6 +1,6 @@
 package io.github.solfeguido.enums
 import ktx.i18n.BundleLine
-/** Generated from core/assets/i18n/nls.properties file. */
+/** Generated from assets/i18n/nls.properties file. */
 enum class Nls(private val key: String) : BundleLine {
     Gclef("gclef"),
     Fclef("fclef"),
