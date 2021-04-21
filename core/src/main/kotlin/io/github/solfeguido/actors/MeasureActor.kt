@@ -23,6 +23,7 @@ class MeasureActor(
 ) : WidgetGroup() {
 
     private val line: Drawable = colorDrawable(gCol("font"))
+    private var currentNoteIndex = 0
     var lineSpace = 0f
         private set
     var bottomLine = 0f
@@ -34,31 +35,28 @@ class MeasureActor(
     private val notes = gdxArrayOf<NoteActor>()
 
     private val signatureActor = KeySignatureActor(this).also { addActor(it) }
-    private var currentNote = NoteActorPool.generate(MidiNotePool.fromIndex(60), this).also {
+    private val currentNote
+        get() = if (notes.isEmpty) NoteActorPool.generate(MidiNotePool.fromIndex(60), this).also {
         notes.add(it)
         addActor(it)
-    }
+    } else this.notes[currentNoteIndex]
 
     fun checkNote(note: NoteOrderEnum) {
         val expected = currentNote.note?.noteOrder ?: return
-
-        // TODO: add an effect
-        this.currentNote.reset()
-        this.removeActor(this.currentNote)
-        this.notes.removeIndex(0)
-        this.currentNote = if(this.notes.isEmpty) generateNote() else this.notes.first()
         this.fire(ResultEvent(expected, note))
+        //TODO: add an effect
+        currentNoteIndex++
     }
 
     override fun act(delta: Float) {
         super.act(delta)
+        val current = currentNote
         if (notes.isEmpty) return
         var maxLeft = 0f
         val end = (signatureActor.x + signatureActor.width) + clefActor.width
         val start = Gdx.graphics.width.toFloat() + 100f
-        val current = notes.first().x
-        val nwPos = Interpolation.exp10Out.apply(start, end, (start - current) / (start - end))
-        val moveBy = (current - nwPos) * delta
+        val nwPos = Interpolation.exp10Out.apply(start, end, (start - current.x) / (start - end))
+        val moveBy = (current.x - nwPos) * delta
         notes.forEach {
             it.x -= moveBy
             maxLeft = max(maxLeft, it.x)

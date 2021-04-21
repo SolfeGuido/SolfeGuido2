@@ -12,6 +12,8 @@ import io.github.solfeguido.config.Constants
 import io.github.solfeguido.core.Jingles
 import io.github.solfeguido.core.SoundHelper
 import io.github.solfeguido.core.StateMachine
+import io.github.solfeguido.core.StateParameter
+import io.github.solfeguido.enums.ClefEnum
 import io.github.solfeguido.enums.IconName
 import io.github.solfeguido.loaders.FontLoader
 import io.github.solfeguido.midi.MidiFile
@@ -86,7 +88,7 @@ class SplashScreen(context: Context) : UIScreen(context) {
                         characters = IconName.values().joinToString("") { icon -> icon.value }
                     }
                 })
-                load<BitmapFont>(Constants.PRIMARY_FONT, FontLoader.FontLoaderParameter().also {
+                load(Constants.PRIMARY_FONT, FontLoader.FontLoaderParameter().also {
                     it.fontFileName = Constants.PRIMARY_FONT
                     it.fontParameters.apply {
                         size = Constants.TITLE_SIZE
@@ -94,7 +96,7 @@ class SplashScreen(context: Context) : UIScreen(context) {
                         magFilter = Texture.TextureFilter.Linear
                     }
                 })
-                load<BitmapFont>("icon.woff", FontLoader.FontLoaderParameter().also {
+                load("icon.woff", FontLoader.FontLoaderParameter().also {
                     it.fontFileName = Constants.ICONS_PATH
                     it.fontParameters.apply {
                         size = Constants.TITLE_SIZE
@@ -102,7 +104,7 @@ class SplashScreen(context: Context) : UIScreen(context) {
                         magFilter = Texture.TextureFilter.Linear
                     }
                 })
-                load<BitmapFont>(Constants.TITLE_FONT, FontLoader.FontLoaderParameter().also {
+                load(Constants.TITLE_FONT, FontLoader.FontLoaderParameter().also {
                     it.fontFileName = Constants.TITLE_FONT
                     it.fontParameters.apply {
                         size = Constants.TITLE_SIZE
@@ -115,7 +117,7 @@ class SplashScreen(context: Context) : UIScreen(context) {
             Scene2DSkin.defaultSkin = getDefaultSkin(assetManager)
             jingles.registerJingles(assetManager)
             jingles.playJingle("Startup")
-            context.inject<StateMachine>().switch<MenuScreen>()
+            context.inject<StateMachine>().switch<PlayScreen>(StateParameter.witType(ClefEnum.GClef))
         }
     }
 

@@ -9,6 +9,8 @@ import io.github.solfeguido.config.Constants
 import io.github.solfeguido.core.Jingles
 import io.github.solfeguido.core.SoundHelper
 import io.github.solfeguido.core.StateMachine
+import io.github.solfeguido.core.StateParameter
+import io.github.solfeguido.enums.ClefEnum
 import io.github.solfeguido.factories.ParticlePool
 import io.github.solfeguido.factories.gCol
 import io.github.solfeguido.screens.*
@@ -38,6 +40,8 @@ class SolfeGuido : ApplicationListener {
                 .addScreen<LevelSelectionScreen>()
                 .addScreen<OptionScreen>()
                 .addScreen<PlayScreen>()
+
+
         context.register {
             bindSingleton(Gdx.app.getPreferences(Constants.PREFERENCES_NAME))
             bindSingleton(ParticlePool(context))
