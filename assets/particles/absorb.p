@@ -144,5 +144,5 @@ behind: false
 premultipliedAlpha: true
 spriteMode: single
 - Image Paths -
-/home/azarias/Documents/Scolaire/Programmation/Kotlin/SolfeGuido/core/assets/images/particle.png
+particle.png
 
