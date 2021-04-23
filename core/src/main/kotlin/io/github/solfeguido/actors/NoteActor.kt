@@ -1,7 +1,10 @@
 package io.github.solfeguido.actors
 
 import com.badlogic.gdx.Gdx
+import com.badlogic.gdx.graphics.Color
 import com.badlogic.gdx.graphics.g2d.Batch
+import com.badlogic.gdx.math.Interpolation
+import com.badlogic.gdx.scenes.scene2d.actions.Actions
 import com.badlogic.gdx.scenes.scene2d.ui.WidgetGroup
 import com.badlogic.gdx.scenes.scene2d.utils.Drawable
 import com.badlogic.gdx.utils.Pool
@@ -16,6 +19,7 @@ import io.github.solfeguido.factories.TRANSPARENT
 import io.github.solfeguido.factories.colorDrawable
 import io.github.solfeguido.factories.gCol
 import io.github.solfeguido.ui.Icon
+import ktx.actors.plusAssign
 import ktx.log.info
 
 class NoteActor : WidgetGroup(), Pool.Poolable {
@@ -81,6 +85,19 @@ class NoteActor : WidgetGroup(), Pool.Poolable {
         this.x = Gdx.graphics.width.toFloat()
     }
 
+    private fun colorFade(color: Color) {
+        this.noteIcon += Actions.color(color, 0.2f, Interpolation.exp10Out)
+        this.accidentalIcon += Actions.color(color, 0.2f, Interpolation.exp10Out)
+    }
+
+    fun setCorrect() {
+        colorFade(gCol("correct"))
+    }
+
+    fun setWrong() {
+        colorFade(gCol("error"))
+    }
+
     private fun drawLine(batch: Batch, y: Float) {
         lineTexture.draw(batch, x-width / 4, y, width * 1.5f, Constants.LINE_THICKNESS)
     }
@@ -97,7 +114,6 @@ class NoteActor : WidgetGroup(), Pool.Poolable {
         if(relativeMeasurePosition >= 16) drawLine(batch, topLine)
         if(relativeMeasurePosition >= 18) drawLine(batch, topLine + lineSpace)
         if(relativeMeasurePosition >= 20) drawLine(batch, topLine + lineSpace * 2)
-
 
         super.draw(batch, parentAlpha)
     }

@@ -14,6 +14,7 @@ import io.github.solfeguido.enums.NoteOrderEnum
 import io.github.solfeguido.factories.*
 import io.github.solfeguido.ui.events.ResultEvent
 import ktx.collections.gdxArrayOf
+import kotlin.math.exp
 import kotlin.math.max
 import kotlin.random.Random
 
@@ -43,8 +44,14 @@ class MeasureActor(
 
     fun checkNote(note: NoteOrderEnum) {
         val expected = currentNote.note?.noteOrder ?: return
-        this.fire(ResultEvent(expected, note))
+        val event = ResultEvent(expected, note)
+        this.fire(event)
         //TODO: add an effect
+        if(event.isCorrect)
+            currentNote.setCorrect()
+        else
+            currentNote.setWrong()
+
         currentNoteIndex++
     }
 
