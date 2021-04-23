@@ -20,7 +20,6 @@ import io.github.solfeguido.factories.colorDrawable
 import io.github.solfeguido.factories.gCol
 import io.github.solfeguido.ui.Icon
 import ktx.actors.plusAssign
-import ktx.log.info
 
 class NoteActor : WidgetGroup(), Pool.Poolable {
 
@@ -29,11 +28,13 @@ class NoteActor : WidgetGroup(), Pool.Poolable {
         private set
     private var accidental: NoteAccidentalEnum = NoteAccidentalEnum.Natural
     private var relativeMeasurePosition = 10 // Middle of the
+
     // Might be a bug here when changing the app's theme
     private var lineTexture: Drawable = colorDrawable(gCol("font"))
+    private var consumed = false
 
     override fun getHeight() = noteIcon.height * scaleY
-    override fun getWidth() = (noteIcon.width + accidentalIcon.width)  * scaleX
+    override fun getWidth() = (noteIcon.width + accidentalIcon.width) * scaleX
 
     private val accidentalIcon = Icon(IconName.Empty).also {
         addActor(it)
@@ -44,16 +45,21 @@ class NoteActor : WidgetGroup(), Pool.Poolable {
         it.debug = true
     }
 
+    private val accidentalEffect = Icon(IconName.Empty)
+    private val noteEffect = Icon(IconName.QuarterNote)
+
+
     override fun layout() {
         super.layout()
-        accidentalIcon.setScale(1/4f)
+        accidentalIcon.setScale(1 / 4f)
+        accidentalEffect.setScale(1 / 4f)
         noteIcon.x = accidentalIcon.width
-        setScale( (measure!!.lineSpace / noteIcon.height) * 4)
+        setScale((measure!!.lineSpace / noteIcon.height) * 4)
         // TODO: Rotate if too high
         this.y = getYIndex()
     }
 
-    private fun getYIndex(): Float{
+    private fun getYIndex(): Float {
         val minNote = ClefConfig.ClefMinNote[measure!!.clef]
         relativeMeasurePosition = note!!.getMeasurePosition(minNote, measure!!.keySignature)
         return relativeMeasurePosition * (measure!!.lineSpace / 2)
@@ -65,10 +71,26 @@ class NoteActor : WidgetGroup(), Pool.Poolable {
         measure = null
         relativeMeasurePosition = 10
         accidental = NoteAccidentalEnum.Natural
-        noteIcon.color = TRANSPARENT
-        accidentalIcon.color = TRANSPARENT
-        noteIcon.empty()
-        accidentalIcon.empty()
+        noteIcon.apply {
+            color = TRANSPARENT
+            empty()
+        }
+        accidentalIcon.apply {
+            color = TRANSPARENT
+            empty()
+        }
+        noteEffect.apply {
+            this@NoteActor.removeActor(this)
+            empty()
+            color = gCol("font")
+            setScale(1f)
+        }
+        accidentalEffect.apply {
+            this@NoteActor.removeActor(this)
+            empty()
+            color = gCol("font")
+            setScale(1f)
+        }
     }
 
     fun create(measureActor: MeasureActor, note: MidiNote) {
@@ -76,30 +98,56 @@ class NoteActor : WidgetGroup(), Pool.Poolable {
         this.measure = measureActor
         noteIcon.color = gCol("font")
         accidentalIcon.color = gCol("font")
-        accidental =  KeySignatureConfig.getNoteAccidental(note, measure!!.keySignature)
-        accidentalIcon.setIcon(KeySignatureConfig.getIcon(accidental))
+        accidental = KeySignatureConfig.getNoteAccidental(note, measure!!.keySignature)
+        val accIcon = KeySignatureConfig.getIcon(accidental)
+        accidentalIcon.setIcon(accIcon)
         accidentalIcon.pack()
+        accidentalEffect.setIcon(accIcon)
+        accidentalEffect.pack()
         noteIcon.setIcon(IconName.QuarterNote)
         noteIcon.pack()
+        noteEffect.setIcon(IconName.QuarterNote)
+        noteEffect.pack()
         noteIcon.x = accidentalIcon.width
+        noteEffect.x = accidentalIcon.width
         this.x = Gdx.graphics.width.toFloat()
     }
 
-    private fun colorFade(color: Color) {
-        this.noteIcon += Actions.color(color, 0.2f, Interpolation.exp10Out)
-        this.accidentalIcon += Actions.color(color, 0.2f, Interpolation.exp10Out)
+    private fun consume(correct: Boolean) {
+        val color = if (correct) gCol("correct") else gCol("error")
+        consumed = true
+        if (correct) {
+            noteEffect.color = color
+            accidentalEffect.color = color
+            noteEffect.setOrigin(noteIcon.width / 2f, noteIcon.height / 7f)
+            accidentalEffect.setOrigin(accidentalIcon.width / 2f, accidentalIcon.height / 7f)
+
+            addActor(noteEffect)
+            addActor(accidentalEffect)
+            noteEffect += Actions.parallel(
+                Actions.color(TRANSPARENT, 2f, Interpolation.circleOut),
+                Actions.scaleTo(2f, 2f, 2f, Interpolation.circleOut)
+            )
+            accidentalEffect += Actions.parallel(
+                Actions.color(TRANSPARENT, 2f, Interpolation.circleOut),
+                Actions.scaleTo(0.5f, 0.5f, 2f, Interpolation.circleOut)
+            )
+        }
+
+        noteIcon += Actions.color(color, 0.2f, Interpolation.exp10Out)
+        accidentalIcon += Actions.color(color, 0.2f, Interpolation.exp10Out)
     }
 
     fun setCorrect() {
-        colorFade(gCol("correct"))
+        consume(true)
     }
 
     fun setWrong() {
-        colorFade(gCol("error"))
+        consume(false)
     }
 
     private fun drawLine(batch: Batch, y: Float) {
-        lineTexture.draw(batch, x-width / 4, y, width * 1.5f, Constants.LINE_THICKNESS)
+        lineTexture.draw(batch, x - width / 4, y, width * 1.5f, Constants.LINE_THICKNESS)
     }
 
     override fun draw(batch: Batch, parentAlpha: Float) {
@@ -108,12 +156,12 @@ class NoteActor : WidgetGroup(), Pool.Poolable {
         val lineSpace = measure?.lineSpace ?: 0f
         val bottom = measure?.bottomLine ?: 0f
 
-        if(relativeMeasurePosition == 0) drawLine(batch, bottom - lineSpace * 3)
-        if(relativeMeasurePosition <= 2) drawLine(batch, bottom - lineSpace * 2)
-        if(relativeMeasurePosition <= 4) drawLine(batch, bottom - lineSpace)
-        if(relativeMeasurePosition >= 16) drawLine(batch, topLine)
-        if(relativeMeasurePosition >= 18) drawLine(batch, topLine + lineSpace)
-        if(relativeMeasurePosition >= 20) drawLine(batch, topLine + lineSpace * 2)
+        if (relativeMeasurePosition == 0) drawLine(batch, bottom - lineSpace * 3)
+        if (relativeMeasurePosition <= 2) drawLine(batch, bottom - lineSpace * 2)
+        if (relativeMeasurePosition <= 4) drawLine(batch, bottom - lineSpace)
+        if (relativeMeasurePosition >= 16) drawLine(batch, topLine)
+        if (relativeMeasurePosition >= 18) drawLine(batch, topLine + lineSpace)
+        if (relativeMeasurePosition >= 20) drawLine(batch, topLine + lineSpace * 2)
 
         super.draw(batch, parentAlpha)
     }
