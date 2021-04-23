@@ -132,6 +132,8 @@ class NoteActor : WidgetGroup(), Pool.Poolable {
                 Actions.color(TRANSPARENT, 2f, Interpolation.circleOut),
                 Actions.scaleTo(0.5f, 0.5f, 2f, Interpolation.circleOut)
             )
+        } else {
+            noteIcon.setIcon(IconName.GhostNote)
         }
 
         noteIcon += Actions.color(color, 0.2f, Interpolation.exp10Out)

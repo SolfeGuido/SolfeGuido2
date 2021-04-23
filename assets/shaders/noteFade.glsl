@@ -1,10 +1,19 @@
-extern number leftLimit;
-extern number rightLimit;
-extern number noteWidth;
+#ifdef GL_ES
+precision highp float;
+#endif
 
-vec4 effect(vec4 color, Image texture, vec2 tc, vec2 screen)
+attribute vec4 a_position;
+attribute vec4 a_color;
+attribute vec2 a_texCoord0;
+
+uniform float leftLimit;
+uniform float rightLimit;
+uniform float noteWidth;
+
+void main()
 {
-  number leftAlpha = min( max(0.0, screen.x - (leftLimit - noteWidth)) / noteWidth, 1.0);
-  number rightAlpha = min( max(0.0, rightLimit - screen.x ) / noteWidth, 1.0);
-  return vec4(color.rgb, leftAlpha * rightAlpha * color.a) * Texel(texture, tc);
+    float left_alpha =  min( max(0.0, a_position.x - (leftLimit - noteWidth)) / noteWidth, 1.0);
+    float right_alpha = min( max(0.0, rightLimit - a_position.x ) / noteWidth, 1.0);
+    gl_FragColor = texture2D(sceneTex, a_texCoord0) * vec4(color.rgb, leftAlpha * rightAlpha * color.a);
+
 }
