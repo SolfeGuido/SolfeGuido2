@@ -9,6 +9,7 @@ object Constants {
     const val SOUNDS_PATH = "sounds"
     const val FONTS_PATH = "fonts"
     const val PARTICLES_PATH = "particles"
+    const val SHADERS_PATH = "shaders"
     const val IMAGES_PATH = "images"
 
     // Actual values

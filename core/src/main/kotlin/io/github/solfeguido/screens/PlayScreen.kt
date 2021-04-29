@@ -7,6 +7,7 @@ import com.badlogic.gdx.utils.Align
 import io.github.solfeguido.actors.MeasureActor
 import io.github.solfeguido.core.StateParameter
 import io.github.solfeguido.enums.ClefEnum
+import io.github.solfeguido.enums.KeySignatureEnum
 import io.github.solfeguido.factories.*
 import io.github.solfeguido.settings.TimeSettings
 import ktx.actors.plusAssign

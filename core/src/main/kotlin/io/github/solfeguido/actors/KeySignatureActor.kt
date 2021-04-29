@@ -22,9 +22,7 @@ class KeySignatureActor(private val measure: MeasureActor) : WidgetGroup() {
     private val accidentals: GdxArray<Label>
 
     override fun getHeight() = totalHeight
-    override fun getWidth(): Float {
-        return super.getWidth()
-    }
+    override fun getWidth() = totalWidth
 
     init {
         val icon = KeySignatureConfig.getIcon(measure.keySignature.symbol)
@@ -56,7 +54,7 @@ class KeySignatureActor(private val measure: MeasureActor) : WidgetGroup() {
             lbl.parent.setScale(scale)
             totalHeight = lbl.height
         }
-        totalWidth = maxX - minX
+        totalWidth = max(maxX - minX, 0f)
     }
 
 

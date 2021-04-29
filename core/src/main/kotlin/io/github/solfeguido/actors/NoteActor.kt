@@ -3,6 +3,7 @@ package io.github.solfeguido.actors
 import com.badlogic.gdx.Gdx
 import com.badlogic.gdx.graphics.Color
 import com.badlogic.gdx.graphics.g2d.Batch
+import com.badlogic.gdx.graphics.g3d.Shader
 import com.badlogic.gdx.math.Interpolation
 import com.badlogic.gdx.scenes.scene2d.actions.Actions
 import com.badlogic.gdx.scenes.scene2d.ui.WidgetGroup
@@ -15,6 +16,7 @@ import io.github.solfeguido.config.KeySignatureConfig
 import io.github.solfeguido.core.MidiNote
 import io.github.solfeguido.enums.IconName
 import io.github.solfeguido.enums.NoteAccidentalEnum
+import io.github.solfeguido.factories.Shaders
 import io.github.solfeguido.factories.TRANSPARENT
 import io.github.solfeguido.factories.colorDrawable
 import io.github.solfeguido.factories.gCol
@@ -158,6 +160,14 @@ class NoteActor : WidgetGroup(), Pool.Poolable {
         val lineSpace = measure?.lineSpace ?: 0f
         val bottom = measure?.bottomLine ?: 0f
 
+        val shader = Shaders.NoteFade
+
+        // shader.bind()
+        // batch.shader = shader
+        // shader.setUniformf("leftLimit", 0f)
+        // shader.setUniformf("rightLimit", Gdx.graphics.width.toFloat())
+        // shader.setUniformf("noteWidth", width)
+
         if (relativeMeasurePosition == 0) drawLine(batch, bottom - lineSpace * 3)
         if (relativeMeasurePosition <= 2) drawLine(batch, bottom - lineSpace * 2)
         if (relativeMeasurePosition <= 4) drawLine(batch, bottom - lineSpace)
@@ -166,6 +176,7 @@ class NoteActor : WidgetGroup(), Pool.Poolable {
         if (relativeMeasurePosition >= 20) drawLine(batch, topLine + lineSpace * 2)
 
         super.draw(batch, parentAlpha)
+        // batch.shader = null
     }
 
 }
