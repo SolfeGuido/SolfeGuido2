@@ -38,6 +38,12 @@ fun getDefaultSkin(assetManager: AssetStorage): Skin{
             fontColor = gCol("font")
         }
 
+        label(name = "noteNameStyle") {
+            font = copyFont(primaryFont)
+            font.data.setScale(1.25f)
+            fontColor = self.getColor("error")
+
+        }
 
         label(name = "iconStyle") {
             font = iconFont

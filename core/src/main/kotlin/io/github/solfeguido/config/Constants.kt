@@ -25,4 +25,5 @@ object Constants {
     // Animations
     const val PRESSED_SCALING = 0.8f
     const val PIANO_PRESSED_SCALING = 0.9f
+    const val FADEOUT_DURATION = 3f
 }

@@ -6,13 +6,14 @@ import com.badlogic.gdx.scenes.scene2d.ui.Label
 import io.github.solfeguido.enums.IconName
 import ktx.scene2d.Scene2DSkin
 
-class Icon(icon: IconName): Group() {
+class Icon(icon: IconName) : Group() {
 
     override fun getHeight() = label.height * scaleY
     override fun getWidth() = label.width * scaleX
     override fun setColor(color: Color?) {
         label.color = color
     }
+
     override fun getColor(): Color = label.color
 
     override fun setDebug(enabled: Boolean) {

@@ -6,6 +6,7 @@ import com.badlogic.gdx.graphics.g2d.Batch
 import com.badlogic.gdx.graphics.g3d.Shader
 import com.badlogic.gdx.math.Interpolation
 import com.badlogic.gdx.scenes.scene2d.actions.Actions
+import com.badlogic.gdx.scenes.scene2d.ui.Label
 import com.badlogic.gdx.scenes.scene2d.ui.WidgetGroup
 import com.badlogic.gdx.scenes.scene2d.utils.Drawable
 import com.badlogic.gdx.utils.Pool
@@ -22,6 +23,7 @@ import io.github.solfeguido.factories.colorDrawable
 import io.github.solfeguido.factories.gCol
 import io.github.solfeguido.ui.Icon
 import ktx.actors.plusAssign
+import ktx.scene2d.Scene2DSkin
 
 class NoteActor : WidgetGroup(), Pool.Poolable {
 
@@ -49,6 +51,11 @@ class NoteActor : WidgetGroup(), Pool.Poolable {
 
     private val accidentalEffect = Icon(IconName.Empty)
     private val noteEffect = Icon(IconName.QuarterNote)
+    private val noteName = Label("", Scene2DSkin.defaultSkin, "noteNameStyle").also {
+        addActor(it)
+        it.isVisible = false
+        it.debug = true
+    }
 
 
     override fun layout() {
@@ -71,6 +78,7 @@ class NoteActor : WidgetGroup(), Pool.Poolable {
         note?.let { Pools.free(it) }
         note = null
         measure = null
+        noteName.isVisible = false
         relativeMeasurePosition = 10
         accidental = NoteAccidentalEnum.Natural
         noteIcon.apply {
@@ -82,16 +90,16 @@ class NoteActor : WidgetGroup(), Pool.Poolable {
             empty()
         }
         noteEffect.apply {
-            this@NoteActor.removeActor(this)
             empty()
             color = gCol("font")
             setScale(1f)
+            remove()
         }
         accidentalEffect.apply {
-            this@NoteActor.removeActor(this)
             empty()
             color = gCol("font")
             setScale(1f)
+            remove()
         }
     }
 
@@ -104,18 +112,22 @@ class NoteActor : WidgetGroup(), Pool.Poolable {
         val accIcon = KeySignatureConfig.getIcon(accidental)
         accidentalIcon.setIcon(accIcon)
         accidentalIcon.pack()
+        // Updates the size of the accidental icon
+        this.pack()
         accidentalEffect.setIcon(accIcon)
         accidentalEffect.pack()
         noteIcon.setIcon(IconName.QuarterNote)
         noteIcon.pack()
         noteEffect.setIcon(IconName.QuarterNote)
         noteEffect.pack()
-        noteIcon.x = accidentalIcon.width
-        noteEffect.x = accidentalIcon.width
+        noteName.setText(note.getName(measureActor.keySignature).value)
+        noteName.x = noteIcon.width + accidentalIcon.width
+        noteName.pack()
+        noteName.y = if(relativeMeasurePosition % 2 == 1) 0f else -measureActor.lineSpace
         this.x = Gdx.graphics.width.toFloat()
     }
 
-    private fun consume(correct: Boolean) {
+    fun consume(correct: Boolean) {
         val color = if (correct) gCol("correct") else gCol("error")
         consumed = true
         if (correct) {
@@ -127,27 +139,20 @@ class NoteActor : WidgetGroup(), Pool.Poolable {
             addActor(noteEffect)
             addActor(accidentalEffect)
             noteEffect += Actions.parallel(
-                Actions.color(TRANSPARENT, 2f, Interpolation.circleOut),
-                Actions.scaleTo(2f, 2f, 2f, Interpolation.circleOut)
+                Actions.color(TRANSPARENT, Constants.FADEOUT_DURATION, Interpolation.circleOut),
+                Actions.scaleBy(3f, 3f, Constants.FADEOUT_DURATION, Interpolation.circleOut)
             )
             accidentalEffect += Actions.parallel(
-                Actions.color(TRANSPARENT, 2f, Interpolation.circleOut),
-                Actions.scaleTo(0.5f, 0.5f, 2f, Interpolation.circleOut)
+                Actions.color(TRANSPARENT, Constants.FADEOUT_DURATION, Interpolation.circleOut),
+                Actions.scaleBy(3f, 3f, Constants.FADEOUT_DURATION, Interpolation.circleOut)
             )
         } else {
             noteIcon.setIcon(IconName.GhostNote)
+            noteName.isVisible =  true
         }
 
         noteIcon += Actions.color(color, 0.2f, Interpolation.exp10Out)
         accidentalIcon += Actions.color(color, 0.2f, Interpolation.exp10Out)
-    }
-
-    fun setCorrect() {
-        consume(true)
-    }
-
-    fun setWrong() {
-        consume(false)
     }
 
     private fun drawLine(batch: Batch, y: Float) {

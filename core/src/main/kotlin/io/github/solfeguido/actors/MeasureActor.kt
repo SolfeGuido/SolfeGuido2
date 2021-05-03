@@ -33,50 +33,65 @@ class MeasureActor(
         private set
 
 
-    private val clefActor: ClefActor = ClefActor(clef).also { addActor(it) }
-
     val leftLimit
         get() = signatureActor.x + signatureActor.width
+
+    val lastNote
+        get() = this.notes.lastOrNull()
+
+    private val clefActor: ClefActor = ClefActor(clef).also { addActor(it) }
     private val clefPosition: ClefConfig = ClefConfig.ClefEquivalent[clef, ClefConfig.GClef]
     private val notes = gdxArrayOf<NoteActor>()
 
     private val signatureActor = KeySignatureActor(this).also { addActor(it) }
-    private val currentNote
-        get() = if (notes.isEmpty) NoteActorPool.generate(MidiNotePool.fromIndex(60), this).also {
-        notes.add(it)
-        addActor(it)
-    } else this.notes[currentNoteIndex]
 
     fun checkNote(note: NoteOrderEnum) {
-        val expected = currentNote.note?.noteOrder ?: return
+        val expected = currentNote().note?.noteOrder ?: return
         val event = ResultEvent(expected, note)
         this.fire(event)
-        //TODO: add an effect
-        if(event.isCorrect)
-            currentNote.setCorrect()
-        else
-            currentNote.setWrong()
+        currentNote().consume(event.isCorrect)
 
         currentNoteIndex++
     }
 
     override fun act(delta: Float) {
         super.act(delta)
-        val current = currentNote
-        if (notes.isEmpty) return
+        val current = currentNote()
         var maxLeft = 0f
-        val end = (signatureActor.x + signatureActor.width) + currentNote.width
+        val end = (signatureActor.x + signatureActor.width) + current.width
         val start = Gdx.graphics.width.toFloat() + 100f
         val nwPos = Interpolation.exp10Out.apply(start, end, (start - current.x) / (start - end))
         val moveBy = (current.x - nwPos) * delta
+
+        val clearNotes = mutableSetOf<NoteActor>()
         notes.forEach {
             it.x -= moveBy
+            if(it.x < -this.width) {
+                clearNotes.add(it)
+            }
             maxLeft = max(maxLeft, it.x)
         }
-        if (maxLeft < (this.width - (currentNote.width * 3))) {
+        clearNotes.forEach {
+            notes.removeValue(it, true)
+            this.removeActor(it)
+            currentNoteIndex--
+        }
+
+        if (maxLeft < (this.width - (current.width * 3))) {
             generateNote()
         }
     }
+
+    private fun currentNote() =
+        if (notes.isEmpty || currentNoteIndex >= notes.size) NoteActorPool.generate(
+            MidiNotePool.fromIndex(
+                60
+            ), this
+        ).also {
+            notes.add(it)
+            addActor(it)
+        } else this.notes[currentNoteIndex]
+
 
     private fun generateNote() =
         NoteActorPool.generate(MidiNotePool.fromIndex(Random.nextInt(60, 80)), this).also {
@@ -84,21 +99,21 @@ class MeasureActor(
             addActor(it)
         }
 
-    // Used only for testing, move the current note to the next semi-tone
-    fun nextNote() {
-        val idx = (currentNote.note!!.midiIndex + 1)
-        currentNote.reset()
-        currentNote.create(this, MidiNotePool.fromIndex(idx))
-        currentNote.layout()
-    }
-
-    // Used only for testing, move the current note to the previous semi-tone
-    fun prevNote() {
-        val idx = (currentNote.note!!.midiIndex - 1)
-        currentNote.reset()
-        currentNote.create(this, MidiNotePool.fromIndex(idx))
-        currentNote.layout()
-    }
+//    // Used only for testing, move the current note to the next semi-tone
+//    fun nextNote() {
+//        val idx = (currentNote.note!!.midiIndex + 1)
+//        currentNote.reset()
+//        currentNote.create(this, MidiNotePool.fromIndex(idx))
+//        currentNote.layout()
+//    }
+//
+//    // Used only for testing, move the current note to the previous semi-tone
+//    fun prevNote() {
+//        val idx = (currentNote.note!!.midiIndex - 1)
+//        currentNote.reset()
+//        currentNote.create(this, MidiNotePool.fromIndex(idx))
+//        currentNote.layout()
+//    }
 
     override fun layout() {
         super.layout()

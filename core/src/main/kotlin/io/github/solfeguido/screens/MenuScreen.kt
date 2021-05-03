@@ -38,8 +38,8 @@ class MenuScreen(context: Context) : UIScreen(context) {
 
     override fun keyTyped(character: Char): Boolean {
         return when (character) {
-            '+' -> measure.nextNote().let { true }
-            '-' -> measure.prevNote().let { true }
+            //'+' -> measure.nextNote().let { true }
+            //'-' -> measure.prevNote().let { true }
             else -> super.keyTyped(character)
         }
     }

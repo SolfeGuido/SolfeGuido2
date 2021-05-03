@@ -11,7 +11,7 @@ object NoteActorPool {
 
     fun get() = obtain()
 
-    fun generate(note: MidiNote, measure: MeasureActor) = get().also {
+    fun generate(note: MidiNote, measure: MeasureActor): NoteActor = get().also {
         it.create(measure, note)
     }
 }
