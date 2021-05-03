@@ -35,3 +35,11 @@ inline fun <T : Actor> T.onTimerEnd(crossinline listener: T.(event: TimerEvent) 
     }.also {
         addListener(it)
     }
+
+inline fun <T : Actor> T.onDialogHide(crossinline listener: T.(event: DialogHideEvent) -> Unit) =
+    DialogHideListener { ev ->
+        listener(ev)
+        true
+    }.also {
+        addListener(it)
+    }
