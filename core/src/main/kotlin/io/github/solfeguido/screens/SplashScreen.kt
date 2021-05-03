@@ -117,7 +117,11 @@ class SplashScreen(context: Context) : UIScreen(context) {
             Scene2DSkin.defaultSkin = getDefaultSkin(assetManager)
             jingles.registerJingles(assetManager)
             jingles.playJingle("Startup")
-            context.inject<StateMachine>().switch<PlayScreen>(StateParameter.witType(ClefEnum.GClef))
+            if(System.getenv("START_STATE") == "PlayScreen") {
+                context.inject<StateMachine>().switch<PlayScreen>(StateParameter.witType(ClefEnum.GClef))
+            } else {
+                context.inject<StateMachine>().switch<MenuScreen>()
+            }
         }
     }
 
