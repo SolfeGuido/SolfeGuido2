@@ -7,9 +7,11 @@ import com.badlogic.gdx.utils.Align
 import io.github.solfeguido.actors.MeasureActor
 import io.github.solfeguido.core.StateParameter
 import io.github.solfeguido.enums.ClefEnum
+import io.github.solfeguido.enums.IconName
 import io.github.solfeguido.enums.KeySignatureEnum
 import io.github.solfeguido.factories.*
 import io.github.solfeguido.settings.TimeSettings
+import io.github.solfeguido.settings.time.CountdownOptions
 import ktx.actors.plusAssign
 import ktx.inject.Context
 import ktx.log.info
@@ -37,14 +39,25 @@ class PlayScreen(context: Context) : UIScreen(context) {
             setFillParent(true)
             setPosition(0f, 0f)
             align(Align.center)
-            timer(context, TimeSettings()) {
-
+            val timer = timer(context, TimeSettings(options = CountdownOptions(2f))) {
+                onTimerEnd {
+                    scene2d.zoomDialog {
+                        title("Test")
+                        line("You finished the game")
+                        line("your score is ...")
+                        line("Made in x seconds")
+                        borderButton("Ok").actor.icon(IconName.Check, 0.5f)
+                        setOrigin(Align.center)
+                    }.show(this.stage)
+                }
             }
             row()
             stack {
                 measure = measure(clef) {
                     onResult {
                         if(!it.isCorrect) {
+                            timer.wrong()
+                            // Could do the oposite when giving a good answer
                         }
                     }
                 }

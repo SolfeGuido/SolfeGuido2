@@ -24,7 +24,7 @@ import ktx.scene2d.Scene2DSkin
 import ktx.scene2d.defaultStyle
 import ktx.style.get
 
-class ZoomDialog( style: String, skin: Skin) : Dialog("", skin, style) {
+class ZoomDialog(style: String, skin: Skin) : Dialog("", skin, style) {
 
     private val background = colorDrawable(Color(0f, 0f, 0f, 0.7f))
 

@@ -3,7 +3,6 @@ package io.github.solfeguido.actors
 import com.badlogic.gdx.Gdx
 import com.badlogic.gdx.graphics.g2d.Batch
 import com.badlogic.gdx.graphics.g2d.ParticleEffect
-import com.badlogic.gdx.math.MathUtils
 import com.badlogic.gdx.scenes.scene2d.ui.WidgetGroup
 import io.github.solfeguido.enums.TimeModeEnum
 import io.github.solfeguido.factories.ParticlePool
@@ -12,6 +11,7 @@ import io.github.solfeguido.factories.gCol
 import io.github.solfeguido.settings.TimeSettings
 import io.github.solfeguido.settings.time.CountdownOptions
 import io.github.solfeguido.settings.time.CountupOptions
+import io.github.solfeguido.ui.events.TimerEvent
 import ktx.inject.Context
 
 class TimerActor(context: Context, private val settings: TimeSettings) : WidgetGroup() {
@@ -19,14 +19,14 @@ class TimerActor(context: Context, private val settings: TimeSettings) : WidgetG
     private val frontColor = gCol("correct")
     private val errorColor = gCol("error")
     private val timeLine = colorDrawable(frontColor)
-    private val max : Float
+    private val max: Float
     private var current: Float
     private var timeBonus: Float
-    private var timePenalty : Float
+    private var timePenalty: Float
     private val direction: Int
-    private var started = false
+    private var running = false
 
-    private val defaultParticles : ParticleEffect
+    private val defaultParticles: ParticleEffect
     private val wrongParticles: ParticleEffect
 
 
@@ -35,7 +35,7 @@ class TimerActor(context: Context, private val settings: TimeSettings) : WidgetG
 
     init {
         val pool = context.inject<ParticlePool>()
-        when(settings.type){
+        when (settings.type) {
             TimeModeEnum.Countdown -> {
                 val options = settings.options as CountdownOptions
                 max = options.duration
@@ -44,11 +44,13 @@ class TimerActor(context: Context, private val settings: TimeSettings) : WidgetG
                 timeBonus = options.timeBonus
                 direction = -1
                 defaultParticles = pool.sparkles.also {
-                    it.emitters.first().tint.colors = floatArrayOf(frontColor.r, frontColor.g, frontColor.b, frontColor.a)
+                    it.emitters.first().tint.colors =
+                        floatArrayOf(frontColor.r, frontColor.g, frontColor.b, frontColor.a)
                     it.emitters.first().setPosition(0f, 0f)
                 }
                 wrongParticles = pool.explode.also {
-                    it.emitters.first().tint.colors = floatArrayOf(errorColor.r, errorColor.g, errorColor.b, errorColor.a)
+                    it.emitters.first().tint.colors =
+                        floatArrayOf(errorColor.r, errorColor.g, errorColor.b, errorColor.a)
                     it.emitters.first().setPosition(0f, 0f)
                 }
             }
@@ -60,11 +62,13 @@ class TimerActor(context: Context, private val settings: TimeSettings) : WidgetG
                 current = 0f
                 direction = 1
                 defaultParticles = pool.absorb.also {
-                    it.emitters.first().tint.colors = floatArrayOf(frontColor.r, frontColor.g, frontColor.b, frontColor.a)
+                    it.emitters.first().tint.colors =
+                        floatArrayOf(frontColor.r, frontColor.g, frontColor.b, frontColor.a)
                     it.emitters.first().setPosition(0f, 0f)
                 }
                 wrongParticles = pool.implode.also {
-                    it.emitters.first().tint.colors = floatArrayOf(errorColor.r, errorColor.g, errorColor.b, errorColor.a)
+                    it.emitters.first().tint.colors =
+                        floatArrayOf(errorColor.r, errorColor.g, errorColor.b, errorColor.a)
                     it.emitters.first().setPosition(0f, 0f)
                 }
             }
@@ -73,33 +77,40 @@ class TimerActor(context: Context, private val settings: TimeSettings) : WidgetG
                 current = 0f
                 direction = 0
                 timeBonus = 0f
-                timePenalty= 0f
+                timePenalty = 0f
                 defaultParticles = pool.emptyParticles
                 wrongParticles = pool.emptyParticles
             }
         }
     }
 
-    fun correct(){
+    fun correct() {
         current -= timeBonus * direction
     }
 
-    fun wrong(){
+    fun wrong() {
         current += timePenalty * direction
         wrongParticles.start()
         wrongParticles.emitters.first().setPosition(progress, y)
     }
 
     override fun act(delta: Float) {
-        if(!started) {
-            started = true
+        super.act(delta)
+        defaultParticles.update(delta)
+        wrongParticles.update(delta)
+
+        if (!running) {
+            // Timer already finished
+            if (current !in 0f..max) return
+            running = true
             defaultParticles.start()
         }
 
-        super.act(delta)
         current += delta * direction
-        defaultParticles.update(delta)
-        wrongParticles.update(delta)
+        if (current !in 0f..max) {
+            fire(TimerEvent())
+            running = false
+        }
     }
 
     override fun getPrefHeight(): Float = 4f

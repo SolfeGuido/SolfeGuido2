@@ -4,11 +4,17 @@ import com.badlogic.gdx.utils.Json
 import com.badlogic.gdx.utils.JsonValue
 import ktx.json.*
 
-class CountdownOptions : ITimeOptions {
+class CountdownOptions(initialDuration: Float = 30f, timeBonus: Float = 0f, timePenalty: Float = 0.5f) : ITimeOptions {
 
     var duration = 30f
     var timeBonus = 0f
     var timePenalty = 0.5f
+
+    init {
+        this.duration = initialDuration
+        this.timeBonus = timeBonus
+        this.timePenalty = timePenalty
+    }
 
     override fun read(json: Json, jsonData: JsonValue) {
         duration = json.readValue(jsonData, "duration")
