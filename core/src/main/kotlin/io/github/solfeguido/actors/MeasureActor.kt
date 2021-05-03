@@ -31,7 +31,12 @@ class MeasureActor(
         private set
     var topLine = 0f
         private set
+
+
     private val clefActor: ClefActor = ClefActor(clef).also { addActor(it) }
+
+    val leftLimit
+        get() = signatureActor.x + signatureActor.width
     private val clefPosition: ClefConfig = ClefConfig.ClefEquivalent[clef, ClefConfig.GClef]
     private val notes = gdxArrayOf<NoteActor>()
 

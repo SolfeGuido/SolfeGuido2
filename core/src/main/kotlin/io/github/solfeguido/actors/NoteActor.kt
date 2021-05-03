@@ -162,11 +162,17 @@ class NoteActor : WidgetGroup(), Pool.Poolable {
 
         val shader = Shaders.NoteFade
 
-        // shader.bind()
-        // batch.shader = shader
-        // shader.setUniformf("leftLimit", 0f)
-        // shader.setUniformf("rightLimit", Gdx.graphics.width.toFloat())
-        // shader.setUniformf("noteWidth", width)
+        shader.bind()
+        batch.shader = shader
+        shader.setUniform2fv(
+            "u_viewport_size",
+            floatArrayOf(Gdx.graphics.width.toFloat(), Gdx.graphics.height.toFloat()),
+            0,
+            2
+        )
+        shader.setUniformf("leftLimit", measure!!.leftLimit + 50)
+        shader.setUniformf("rightLimit", Gdx.graphics.width.toFloat() - 50)
+        shader.setUniformf("noteWidth", width)
 
         if (relativeMeasurePosition == 0) drawLine(batch, bottom - lineSpace * 3)
         if (relativeMeasurePosition <= 2) drawLine(batch, bottom - lineSpace * 2)
@@ -176,7 +182,7 @@ class NoteActor : WidgetGroup(), Pool.Poolable {
         if (relativeMeasurePosition >= 20) drawLine(batch, topLine + lineSpace * 2)
 
         super.draw(batch, parentAlpha)
-        // batch.shader = null
+        batch.shader = null
     }
 
 }
