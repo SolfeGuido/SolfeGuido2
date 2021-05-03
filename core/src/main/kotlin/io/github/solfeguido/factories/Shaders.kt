@@ -14,6 +14,8 @@ object Shaders {
             Gdx.files.internal(DEFAULT_VERTEX_PATH),
             Gdx.files.internal(NOTE_FADE_PATH)
         )
+
+        res.setAttributef("a_viewport_size", Gdx.graphics.width.toFloat(), Gdx.graphics.height.toFloat(), 0f, 0f)
         if (!res.isCompiled)
             throw Error("Failed to compile noteFade Shader : ${res.log}")
         res

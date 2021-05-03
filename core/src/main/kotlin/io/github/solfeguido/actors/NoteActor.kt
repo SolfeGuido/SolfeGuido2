@@ -169,12 +169,6 @@ class NoteActor : WidgetGroup(), Pool.Poolable {
 
         shader.bind()
         batch.shader = shader
-        shader.setUniform2fv(
-            "u_viewport_size",
-            floatArrayOf(Gdx.graphics.width.toFloat(), Gdx.graphics.height.toFloat()),
-            0,
-            2
-        )
         shader.setUniformf("leftLimit", measure!!.leftLimit + 50)
         shader.setUniformf("rightLimit", Gdx.graphics.width.toFloat() - 50)
         shader.setUniformf("noteWidth", width)
