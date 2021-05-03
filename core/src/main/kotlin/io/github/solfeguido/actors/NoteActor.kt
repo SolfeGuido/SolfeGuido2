@@ -120,6 +120,7 @@ class NoteActor : WidgetGroup(), Pool.Poolable {
         noteIcon.pack()
         noteEffect.setIcon(IconName.QuarterNote)
         noteEffect.pack()
+        //TODO: Change name to be based on the user's preferences
         noteName.setText(note.getName(measureActor.keySignature).value)
         noteName.x = noteIcon.width + accidentalIcon.width
         noteName.pack()

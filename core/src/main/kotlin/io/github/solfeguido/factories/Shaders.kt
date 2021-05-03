@@ -10,14 +10,13 @@ object Shaders {
     private const val NOTE_FADE_PATH = "${Constants.SHADERS_PATH}/noteFade.glsl"
 
     val NoteFade by lazy {
-        val res = ShaderProgram(
+        ShaderProgram(
             Gdx.files.internal(DEFAULT_VERTEX_PATH),
             Gdx.files.internal(NOTE_FADE_PATH)
-        )
-
-        res.setAttributef("a_viewport_size", Gdx.graphics.width.toFloat(), Gdx.graphics.height.toFloat(), 0f, 0f)
-        if (!res.isCompiled)
-            throw Error("Failed to compile noteFade Shader : ${res.log}")
-        res
+        ).also {
+            it.setAttributef("a_viewport_size", Gdx.graphics.width.toFloat(), Gdx.graphics.height.toFloat(), 0f, 0f)
+            if (!it.isCompiled)
+                throw Error("Failed to compile noteFade Shader : ${it.log}")
+        }
     }
 }
