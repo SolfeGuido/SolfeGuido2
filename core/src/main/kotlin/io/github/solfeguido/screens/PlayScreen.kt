@@ -40,7 +40,7 @@ class PlayScreen(context: Context) : UIScreen(context) {
             setFillParent(true)
             setPosition(0f, 0f)
             align(Align.center)
-            val timer = timer(context, TimeSettings()) {
+            val timer = timer(context, TimeSettings(options = CountdownOptions(120f))) {
                 onTimerEnd {
                     scene2d.zoomDialog {
                         title("Test")

@@ -9,7 +9,7 @@ import io.github.solfeguido.settings.time.ITimeOptions
 import io.github.solfeguido.settings.time.InfiniteTimeOptions
 import ktx.json.*
 
-class TimeSettings(type: TimeModeEnum = TimeModeEnum.Countdown, options: ITimeOptions = CountdownOptions(2f)) : Json.Serializable {
+class TimeSettings(type: TimeModeEnum = TimeModeEnum.Countdown, options: ITimeOptions = CountdownOptions()) : Json.Serializable {
 
     var type = TimeModeEnum.Countdown
     var options: ITimeOptions = CountdownOptions()

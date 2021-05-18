@@ -94,7 +94,7 @@ class MeasureActor(
 
 
     private fun generateNote() =
-        NoteActorPool.generate(MidiNotePool.fromIndex(Random.nextInt(60, 80)), this).also {
+        NoteActorPool.generate(MidiNotePool.fromIndex(Random.nextInt(80, 90)), this).also {
             notes.add(it)
             addActor(it)
         }

@@ -1,9 +1,7 @@
 package io.github.solfeguido.actors
 
 import com.badlogic.gdx.Gdx
-import com.badlogic.gdx.graphics.Color
 import com.badlogic.gdx.graphics.g2d.Batch
-import com.badlogic.gdx.graphics.g3d.Shader
 import com.badlogic.gdx.math.Interpolation
 import com.badlogic.gdx.scenes.scene2d.actions.Actions
 import com.badlogic.gdx.scenes.scene2d.ui.Label
@@ -23,6 +21,7 @@ import io.github.solfeguido.factories.colorDrawable
 import io.github.solfeguido.factories.gCol
 import io.github.solfeguido.ui.Icon
 import ktx.actors.plusAssign
+import ktx.graphics.copy
 import ktx.scene2d.Scene2DSkin
 
 class NoteActor : WidgetGroup(), Pool.Poolable {
@@ -64,8 +63,14 @@ class NoteActor : WidgetGroup(), Pool.Poolable {
         accidentalEffect.setScale(1 / 4f)
         noteIcon.x = accidentalIcon.width
         setScale((measure!!.lineSpace / noteIcon.height) * 4)
-        // TODO: Rotate if too high
         this.y = getYIndex()
+
+        noteIcon.originX = 2 * width / 3f
+        noteIcon.originY = (4 * width) / 9f
+
+        val rotation = if (relativeMeasurePosition > 10) 180.0f else 0f
+        noteIcon.rotation = rotation
+        noteEffect.rotation = rotation
     }
 
     private fun getYIndex(): Float {
@@ -124,12 +129,13 @@ class NoteActor : WidgetGroup(), Pool.Poolable {
         noteName.setText(note.getName(measureActor.keySignature).value)
         noteName.x = noteIcon.width + accidentalIcon.width
         noteName.pack()
-        noteName.y = if(relativeMeasurePosition % 2 == 1) 0f else -measureActor.lineSpace
+        noteName.y = if (relativeMeasurePosition % 2 == 1) 0f else -measureActor.lineSpace
         this.x = Gdx.graphics.width.toFloat()
     }
 
     fun consume(correct: Boolean) {
         val color = if (correct) gCol("correct") else gCol("error")
+        val transparent = color.copy(alpha = 0f)
         consumed = true
         if (correct) {
             noteEffect.color = color
@@ -149,11 +155,12 @@ class NoteActor : WidgetGroup(), Pool.Poolable {
             )
         } else {
             noteIcon.setIcon(IconName.GhostNote)
-            noteName.isVisible =  true
+            noteName.isVisible = true
         }
 
-        noteIcon += Actions.color(color, 0.2f, Interpolation.exp10Out)
-        accidentalIcon += Actions.color(color, 0.2f, Interpolation.exp10Out)
+        noteIcon += Actions.color(color, 0.1f, Interpolation.exp10Out)
+        accidentalIcon += Actions.color(color, 0.1f, Interpolation.exp10Out)
+        this += Actions.color(transparent, 1f, Interpolation.linear)
     }
 
     private fun drawLine(batch: Batch, y: Float) {
@@ -169,6 +176,7 @@ class NoteActor : WidgetGroup(), Pool.Poolable {
         val shader = Shaders.NoteFade
 
         shader.bind()
+        batch.color = color
         batch.shader = shader
         shader.setUniformf("leftLimit", measure!!.leftLimit + 50)
         shader.setUniformf("rightLimit", Gdx.graphics.width.toFloat() - 50)
