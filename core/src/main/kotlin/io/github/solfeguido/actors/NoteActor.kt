@@ -61,16 +61,21 @@ class NoteActor : WidgetGroup(), Pool.Poolable {
         super.layout()
         accidentalIcon.setScale(1 / 4f)
         accidentalEffect.setScale(1 / 4f)
-        noteIcon.x = accidentalIcon.width
         setScale((measure!!.lineSpace / noteIcon.height) * 4)
         this.y = getYIndex()
+        noteIcon.x = accidentalIcon.width
 
-        noteIcon.originX = 2 * width / 3f
-        noteIcon.originY = (4 * width) / 9f
+        if (relativeMeasurePosition >= 10) {
+            accidentalIcon.y -= accidentalIcon.height * 0.2f
+            noteIcon.originX = width * 0.56f
+            noteIcon.originY = height * 0.1f
+            noteIcon.rotation = 180f
+            noteEffect.rotation = 180f
+            if(accidentalIcon.width == 0f) {
+                noteIcon.x += noteIcon.width * 0.3f
+            }
 
-        val rotation = if (relativeMeasurePosition > 10) 180.0f else 0f
-        noteIcon.rotation = rotation
-        noteEffect.rotation = rotation
+        }
     }
 
     private fun getYIndex(): Float {
