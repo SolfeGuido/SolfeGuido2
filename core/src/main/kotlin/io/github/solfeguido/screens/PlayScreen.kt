@@ -10,6 +10,7 @@ import io.github.solfeguido.core.StateParameter
 import io.github.solfeguido.enums.ClefEnum
 import io.github.solfeguido.enums.IconName
 import io.github.solfeguido.enums.KeySignatureEnum
+import io.github.solfeguido.enums.TimeModeEnum
 import io.github.solfeguido.factories.*
 import io.github.solfeguido.settings.TimeSettings
 import io.github.solfeguido.settings.time.CountdownOptions
@@ -22,10 +23,21 @@ class PlayScreen(context: Context) : UIScreen(context) {
 
     private lateinit var clef: ClefEnum
     private lateinit var measure: MeasureActor
+    private lateinit var timer: TimeSettings
 
+
+    data class GameOptions(
+        val clef: ClefEnum,
+        val timer: TimeSettings = TimeSettings(
+            TimeModeEnum.Countdown,
+            CountdownOptions(120f)
+        )
+    )
 
     override fun create(settings: StateParameter) {
-        clef = settings.getValue()
+        val options: GameOptions = settings.getValue()
+        clef = options.clef
+        timer = options.timer
         super.create(settings)
     }
 
@@ -40,7 +52,7 @@ class PlayScreen(context: Context) : UIScreen(context) {
             setFillParent(true)
             setPosition(0f, 0f)
             align(Align.center)
-            val timer = timer(context, TimeSettings(options = CountdownOptions(120f))) {
+            val timer = timer(context, timer) {
                 onTimerEnd {
                     scene2d.zoomDialog {
                         title("Test")
@@ -61,7 +73,7 @@ class PlayScreen(context: Context) : UIScreen(context) {
             stack {
                 measure = measure(clef) {
                     onResult {
-                        if(!it.isCorrect) {
+                        if (!it.isCorrect) {
                             timer.wrong()
                             // Could do the oposite when giving a good answer
                         }

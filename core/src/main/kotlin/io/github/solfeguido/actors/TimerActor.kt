@@ -91,7 +91,7 @@ class TimerActor(context: Context, private val settings: TimeSettings) : WidgetG
     fun wrong() {
         current += timePenalty * direction
         wrongParticles.start()
-        wrongParticles.emitters.first().setPosition(progress, y)
+        wrongParticles.emitters.firstOrNull()?.setPosition(progress, y)
     }
 
     override fun act(delta: Float) {
@@ -120,7 +120,7 @@ class TimerActor(context: Context, private val settings: TimeSettings) : WidgetG
     override fun draw(batch: Batch, parentAlpha: Float) {
         val c = color
         batch.setColor(c.r, c.g, c.b, c.a * parentAlpha)
-        defaultParticles.emitters.first().setPosition(progress, y)
+        defaultParticles.emitters.firstOrNull()?.setPosition(progress, y)
         timeLine.draw(batch, x, y, progress, height)
         defaultParticles.draw(batch)
         wrongParticles.draw(batch)
