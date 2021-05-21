@@ -18,6 +18,7 @@ import ktx.inject.Context
 import ktx.scene2d.KWidget
 import ktx.scene2d.Scene2DSkin
 import ktx.scene2d.actor
+import kotlin.math.min
 
 abstract class UIScreen(protected val context: Context) : KtxScreen, InputProcessor, GestureDetector.GestureListener {
 
@@ -51,7 +52,7 @@ abstract class UIScreen(protected val context: Context) : KtxScreen, InputProces
     }
 
     override fun render(delta: Float) {
-        stage.act()
+        stage.act(min(delta, 1 / 30f))
         stage.draw()
     }
 
