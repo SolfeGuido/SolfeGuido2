@@ -36,15 +36,15 @@ class MidiFile(inputStream: InputStream) {
     val tracks: GdxArray<MidiTrack>
 
     val lengthInTicks
-        get() = tracks.maxBy { it.lengthInTicks }
+        get() = tracks.maxByOrNull { it.lengthInTicks }
 
     companion object{
         const val HEADER_SIZE = 14
         val IDENTIFIER = byteArrayOf(
-                'M'.toByte(),
-                'T'.toByte(),
-                'h'.toByte(),
-                'd'.toByte()
+                'M'.code.toByte(),
+                'T'.code.toByte(),
+                'h'.code.toByte(),
+                'd'.code.toByte()
         )
         const val DEFAULT_RESOLUTION = 480
     }
