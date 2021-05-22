@@ -92,6 +92,7 @@ class MeasureActor(
             addActor(it)
         } else this.notes[currentNoteIndex]
 
+    override fun childrenChanged() {}
 
     private fun generateNote() =
         NoteActorPool.generate(MidiNotePool.fromIndex(Random.nextInt(80, 90)), this).also {
