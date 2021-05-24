@@ -68,6 +68,8 @@ class NoteActor : WidgetGroup(), Pool.Poolable {
             accidentalIcon.y -= accidentalIcon.height * 0.2f
             noteIcon.originX = noteIcon.width / 2f
             noteIcon.originY = height * 0.1f
+            noteEffect.originX = noteEffect.width / 2f
+            noteEffect.originY = height * 0.1f
             noteIcon.rotation = 180f
             noteEffect.rotation = 180f
         }
