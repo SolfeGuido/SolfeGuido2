@@ -1,19 +1,14 @@
 package io.github.solfeguido.screens
 
 import com.badlogic.gdx.Gdx
-import com.badlogic.gdx.math.Interpolation
-import com.badlogic.gdx.scenes.scene2d.actions.Actions
 import com.badlogic.gdx.utils.Align
 import io.github.solfeguido.actors.MeasureActor
 import io.github.solfeguido.core.StateMachine
 import io.github.solfeguido.core.StateParameter
 import io.github.solfeguido.enums.ClefEnum
 import io.github.solfeguido.enums.IconName
-import io.github.solfeguido.enums.KeySignatureEnum
-import io.github.solfeguido.enums.TimeModeEnum
 import io.github.solfeguido.factories.*
 import io.github.solfeguido.settings.TimeSettings
-import io.github.solfeguido.settings.time.CountdownOptions
 import ktx.actors.plusAssign
 import ktx.inject.Context
 import ktx.log.info
@@ -28,10 +23,7 @@ class PlayScreen(context: Context) : UIScreen(context) {
 
     data class GameOptions(
         val clef: ClefEnum,
-        val timer: TimeSettings = TimeSettings(
-            TimeModeEnum.Countdown,
-            CountdownOptions(120f)
-        )
+        val timer: TimeSettings = TimeSettings.ClassicCountdownMode
     )
 
     override fun create(settings: StateParameter) {

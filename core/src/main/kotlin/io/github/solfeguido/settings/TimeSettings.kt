@@ -2,36 +2,55 @@ package io.github.solfeguido.settings
 
 import com.badlogic.gdx.utils.Json
 import com.badlogic.gdx.utils.JsonValue
-import io.github.solfeguido.enums.TimeModeEnum
-import io.github.solfeguido.settings.time.CountdownOptions
-import io.github.solfeguido.settings.time.CountupOptions
-import io.github.solfeguido.settings.time.ITimeOptions
-import io.github.solfeguido.settings.time.InfiniteTimeOptions
 import ktx.json.*
 
-class TimeSettings(type: TimeModeEnum = TimeModeEnum.Countdown, options: ITimeOptions = CountdownOptions()) : Json.Serializable {
+class TimeSettings(
+    var start : Float = 0.0f,
+    var max: Float = 60.0f,
+    var timeBonus: Float = 0f,
+    var timePenalty: Float = 1f,
+    var multiplicator: Float = 1f,
+    var showParticles: Boolean = true
+) : Json.Serializable {
 
-    var type = TimeModeEnum.Countdown
-    var options: ITimeOptions = CountdownOptions()
+    companion object {
 
+        val InfiniteMode = TimeSettings(
+            start = 0f,
+            max = 1f,
+            timeBonus =  0f,
+            timePenalty = 0f,
+            multiplicator = 0f,
+            showParticles = false
+        )
 
-    init {
-        this.type = type
-        this.options = options
+        val ClassicCountdownMode = TimeSettings(
+            start = 120f,
+            max = 120f,
+            timeBonus = 0f,
+            timePenalty = 2f,
+            multiplicator = -1f,
+            showParticles = true
+        )
+
     }
 
     override fun read(json: Json, jsonData: JsonValue) {
-        type = json.readValue(jsonData, "type")
-        options = when (type) {
-            TimeModeEnum.Countdown -> json.readValue<CountupOptions>(jsonData, "options")
-            TimeModeEnum.Countup -> json.readValue<CountupOptions>(jsonData, "options")
-            TimeModeEnum.Infinite -> json.readValue<InfiniteTimeOptions>(jsonData, "options")
-        }
+        start = json.readValue(jsonData, "start")
+        max = json.readValue(jsonData, "max")
+        timeBonus = json.readValue(jsonData, "timeBonus")
+        timePenalty = json.readValue(jsonData, "timePenalty")
+        multiplicator = json.readValue(jsonData, "multiplicator")
+        showParticles = json.readValue(jsonData, "showParticles")
     }
 
     override fun write(json: Json) {
-        json.writeValue("type", type)
-        json.writeValue("options", options)
+        json.writeValue("start", start)
+        json.writeValue("max", max)
+        json.writeValue("timeBonus", timeBonus)
+        json.writeValue("timePenalty", timePenalty)
+        json.writeValue("multiplicator", multiplicator)
+        json.writeValue("showParticles", showParticles)
     }
 
 }

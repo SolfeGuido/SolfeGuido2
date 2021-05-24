@@ -17,11 +17,9 @@ import io.github.solfeguido.core.StateParameter
 import io.github.solfeguido.enums.ClefEnum
 import io.github.solfeguido.enums.IconName
 import io.github.solfeguido.enums.KeySignatureEnum
-import io.github.solfeguido.enums.TimeModeEnum
 import io.github.solfeguido.factories.*
 import io.github.solfeguido.factories.iconButton
 import io.github.solfeguido.settings.TimeSettings
-import io.github.solfeguido.settings.time.CountdownOptions
 import ktx.actors.div
 import ktx.actors.onClick
 import ktx.actors.plus
@@ -228,7 +226,7 @@ class MenuScreen(context: Context) : UIScreen(context) {
                             left()
                             pad(10f)
                             onClick {
-                                timerOptions = TimeSettings(TimeModeEnum.Countdown)
+                                timerOptions = TimeSettings.ClassicCountdownMode
                                 pushActor(classicOptions)
                             }
                         }
@@ -246,7 +244,7 @@ class MenuScreen(context: Context) : UIScreen(context) {
                             label.setAlignment(Align.right)
                             pad(10f)
                             onClick {
-                                timerOptions = TimeSettings(TimeModeEnum.Infinite)
+                                timerOptions = TimeSettings.InfiniteMode
                                 pushActor(classicOptions)
                             }
                         }
