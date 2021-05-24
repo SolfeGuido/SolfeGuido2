@@ -5,10 +5,11 @@ import com.badlogic.gdx.utils.Align
 import io.github.solfeguido.actors.MeasureActor
 import io.github.solfeguido.core.StateMachine
 import io.github.solfeguido.core.StateParameter
-import io.github.solfeguido.enums.ClefEnum
 import io.github.solfeguido.enums.IconName
 import io.github.solfeguido.factories.*
+import io.github.solfeguido.settings.GameModeSettings
 import io.github.solfeguido.settings.TimeSettings
+import io.github.solfeguido.settings.gamemode.IGameModeOptions
 import ktx.actors.plusAssign
 import ktx.inject.Context
 import ktx.log.info
@@ -16,20 +17,14 @@ import ktx.scene2d.*
 
 class PlayScreen(context: Context) : UIScreen(context) {
 
-    private lateinit var clef: ClefEnum
-    private lateinit var measure: MeasureActor
+    private lateinit var game: IGameModeOptions
     private lateinit var timer: TimeSettings
 
 
-    data class GameOptions(
-        val clef: ClefEnum,
-        val timer: TimeSettings = TimeSettings.ClassicCountdownMode
-    )
-
     override fun create(settings: StateParameter) {
-        val options: GameOptions = settings.getValue()
-        clef = options.clef
-        timer = options.timer
+        val options: GameModeSettings = settings.getValue()
+        game = options.options
+        timer = options.time
         super.create(settings)
     }
 
@@ -63,12 +58,9 @@ class PlayScreen(context: Context) : UIScreen(context) {
             }
             row()
             stack {
-                measure = measure(clef) {
-                    onResult {
-                        if (!it.isCorrect) {
-                            timer.wrong()
-                            // Could do the oposite when giving a good answer
-                        }
+                game.populateScene(this) { result ->
+                    if (!result.isCorrect) {
+                        timer.wrong()
                     }
                 }
                 it.grow()
@@ -79,7 +71,7 @@ class PlayScreen(context: Context) : UIScreen(context) {
                 pianoAnswer {
                     onAnswer {
                         // Handle answer based on what was generated
-                        measure.checkNote(it.note)
+                        game.validateNote(it.note)
                     }
                 }
             }

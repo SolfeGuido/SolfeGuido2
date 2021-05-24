@@ -3,7 +3,10 @@ package io.github.solfeguido.settings.gamemode
 import com.badlogic.gdx.utils.Json
 import com.badlogic.gdx.utils.JsonValue
 import io.github.solfeguido.enums.KeySignatureEnum
+import io.github.solfeguido.enums.NoteOrderEnum
+import io.github.solfeguido.ui.events.ResultEvent
 import ktx.json.*
+import ktx.scene2d.KStack
 
 class IntervalGuessOptions : IGameModeOptions {
 
@@ -23,4 +26,9 @@ class IntervalGuessOptions : IGameModeOptions {
         json.writeValue("keySignature", keySignature)
     }
 
+    override fun populateScene(parent: KStack, resultCallback: (ResultEvent) -> Unit) {
+
+    }
+
+    override fun validateNote(note: NoteOrderEnum) = false
 }

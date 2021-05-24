@@ -3,9 +3,12 @@ package io.github.solfeguido.settings.gamemode
 import com.badlogic.gdx.utils.Json
 import com.badlogic.gdx.utils.JsonValue
 import io.github.solfeguido.enums.KeySignatureEnum
+import io.github.solfeguido.enums.NoteOrderEnum
 import io.github.solfeguido.settings.GeneratorSettings
 import io.github.solfeguido.settings.MeasureSettings
+import io.github.solfeguido.ui.events.ResultEvent
 import ktx.json.*
+import ktx.scene2d.KStack
 
 class EarTrainingOptions : IGameModeOptions {
 
@@ -24,4 +27,10 @@ class EarTrainingOptions : IGameModeOptions {
         json.writeValue("measure", measure)
         json.writeValue("keySignature", keySignature)
     }
+
+    override fun populateScene(parent: KStack, resultCallback: (ResultEvent) -> Unit) {
+
+    }
+
+    override fun validateNote(note: NoteOrderEnum) = false
 }

@@ -19,6 +19,7 @@ import io.github.solfeguido.enums.IconName
 import io.github.solfeguido.enums.KeySignatureEnum
 import io.github.solfeguido.factories.*
 import io.github.solfeguido.factories.iconButton
+import io.github.solfeguido.settings.GameModeSettings
 import io.github.solfeguido.settings.TimeSettings
 import ktx.actors.div
 import ktx.actors.onClick
@@ -190,10 +191,7 @@ class MenuScreen(context: Context) : UIScreen(context) {
                                 onClick {
                                     context.inject<StateMachine>().switch<PlayScreen>(
                                         StateParameter.witType(
-                                            PlayScreen.GameOptions(
-                                                clef,
-                                                timerOptions
-                                            )
+                                            GameModeSettings()
                                         )
                                     )
                                 }
