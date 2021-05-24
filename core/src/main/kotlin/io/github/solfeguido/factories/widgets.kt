@@ -84,7 +84,6 @@ inline fun <S> KWidget<S>.answerButton (
         init: (@Scene2dDsl AnswerButton).(S) -> Unit
 ) = actor(AnswerButton(text), init)
 
-@OptIn(ExperimentalContracts::class)
 inline fun <S> KWidget<S>.borderContainer(
         init: BorderContainer<Actor>.(S) -> Unit = {}) : BorderContainer<Actor> {
     contract { callsInPlace(init, InvocationKind.EXACTLY_ONCE) }
@@ -93,7 +92,6 @@ inline fun <S> KWidget<S>.borderContainer(
 
 
 @Scene2dDsl
-@OptIn(ExperimentalContracts::class)
 inline fun RootWidget.zoomDialog(
         style: String = defaultStyle,
         skin: Skin = Scene2DSkin.defaultSkin,

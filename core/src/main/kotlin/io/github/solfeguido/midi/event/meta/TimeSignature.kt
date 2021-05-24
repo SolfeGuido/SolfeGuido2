@@ -24,8 +24,15 @@ import java.io.OutputStream
 import kotlin.math.pow
 
 
-class TimeSignature @JvmOverloads constructor(tick: Long = 0, delta: Long = 0, num: Int = 4, den: Int = 4, meter: Int = DEFAULT_METER, div: Int = DEFAULT_DIVISION) :
-        MetaEvent(tick, delta, TIME_SIGNATURE, VariableLengthInt(4)) {
+class TimeSignature @JvmOverloads constructor(
+    tick: Long = 0,
+    delta: Long = 0,
+    num: Int = 4,
+    den: Int = 4,
+    meter: Int = DEFAULT_METER,
+    div: Int = DEFAULT_DIVISION
+) :
+    MetaEvent(tick, delta, TIME_SIGNATURE, VariableLengthInt(4)) {
     var numerator = 0
         private set
     var denominatorValue = 0
@@ -46,7 +53,7 @@ class TimeSignature @JvmOverloads constructor(tick: Long = 0, delta: Long = 0, n
         get() = Math.pow(2.0, denominatorValue.toDouble()).toInt()
 
     override val eventSize: Int
-        protected get() = 7
+        get() = 7
 
     public override fun writeToFile(out: OutputStream) {
         super.writeToFile(out)
@@ -73,7 +80,7 @@ class TimeSignature @JvmOverloads constructor(tick: Long = 0, delta: Long = 0, n
     }
 
     override fun compareTo(other: MidiEvent?): Int {
-        if(other !is MidiEvent) return 1
+        if (other !is MidiEvent) return 1
 
         if (mTick != other.mTick) {
             return if (mTick < other.mTick) -1 else 1
@@ -84,12 +91,11 @@ class TimeSignature @JvmOverloads constructor(tick: Long = 0, delta: Long = 0, n
         if (other !is TimeSignature) {
             return 1
         }
-        val o = other as TimeSignature
-        if (numerator != o.numerator) {
-            return if (numerator < o.numerator) -1 else 1
+        if (numerator != other.numerator) {
+            return if (numerator < other.numerator) -1 else 1
         }
-        return if (denominatorValue != o.denominatorValue) {
-            if (denominatorValue < o.denominatorValue) -1 else 1
+        return if (denominatorValue != other.denominatorValue) {
+            if (denominatorValue < other.denominatorValue) -1 else 1
         } else 0
     }
 

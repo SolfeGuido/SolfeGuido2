@@ -53,15 +53,14 @@ class SequenceNumber(tick: Long, delta: Long, val sequenceNumber: Int) : MetaEve
         if (other !is SequenceNumber) {
             return 1
         }
-        val o = other as SequenceNumber
-        return if (sequenceNumber != o.sequenceNumber) {
-            if (sequenceNumber < o.sequenceNumber) -1 else 1
+        return if (sequenceNumber != other.sequenceNumber) {
+            if (sequenceNumber < other.sequenceNumber) -1 else 1
         } else 0
     }
 
     companion object {
         fun parseSequenceNumber(tick: Long, delta: Long, info: MetaEventData): MetaEvent {
-            if (info.length.varValue !== 2) {
+            if (info.length.varValue != 2) {
                 return GenericMetaEvent(tick, delta, info)
             }
             val msb = info.data[0].toInt()

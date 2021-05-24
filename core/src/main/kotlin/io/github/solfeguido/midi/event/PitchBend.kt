@@ -41,10 +41,9 @@ class PitchBend : ChannelEvent {
             return y + x
         }
         set(amount) {
-            var amount = amount
-            amount = amount and 0x3FFF
-            value1 = amount and 0x7F
-            value2 = amount shr 7
+            var am = amount and 0x3FFF
+            value1 = am and 0x7F
+            value2 = am shr 7
         }
 
 }

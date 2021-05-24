@@ -27,7 +27,7 @@ class KeySignature(tick: Long, delta: Long, var key: Int, var scale: Int) : Meta
     private var mKey = 0
 
     override val eventSize: Int
-        protected get() = 5
+        get() = 5
 
     public override fun writeToFile(out: OutputStream) {
         super.writeToFile(out)
@@ -47,12 +47,11 @@ class KeySignature(tick: Long, delta: Long, var key: Int, var scale: Int) : Meta
         if (other !is KeySignature) {
             return 1
         }
-        val o = other as KeySignature
-        if (mKey != o.mKey) {
-            return if (mKey < o.mKey) -1 else 1
+        if (mKey != other.mKey) {
+            return if (mKey < other.mKey) -1 else 1
         }
-        return if (scale != o.scale) {
-            if (mKey < o.scale) -1 else 1
+        return if (scale != other.scale) {
+            if (mKey < other.scale) -1 else 1
         } else 0
     }
 

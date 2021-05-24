@@ -10,7 +10,6 @@ import kotlin.contracts.InvocationKind
 import kotlin.contracts.contract
 
 @SkinDsl
-@OptIn(ExperimentalContracts::class)
 inline fun Skin.borderButton(
         name: String = defaultStyle,
         init: (@SkinDsl STextButton.STextButtonStyle).() -> Unit = {}

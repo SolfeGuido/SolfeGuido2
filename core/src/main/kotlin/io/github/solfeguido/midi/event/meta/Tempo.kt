@@ -44,7 +44,7 @@ class Tempo @JvmOverloads constructor(tick: Long = 0, delta: Long = 0, mpqn: Int
         }
 
     override val eventSize: Int
-        protected get() = 6
+        get() = 6
 
     public override fun writeToFile(out: OutputStream) {
         super.writeToFile(out)
@@ -63,9 +63,8 @@ class Tempo @JvmOverloads constructor(tick: Long = 0, delta: Long = 0, mpqn: Int
         if (other !is Tempo) {
             return 1
         }
-        val o = other as Tempo
-        return if (mMPQN != o.mMPQN) {
-            if (mMPQN < o.mMPQN) -1 else 1
+        return if (mMPQN != other.mMPQN) {
+            if (mMPQN < other.mMPQN) -1 else 1
         } else 0
     }
 

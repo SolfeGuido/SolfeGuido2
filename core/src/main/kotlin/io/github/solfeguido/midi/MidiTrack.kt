@@ -38,7 +38,12 @@ class MidiTrack() {
 
     companion object {
         const val VERBOSE = false
-        val IDENTIFIER = byteArrayOf('M'.toByte(), 'T'.toByte(), 'r'.toByte(), 'k'.toByte())
+        val IDENTIFIER = byteArrayOf(
+            'M'.code.toByte(),
+            'T'.code.toByte(),
+            'r'.code.toByte(),
+            'k'.code.toByte()
+        )
 
         fun createTempTrack() = MidiTrack().also {
             it.insertEvent(TimeSignature())
@@ -84,7 +89,7 @@ class MidiTrack() {
         input.read(buffer)
 
         if(!bytesEqual(IDENTIFIER, buffer, 0, 4)) {
-            info { "${buffer.map { it.toChar() }}" }
+            info { "${buffer.map { it.toInt().toChar() }}" }
             ktx.log.error { "Track identifier did not match MTrk" }
             return
         }

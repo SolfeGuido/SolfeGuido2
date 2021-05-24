@@ -18,6 +18,7 @@ class BorderContainer<T : Actor> : Container<T>(), KGroup {
         background = colorDrawable(gCol("background"))
     }
 
+    @Suppress("UNCHECKED_CAST")
     override fun addActor(actor: Actor?) {
         this.actor == null || throw IllegalStateException("Container may store only a single child.")
         this.actor = actor as T

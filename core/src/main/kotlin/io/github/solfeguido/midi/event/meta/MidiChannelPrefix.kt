@@ -26,7 +26,7 @@ import java.io.OutputStream
 class MidiChannelPrefix(tick: Long, delta: Long, var channel: Int) : MetaEvent(tick, delta, MIDI_CHANNEL_PREFIX, VariableLengthInt(4)) {
 
     override val eventSize: Int
-        protected get() = 4
+        get() = 4
 
     @Throws(IOException::class)
     public override fun writeToFile(out: OutputStream) {
@@ -46,9 +46,8 @@ class MidiChannelPrefix(tick: Long, delta: Long, var channel: Int) : MetaEvent(t
         if (other !is MidiChannelPrefix) {
             return 1
         }
-        val o = other as MidiChannelPrefix
-        return if (channel != o.channel) {
-            if (channel < o.channel) -1 else 1
+        return if (channel != other.channel) {
+            if (channel < other.channel) -1 else 1
         } else 0
     }
 

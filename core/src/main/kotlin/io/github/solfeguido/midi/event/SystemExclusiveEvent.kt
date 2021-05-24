@@ -75,7 +75,7 @@ class SystemExclusiveEvent(type: Int, tick: Long, delta: Long, data: ByteArray) 
     }
 
     override val eventSize: Int
-        protected get() = 1 + mLength.sizeInBytes + mData.size
+        get() = 1 + mLength.sizeInBytes + mData.size
 
     init {
         mType = type and 0xFF

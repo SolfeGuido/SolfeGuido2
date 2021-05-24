@@ -27,7 +27,7 @@ class SmpteOffset(tick: Long, delta: Long, var frameRate: FrameRate?, var hours:
         MetaEvent(tick, delta, SMPTE_OFFSET, VariableLengthInt(5)) {
 
     override val eventSize: Int
-        protected get() = 8
+        get() = 8
 
     @Throws(IOException::class)
     public override fun writeToFile(out: OutputStream) {

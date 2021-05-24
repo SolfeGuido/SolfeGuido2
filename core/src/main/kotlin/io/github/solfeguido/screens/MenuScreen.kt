@@ -39,13 +39,13 @@ class MenuScreen(context: Context) : UIScreen(context) {
 
     private val widgetStack = gdxArrayOf<Actor>()
 
-    override fun keyTyped(character: Char): Boolean {
-        return when (character) {
-            //'+' -> measure.nextNote().let { true }
-            //'-' -> measure.prevNote().let { true }
-            else -> super.keyTyped(character)
-        }
-    }
+//    override fun keyTyped(character: Char): Boolean {
+//        return when (character) {
+//            //'+' -> measure.nextNote().let { true }
+//            //'-' -> measure.prevNote().let { true }
+//            else -> super.keyTyped(character)
+//        }
+//    }
 
     private fun showCreditsDialog() {
         scene2d.zoomDialog {
