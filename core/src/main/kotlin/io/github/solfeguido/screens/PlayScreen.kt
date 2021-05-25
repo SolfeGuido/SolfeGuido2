@@ -2,12 +2,11 @@ package io.github.solfeguido.screens
 
 import com.badlogic.gdx.Gdx
 import com.badlogic.gdx.utils.Align
-import io.github.solfeguido.actors.MeasureActor
 import io.github.solfeguido.core.StateMachine
 import io.github.solfeguido.core.StateParameter
 import io.github.solfeguido.enums.IconName
 import io.github.solfeguido.factories.*
-import io.github.solfeguido.settings.GameModeSettings
+import io.github.solfeguido.settings.GameSettings
 import io.github.solfeguido.settings.TimeSettings
 import io.github.solfeguido.settings.gamemode.IGameModeOptions
 import ktx.actors.plusAssign
@@ -22,7 +21,7 @@ class PlayScreen(context: Context) : UIScreen(context) {
 
 
     override fun create(settings: StateParameter) {
-        val options: GameModeSettings = settings.getValue()
+        val options: GameSettings = settings.getValue()
         game = options.options
         timer = options.time
         super.create(settings)

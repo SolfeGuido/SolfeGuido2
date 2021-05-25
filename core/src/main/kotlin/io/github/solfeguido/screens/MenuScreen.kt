@@ -4,7 +4,10 @@ import com.badlogic.gdx.Gdx
 import com.badlogic.gdx.Input
 import com.badlogic.gdx.audio.Sound
 import com.badlogic.gdx.math.Interpolation
-import com.badlogic.gdx.scenes.scene2d.*
+import com.badlogic.gdx.scenes.scene2d.Actor
+import com.badlogic.gdx.scenes.scene2d.Group
+import com.badlogic.gdx.scenes.scene2d.InputEvent
+import com.badlogic.gdx.scenes.scene2d.InputListener
 import com.badlogic.gdx.scenes.scene2d.actions.Actions
 import com.badlogic.gdx.scenes.scene2d.ui.ScrollPane
 import com.badlogic.gdx.scenes.scene2d.ui.Table
@@ -17,9 +20,11 @@ import io.github.solfeguido.core.StateParameter
 import io.github.solfeguido.enums.ClefEnum
 import io.github.solfeguido.enums.IconName
 import io.github.solfeguido.enums.KeySignatureEnum
-import io.github.solfeguido.factories.*
+import io.github.solfeguido.factories.borderButton
 import io.github.solfeguido.factories.iconButton
-import io.github.solfeguido.settings.GameModeSettings
+import io.github.solfeguido.factories.measure
+import io.github.solfeguido.factories.zoomDialog
+import io.github.solfeguido.settings.GameSettings
 import io.github.solfeguido.settings.TimeSettings
 import ktx.actors.div
 import ktx.actors.onClick
@@ -191,7 +196,7 @@ class MenuScreen(context: Context) : UIScreen(context) {
                                 onClick {
                                     context.inject<StateMachine>().switch<PlayScreen>(
                                         StateParameter.witType(
-                                            GameModeSettings()
+                                            GameSettings.classicWithTimer(clef, timerOptions)
                                         )
                                     )
                                 }

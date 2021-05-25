@@ -21,6 +21,7 @@ class IntervalGuessOptions : IGameModeOptions {
     }
 
     override fun write(json: Json) {
+        super.write(json)
         json.writeValue("minInterval", minInterval)
         json.writeValue("maxInterval", maxInterval)
         json.writeValue("keySignature", keySignature)

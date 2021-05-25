@@ -23,6 +23,7 @@ class EarTrainingOptions : IGameModeOptions {
     }
 
     override fun write(json: Json) {
+        super.write(json)
         json.writeValue("generator", generator)
         json.writeValue("measure", measure)
         json.writeValue("keySignature", keySignature)

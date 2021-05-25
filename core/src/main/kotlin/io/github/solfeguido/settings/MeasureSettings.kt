@@ -6,14 +6,13 @@ import io.github.solfeguido.enums.ClefEnum
 import io.github.solfeguido.enums.KeySignatureEnum
 import ktx.json.readValue
 
-class MeasureSettings : Json.Serializable {
-
-    var clef: ClefEnum = ClefEnum.GClef
-    var signature = KeySignatureEnum.CMajor
-    var minNote = 60
-    var maxNote = 60
-    var canHaveAccidentals = false
-
+class MeasureSettings(
+    var clef: ClefEnum = ClefEnum.GClef,
+    var signature: KeySignatureEnum = KeySignatureEnum.CMajor,
+    var minNote: Int = 60,
+    var maxNote: Int = 60,
+    var canHaveAccidentals: Boolean = false
+) : Json.Serializable {
 
     override fun write(json: Json) {
         json.writeValue("clef", clef)
