@@ -40,6 +40,7 @@ class PlayScreen(context: Context) : UIScreen(context) {
             align(Align.center)
             val timer = timer(context, timer) {
                 onTimerEnd {
+                    game.endGame()
                     scene2d.zoomDialog {
                         title("Test")
                         line("You finished the game")

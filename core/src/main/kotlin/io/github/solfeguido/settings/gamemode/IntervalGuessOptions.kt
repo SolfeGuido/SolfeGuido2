@@ -31,5 +31,9 @@ class IntervalGuessOptions : IGameModeOptions {
 
     }
 
+    override fun endGame() {
+        // TODO
+    }
+
     override fun validateNote(note: NoteOrderEnum) = false
 }

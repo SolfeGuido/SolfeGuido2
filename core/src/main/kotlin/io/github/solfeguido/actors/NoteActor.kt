@@ -1,6 +1,7 @@
 package io.github.solfeguido.actors
 
 import com.badlogic.gdx.Gdx
+import com.badlogic.gdx.graphics.Color
 import com.badlogic.gdx.graphics.g2d.Batch
 import com.badlogic.gdx.math.Interpolation
 import com.badlogic.gdx.scenes.scene2d.actions.Actions
@@ -137,7 +138,6 @@ class NoteActor : WidgetGroup(), Pool.Poolable {
 
     fun consume(correct: Boolean) {
         val color = if (correct) gCol("correct") else gCol("error")
-        val transparent = color.copy(alpha = 0f)
         consumed = true
         if (correct) {
             noteEffect.color = color
@@ -160,9 +160,19 @@ class NoteActor : WidgetGroup(), Pool.Poolable {
             noteName.isVisible = true
         }
 
+        fadeOutTo(color)
+    }
+
+    private fun fadeOutTo(color: Color) {
         noteIcon += Actions.color(color, 0.1f, Interpolation.exp10Out)
         accidentalIcon += Actions.color(color, 0.1f, Interpolation.exp10Out)
-        this += Actions.color(transparent, 1f, Interpolation.linear)
+        this += Actions.color(this.color.copy(alpha = 0f), 1f, Interpolation.linear)
+    }
+
+    fun simpleFadeOut() {
+        noteIcon.actions.clear()
+        accidentalIcon.actions.clear()
+        fadeOutTo(this.color)
     }
 
     private fun drawLine(batch: Batch, y: Float) {

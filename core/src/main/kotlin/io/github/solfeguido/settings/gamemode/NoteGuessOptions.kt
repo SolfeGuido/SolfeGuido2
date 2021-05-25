@@ -43,6 +43,12 @@ class NoteGuessOptions(
         }.toGdxArray()
     }
 
+    override fun endGame() {
+        actors.forEach {
+            it.terminate()
+        }
+    }
+
     override fun validateNote(note: NoteOrderEnum) : Boolean {
         val measure = actors[currentMeasure]
         currentMeasure = (currentMeasure + 1) % actors.size

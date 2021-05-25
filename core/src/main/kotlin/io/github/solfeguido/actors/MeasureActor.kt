@@ -14,7 +14,6 @@ import io.github.solfeguido.enums.NoteOrderEnum
 import io.github.solfeguido.factories.*
 import io.github.solfeguido.ui.events.ResultEvent
 import ktx.collections.gdxArrayOf
-import kotlin.math.exp
 import kotlin.math.max
 import kotlin.random.Random
 
@@ -24,6 +23,7 @@ class MeasureActor(
 ) : WidgetGroup() {
 
     private val line: Drawable = colorDrawable(gCol("font"))
+    var terminated = false
     private var currentNoteIndex = 0
     var lineSpace = 0f
         private set
@@ -78,7 +78,7 @@ class MeasureActor(
             currentNoteIndex--
         }
 
-        if (maxLeft < (this.width - (current.width * 3))) {
+        if (!terminated && maxLeft < (this.width - (current.width * 3))) {
             generateNote()
         }
     }
@@ -93,6 +93,20 @@ class MeasureActor(
             addActor(it)
         } else this.notes[currentNoteIndex]
 
+    /**
+     * Whenever a new note is added to this group
+     * 'invalidateHierarchy' is called. This may
+     * invalidate the parent table element. When it does so,
+     * the table will try to reposition all of its child elements.
+     * And by doing so, it might reposition some elements that are
+     * currently transition to the left or the right of the screen
+     * This produces a weird flickering on the screen, and ultimately
+     * it will put back on the screen a menu that should be hidden
+     * In order to avoid the hierarchy invalidation to be called
+     * we just need to tell this function to do nothing. Because
+     * when adding a new note to the measure, the measure itself will
+     * not change its size, so no need to update any elements at all.
+     */
     override fun childrenChanged() {}
 
     private fun generateNote() =
@@ -144,5 +158,12 @@ class MeasureActor(
         if (isTransform) resetTransform(batch)
 
         super.draw(batch, parentAlpha)
+    }
+
+    fun terminate() {
+        terminated = true
+        notes.forEach {
+            it.simpleFadeOut()
+        }
     }
 }

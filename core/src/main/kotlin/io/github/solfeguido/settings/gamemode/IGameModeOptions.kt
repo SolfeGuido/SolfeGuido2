@@ -50,4 +50,6 @@ sealed interface IGameModeOptions : Json.Serializable {
     fun populateScene(parent: KStack, resultCallback: (ResultEvent) -> Unit)
 
     fun validateNote(note: NoteOrderEnum): Boolean
+
+    fun endGame() : Unit
 }

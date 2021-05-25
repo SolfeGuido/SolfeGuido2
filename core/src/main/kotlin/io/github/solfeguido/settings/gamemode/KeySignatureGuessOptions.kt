@@ -27,6 +27,10 @@ class KeySignatureGuessOptions : IGameModeOptions {
 
     }
 
+    override fun endGame() {
+        // TODO
+    }
+
     override fun validateNote(note: NoteOrderEnum) = false
 
 }

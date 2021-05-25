@@ -30,7 +30,11 @@ class EarTrainingOptions : IGameModeOptions {
     }
 
     override fun populateScene(parent: KStack, resultCallback: (ResultEvent) -> Unit) {
+    // TODO
+    }
 
+    override fun endGame() {
+        // TODO
     }
 
     override fun validateNote(note: NoteOrderEnum) = false
