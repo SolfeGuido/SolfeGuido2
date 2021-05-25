@@ -58,8 +58,11 @@ class PlayScreen(context: Context) : UIScreen(context) {
             row()
             stack {
                 game.populateScene(this) { result ->
+                    println()
                     if (!result.isCorrect) {
                         timer.wrong()
+                    } else {
+                        timer.correct()
                     }
                 }
                 it.grow()

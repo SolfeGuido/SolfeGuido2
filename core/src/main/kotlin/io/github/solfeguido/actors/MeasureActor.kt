@@ -45,13 +45,14 @@ class MeasureActor(
 
     private val signatureActor = KeySignatureActor(this).also { addActor(it) }
 
-    fun checkNote(note: NoteOrderEnum) {
-        val expected = currentNote().note?.noteOrder ?: return
+    fun checkNote(note: NoteOrderEnum) : Boolean {
+        val expected = currentNote().note?.noteOrder ?: return false
         val event = ResultEvent(expected, note)
         this.fire(event)
         currentNote().consume(event.isCorrect)
 
         currentNoteIndex++
+        return event.isCorrect
     }
 
     override fun act(delta: Float) {

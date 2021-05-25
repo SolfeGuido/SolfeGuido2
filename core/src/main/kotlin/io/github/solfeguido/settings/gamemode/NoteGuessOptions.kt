@@ -2,6 +2,7 @@ package io.github.solfeguido.settings.gamemode
 
 import com.badlogic.gdx.utils.Json
 import com.badlogic.gdx.utils.JsonValue
+import io.github.solfeguido.actors.MeasureActor
 import io.github.solfeguido.enums.NoteOrderEnum
 import io.github.solfeguido.factories.measure
 import io.github.solfeguido.factories.onResult
@@ -10,6 +11,7 @@ import io.github.solfeguido.settings.MeasureSettings
 import io.github.solfeguido.ui.events.ResultEvent
 import ktx.collections.GdxArray
 import ktx.collections.gdxArrayOf
+import ktx.collections.toGdxArray
 import ktx.json.readValue
 import ktx.scene2d.KStack
 
@@ -18,6 +20,8 @@ class NoteGuessOptions(
     var generator: GeneratorSettings = GeneratorSettings()
 ) : IGameModeOptions {
 
+    var currentMeasure = 0
+    var actors: GdxArray<MeasureActor> = gdxArrayOf()
 
     override fun read(json: Json, jsonData: JsonValue) {
         measures = json.readValue(jsonData, "measures")
@@ -31,12 +35,17 @@ class NoteGuessOptions(
     }
 
     override fun populateScene(parent: KStack, resultCallback: (ResultEvent) -> Unit) {
-        measures.forEach {
+        currentMeasure = 0
+        actors = measures.map {
             parent.measure {
                 onResult { resultCallback(it) }
             }
-        }
+        }.toGdxArray()
     }
 
-    override fun validateNote(note: NoteOrderEnum) = false
+    override fun validateNote(note: NoteOrderEnum) : Boolean {
+        val measure = actors[currentMeasure]
+        currentMeasure = (currentMeasure + 1) % actors.size
+        return measure.checkNote(note)
+    }
 }
