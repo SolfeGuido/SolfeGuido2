@@ -54,6 +54,7 @@ class ZoomDialog(style: String, skin: Skin) : Dialog("", skin, style) {
 
 
     override fun show(stage: Stage): Dialog {
+        color.a = 0f
         super.show(stage,
                  (Actions.alpha(0f) / Actions.scaleTo(0f, 0f)) +
                          Actions.scaleTo(1f, 1f, 0.4f, Interpolation.swingOut) /
