@@ -81,6 +81,7 @@ class MeasureActor(
         if (!terminated && maxLeft < (this.width - (current.width * 3))) {
             generateNote()
         }
+
     }
 
     private fun currentNote() =

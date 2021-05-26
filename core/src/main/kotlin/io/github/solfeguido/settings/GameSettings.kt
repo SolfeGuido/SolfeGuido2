@@ -3,10 +3,8 @@ package io.github.solfeguido.settings
 import com.badlogic.gdx.utils.Json
 import com.badlogic.gdx.utils.JsonValue
 import io.github.solfeguido.enums.ClefEnum
-import io.github.solfeguido.enums.KeySignatureEnum
 import io.github.solfeguido.settings.gamemode.IGameModeOptions
 import io.github.solfeguido.settings.gamemode.NoteGuessOptions
-import ktx.collections.gdxArrayOf
 import ktx.json.readValue
 
 class GameSettings(

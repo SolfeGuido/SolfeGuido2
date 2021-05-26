@@ -6,8 +6,9 @@ import io.github.solfeguido.actors.MeasureActor
 import io.github.solfeguido.enums.NoteOrderEnum
 import io.github.solfeguido.factories.measure
 import io.github.solfeguido.factories.onResult
-import io.github.solfeguido.settings.GeneratorSettings
 import io.github.solfeguido.settings.MeasureSettings
+import io.github.solfeguido.settings.generator.IGeneratorOptions
+import io.github.solfeguido.settings.generator.RandomGenerator
 import io.github.solfeguido.ui.events.ResultEvent
 import ktx.collections.GdxArray
 import ktx.collections.gdxArrayOf
@@ -17,7 +18,7 @@ import ktx.scene2d.KStack
 
 class NoteGuessOptions(
     var measures: GdxArray<MeasureSettings> = gdxArrayOf(),
-    var generator: GeneratorSettings = GeneratorSettings()
+    var generator: IGeneratorOptions = RandomGenerator()
 ) : IGameModeOptions {
 
     var currentMeasure = 0
@@ -25,7 +26,7 @@ class NoteGuessOptions(
 
     override fun read(json: Json, jsonData: JsonValue) {
         measures = json.readValue(jsonData, "measures")
-        generator = json.readValue(jsonData, "generator")
+        generator = IGeneratorOptions.toInstance(json, jsonData)
     }
 
     override fun write(json: Json) {
@@ -49,7 +50,7 @@ class NoteGuessOptions(
         }
     }
 
-    override fun validateNote(note: NoteOrderEnum) : Boolean {
+    override fun validateNote(note: NoteOrderEnum): Boolean {
         val measure = actors[currentMeasure]
         currentMeasure = (currentMeasure + 1) % actors.size
         return measure.checkNote(note)
