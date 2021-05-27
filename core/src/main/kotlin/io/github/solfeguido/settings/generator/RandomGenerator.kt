@@ -16,6 +16,7 @@ class RandomGenerator(
     }
 
     override fun write(json: Json) {
+        super.write(json)
         json.writeValue("minNote", minNote)
         json.writeValue("maxNote", maxNote)
     }

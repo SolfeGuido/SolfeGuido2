@@ -19,7 +19,9 @@ interface IGeneratorOptions : Json.Serializable {
 
     override fun read(json: Json, jsonData: JsonValue) {}
 
-    override fun write(json: Json) {}
+    override fun write(json: Json) {
+        json.writeValue("className", this.javaClass.simpleName)
+    }
 
     fun next(): Int
 }

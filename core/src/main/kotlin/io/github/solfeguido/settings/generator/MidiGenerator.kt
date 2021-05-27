@@ -12,6 +12,7 @@ class MidiGenerator(var filename: String = "") : IGeneratorOptions {
     }
 
     override fun write(json: Json) {
+        super.write(json)
         json.writeValue("filename", filename)
     }
 
