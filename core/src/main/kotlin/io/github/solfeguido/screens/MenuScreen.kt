@@ -119,7 +119,6 @@ class MenuScreen(context: Context) : UIScreen(context) {
     override fun show() {
         super.show()
         lateinit var playMenu: Table
-        lateinit var classicOptions: Group
         lateinit var playOptions: ScrollPane
         lateinit var keyOptions: Actor
         stage += scene2d.table {
@@ -130,9 +129,6 @@ class MenuScreen(context: Context) : UIScreen(context) {
                 backButton = iconButton(IconName.ChevronLeft) {
                     onClick {
                         popActor()
-                        /*
-                        context.inject<AssetStorage>().get<Sound>(Constants.CLICK_SOUND).play()
-                        showCreditsDialog()*/
                     }
                     pad(5f)
                     it.expandX().top().left()
