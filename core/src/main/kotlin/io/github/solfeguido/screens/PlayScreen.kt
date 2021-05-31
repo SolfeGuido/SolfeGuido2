@@ -42,10 +42,8 @@ class PlayScreen(context: Context) : UIScreen(context) {
                 onTimerEnd {
                     game.endGame()
                     scene2d.zoomDialog {
-                        title("Test")
-                        line("You finished the game")
+                        title("Finished !")
                         line("your score is ...")
-                        line("Made in x seconds")
                         borderButton("Ok").actor.icon(IconName.Check, 0.5f)
                         setOrigin(Align.center)
 

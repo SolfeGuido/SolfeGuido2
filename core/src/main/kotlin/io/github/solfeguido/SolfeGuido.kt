@@ -40,6 +40,7 @@ class SolfeGuido : ApplicationListener {
                 .addScreen<LevelSelectionScreen>()
                 .addScreen<OptionScreen>()
                 .addScreen<PlayScreen>()
+                .addScreen<ClassicSelectionScreen>()
 
 
         context.register {

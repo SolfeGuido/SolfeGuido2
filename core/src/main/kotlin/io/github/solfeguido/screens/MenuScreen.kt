@@ -14,18 +14,13 @@ import com.badlogic.gdx.scenes.scene2d.ui.Table
 import com.badlogic.gdx.utils.Align
 import io.github.solfeguido.actors.MeasureActor
 import io.github.solfeguido.config.Constants
-import io.github.solfeguido.config.KeySignatureConfig
 import io.github.solfeguido.core.StateMachine
-import io.github.solfeguido.core.StateParameter
 import io.github.solfeguido.enums.ClefEnum
 import io.github.solfeguido.enums.IconName
-import io.github.solfeguido.enums.KeySignatureEnum
 import io.github.solfeguido.factories.borderButton
 import io.github.solfeguido.factories.iconButton
 import io.github.solfeguido.factories.measure
 import io.github.solfeguido.factories.zoomDialog
-import io.github.solfeguido.settings.GameSettings
-import io.github.solfeguido.settings.TimeSettings
 import ktx.actors.div
 import ktx.actors.onClick
 import ktx.actors.plus
@@ -70,15 +65,17 @@ class MenuScreen(context: Context) : UIScreen(context) {
         val top = widgetStack.last()
         top.clearActions()
         actor.clearActions()
-        top += Actions.moveTo(-stage.width, 0f, 0.4f, Interpolation.exp10Out) + Actions.visible(
-            false
+        val shift = if (widgetStack.size == 1) -stage.width else -(top.width / 4f)
+
+        top += Actions.moveBy(shift, 0f, 0.4f, Interpolation.exp10Out) + Actions.visible(
+            widgetStack.size != 1
         )
         actor += (Actions.moveTo(stage.width, 0f) / Actions.scaleTo(
-            0f,
+            0.5f,
             1f
         )) + Actions.visible(true) +
-                Actions.moveTo(0f, 0f, 0.4f, Interpolation.swingOut) /
-                Actions.scaleTo(1f, 1f, 0.4f, Interpolation.swingOut)
+                Actions.moveTo(0f, 0f, 0.4f, Interpolation.exp10Out) /
+                Actions.scaleTo(1f, 1f, 0.4f, Interpolation.exp10Out)
         if (widgetStack.size == 1) {
             backButton.clearActions()
             backButton += (Actions.moveTo(
@@ -104,8 +101,8 @@ class MenuScreen(context: Context) : UIScreen(context) {
         current += (Actions.moveTo(-stage.width, 0f) / Actions.scaleTo(0f, 1f)) + Actions.visible(
             true
         ) +
-                (Actions.scaleTo(1f, 1f, 0.4f, Interpolation.swingOut) /
-                        Actions.moveTo(0f, 0f, 0.4f, Interpolation.swingOut))
+                (Actions.scaleTo(1f, 1f, 0.4f, Interpolation.exp10Out) /
+                        Actions.moveTo(0f, 0f, 0.4f, Interpolation.exp10Out))
         if (widgetStack.size == 1) {
             backButton.clearActions()
             backButton += Actions.moveTo(
@@ -125,7 +122,6 @@ class MenuScreen(context: Context) : UIScreen(context) {
         lateinit var classicOptions: Group
         lateinit var playOptions: ScrollPane
         lateinit var keyOptions: Actor
-        var timerOptions = TimeSettings()
         stage += scene2d.table {
             setFillParent(true)
             setPosition(0f, 0f)
@@ -181,42 +177,6 @@ class MenuScreen(context: Context) : UIScreen(context) {
                     }
                 }
                 widgetStack.add(playMenu)
-                classicOptions = scrollPane {
-                    isVisible = false
-                    verticalGroup {
-                        setOrigin(Align.center)
-                        fill()
-                        center()
-                        this.space(10f)
-                        ClefEnum.values().forEach { clef ->
-                            borderButton(clef.name) {
-                                icon(clef.icon, 0.9f).pad(5f)
-                                pad(5f)
-
-                                onClick {
-                                    context.inject<StateMachine>().switch<PlayScreen>(
-                                        StateParameter.witType(
-                                            GameSettings.classicWithTimer(clef, timerOptions)
-                                        )
-                                    )
-                                }
-                            }
-                        }
-                    }
-                }
-                keyOptions = scrollPane {
-                    isVisible = false
-                    verticalGroup {
-                        setOrigin(Align.center)
-                        fill().center().space(10f).padBottom(10f).padTop(10f)
-                        KeySignatureEnum.values().forEach { ks ->
-                            borderButton(ks.name) {
-                                icon(KeySignatureConfig.getIcon(ks.symbol))
-                                pad(5f)
-                            }
-                        }
-                    }
-                }
                 playOptions = scrollPane {
                     this.setScrollbarsVisible(false)
                     fadeScrollBars = false
@@ -229,8 +189,7 @@ class MenuScreen(context: Context) : UIScreen(context) {
                             left()
                             pad(10f)
                             onClick {
-                                timerOptions = TimeSettings.ClassicCountdownMode
-                                pushActor(classicOptions)
+                                context.inject<StateMachine>().switch<ClassicSelectionScreen>()
                             }
                         }
                         borderButton("Levels") {
@@ -242,15 +201,6 @@ class MenuScreen(context: Context) : UIScreen(context) {
                                 context.inject<StateMachine>().switch<LevelSelectionScreen>()
                             }
                         }
-                        borderButton("FreePlay") {
-                            icon(IconName.Infinity, 0.9f).left()
-                            label.setAlignment(Align.right)
-                            pad(10f)
-                            onClick {
-                                timerOptions = TimeSettings.InfiniteMode
-                                pushActor(classicOptions)
-                            }
-                        }
                         // Later
                         // borderButton("Competitive") {
                         //     icon(IconName.Speedometer, 0.9f).left()
@@ -258,15 +208,15 @@ class MenuScreen(context: Context) : UIScreen(context) {
                         //     pad(10f)
                         //     onClick { pushActor(classicOptions)  }
                         // }
-                        // borderButton("Ear training") {
-                        //     icon(IconName.Eacute, 0.9f).left()
-                        //     label.setAlignment(Align.right)
-                        //     pad(10f)
-                        //     onClick {
-                        //         //TODO go to play scene
-                        //         info { "Doing ear training" }
-                        //     }
-                        // }
+                        borderButton("Ear training") {
+                            icon(IconName.Eacute, 0.9f).left()
+                            label.setAlignment(Align.right)
+                            pad(10f)
+                            onClick {
+                                //TODO go to play scene
+                                info { "Doing ear training" }
+                            }
+                        }
                         // borderButton("Custom") {
                         //     icon(IconName.Road, 0.9f).left()
                         //     label.setAlignment(Align.right)
@@ -285,12 +235,12 @@ class MenuScreen(context: Context) : UIScreen(context) {
                         //         context.inject<StateMachine>().switch<GameCreationScreen>()
                         //     }
                         // }
-                        // borderButton("Key Signature") {
-                        //     icon(IconName.SharpAccidental, 0.9f).left()
-                        //     label.setAlignment(Align.right)
-                        //     pad(10f)
-                        //     onClick { pushActor(keyOptions) }
-                        // }
+                        borderButton("Key Signature") {
+                            icon(IconName.SharpAccidental, 0.9f).left()
+                            label.setAlignment(Align.right)
+                            pad(10f)
+                            onClick { pushActor(keyOptions) }
+                        }
                         fill()
                         center()
                         padTop(10f)
