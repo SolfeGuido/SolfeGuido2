@@ -5,6 +5,7 @@ import com.badlogic.gdx.graphics.g2d.Batch
 import com.badlogic.gdx.math.Interpolation
 import com.badlogic.gdx.scenes.scene2d.ui.WidgetGroup
 import com.badlogic.gdx.scenes.scene2d.utils.Drawable
+import com.badlogic.gdx.utils.Pools
 import io.github.solfeguido.config.ClefConfig
 import io.github.solfeguido.config.Constants
 import io.github.solfeguido.config.KeySignatureConfig
@@ -47,7 +48,10 @@ class MeasureActor(
 
     fun checkNote(note: NoteOrderEnum) : Boolean {
         val expected = currentNote().note?.noteOrder ?: return false
-        val event = ResultEvent(expected, note)
+        val event = Pools.obtain(ResultEvent::class.java).apply {
+            this.expected = expected
+            this.actual = note
+        }
         this.fire(event)
         currentNote().consume(event.isCorrect)
 

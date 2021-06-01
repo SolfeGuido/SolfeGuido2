@@ -4,7 +4,11 @@ import com.badlogic.gdx.scenes.scene2d.Event
 import com.badlogic.gdx.scenes.scene2d.EventListener
 import io.github.solfeguido.enums.NoteOrderEnum
 
-class ResultEvent(val expected: NoteOrderEnum, val actual: NoteOrderEnum) : Event() {
+class ResultEvent : Event() {
+
+    var expected = NoteOrderEnum.C
+    var actual = NoteOrderEnum.C
+
     val isCorrect get() = expected == actual
 }
 
