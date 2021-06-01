@@ -21,7 +21,7 @@ class PlayScreen(context: Context) : UIScreen(context) {
 
 
     override fun create(settings: StateParameter) {
-        val options: GameSettings = settings.getValue()
+        val options: GameSettings = settings.get()
         game = options.options
         timer = options.time
         super.create(settings)

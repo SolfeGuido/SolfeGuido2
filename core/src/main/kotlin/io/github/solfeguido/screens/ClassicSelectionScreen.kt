@@ -2,6 +2,7 @@ package io.github.solfeguido.screens
 
 import com.badlogic.gdx.utils.Align
 import io.github.solfeguido.core.StateMachine
+import io.github.solfeguido.core.StateParameter
 import io.github.solfeguido.enums.ClefEnum
 import io.github.solfeguido.enums.IconName
 import io.github.solfeguido.factories.iconButton
@@ -28,7 +29,7 @@ class ClassicSelectionScreen(context: Context) : UIScreen(context) {
             slidingTable(Align.top) {
                 iconButton(IconName.ChevronLeft) {
                     onClick {
-                        context.inject<StateMachine>().switch<MenuScreen>()
+                        context.inject<StateMachine>().switch<MenuScreen>(StateParameter.witType(MenuScreen.VisibleMenu.Play))
                     }
                     pad(5f)
                     it.top().left()

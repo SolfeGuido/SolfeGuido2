@@ -5,7 +5,6 @@ import com.badlogic.gdx.Input
 import com.badlogic.gdx.audio.Sound
 import com.badlogic.gdx.math.Interpolation
 import com.badlogic.gdx.scenes.scene2d.Actor
-import com.badlogic.gdx.scenes.scene2d.Group
 import com.badlogic.gdx.scenes.scene2d.InputEvent
 import com.badlogic.gdx.scenes.scene2d.InputListener
 import com.badlogic.gdx.scenes.scene2d.actions.Actions
@@ -15,6 +14,7 @@ import com.badlogic.gdx.utils.Align
 import io.github.solfeguido.actors.MeasureActor
 import io.github.solfeguido.config.Constants
 import io.github.solfeguido.core.StateMachine
+import io.github.solfeguido.core.StateParameter
 import io.github.solfeguido.enums.ClefEnum
 import io.github.solfeguido.enums.IconName
 import io.github.solfeguido.factories.borderButton
@@ -33,8 +33,14 @@ import ktx.scene2d.*
 
 class MenuScreen(context: Context) : UIScreen(context) {
 
+    enum class VisibleMenu {
+        Root,
+        Play
+    }
+
     private lateinit var measure: MeasureActor
     private lateinit var backButton: Actor
+    private lateinit var shownMenu: VisibleMenu
 
     private val widgetStack = gdxArrayOf<Actor>()
 
@@ -61,6 +67,24 @@ class MenuScreen(context: Context) : UIScreen(context) {
         }.show(this@MenuScreen.stage)
     }
 
+    private fun updateBackButton() {
+        if (widgetStack.size > 1) {
+            backButton.clearActions()
+            backButton += (Actions.moveTo(
+                -backButton.width,
+                backButton.y
+            ) + Actions.visible(true)) + Actions.moveTo(5f, backButton.y, 0.4f, Interpolation.fade)
+        } else {
+            backButton.clearActions()
+            backButton += Actions.moveTo(
+                -backButton.width,
+                backButton.y,
+                0.4f,
+                Interpolation.fade
+            ) + Actions.visible(false)
+        }
+    }
+
     private fun pushActor(actor: Actor) {
         val top = widgetStack.last()
         top.clearActions()
@@ -76,14 +100,8 @@ class MenuScreen(context: Context) : UIScreen(context) {
         )) + Actions.visible(true) +
                 Actions.moveTo(0f, 0f, 0.4f, Interpolation.exp10Out) /
                 Actions.scaleTo(1f, 1f, 0.4f, Interpolation.exp10Out)
-        if (widgetStack.size == 1) {
-            backButton.clearActions()
-            backButton += (Actions.moveTo(
-                -backButton.width,
-                backButton.y
-            ) + Actions.visible(true)) + Actions.moveTo(5f, backButton.y, 0.4f, Interpolation.fade)
-        }
         widgetStack.add(actor)
+        updateBackButton()
     }
 
     private fun popActor(): Boolean {
@@ -103,18 +121,15 @@ class MenuScreen(context: Context) : UIScreen(context) {
         ) +
                 (Actions.scaleTo(1f, 1f, 0.4f, Interpolation.exp10Out) /
                         Actions.moveTo(0f, 0f, 0.4f, Interpolation.exp10Out))
-        if (widgetStack.size == 1) {
-            backButton.clearActions()
-            backButton += Actions.moveTo(
-                -backButton.width,
-                backButton.y,
-                0.4f,
-                Interpolation.fade
-            ) + Actions.visible(false)
-        }
+        updateBackButton()
         return true
     }
 
+    override fun create(settings: StateParameter) {
+        println(settings)
+        shownMenu = settings.getOrDefault(VisibleMenu.Root)
+        super.create(settings)
+    }
 
     override fun show() {
         super.show()
@@ -171,13 +186,14 @@ class MenuScreen(context: Context) : UIScreen(context) {
                         pad(5f)
                         it.pad(10f)
                     }
+                    isVisible = shownMenu == VisibleMenu.Root
                 }
                 widgetStack.add(playMenu)
                 playOptions = scrollPane {
                     this.setScrollbarsVisible(false)
                     fadeScrollBars = false
                     setOrigin(Align.center)
-                    isVisible = false
+                    isVisible = shownMenu == VisibleMenu.Play
                     verticalGroup {
                         borderButton("Classic") {
                             icon(IconName.Music, 0.9f).left()
@@ -243,6 +259,10 @@ class MenuScreen(context: Context) : UIScreen(context) {
                         padBottom(10f)
                         this.space(10f)
                     }
+                }
+                if(shownMenu == VisibleMenu.Play) {
+                    widgetStack.add(playOptions)
+                    updateBackButton()
                 }
                 it.grow()
             }
