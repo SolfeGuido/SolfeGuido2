@@ -4,6 +4,7 @@ import com.badlogic.gdx.Gdx
 import com.badlogic.gdx.graphics.g2d.Batch
 import com.badlogic.gdx.graphics.g2d.ParticleEffect
 import com.badlogic.gdx.scenes.scene2d.ui.WidgetGroup
+import com.badlogic.gdx.utils.Pools
 import io.github.solfeguido.factories.ParticlePool
 import io.github.solfeguido.factories.colorDrawable
 import io.github.solfeguido.factories.gCol
@@ -79,7 +80,7 @@ class TimerActor(context: Context, settings: TimeSettings) : WidgetGroup() {
 
         current += delta * direction
         if (current !in 0f..max) {
-            fire(TimerEvent())
+            fire(Pools.obtain(TimerEvent::class.java))
             running = false
         }
     }

@@ -4,7 +4,13 @@ import com.badlogic.gdx.scenes.scene2d.Event
 import com.badlogic.gdx.scenes.scene2d.EventListener
 import io.github.solfeguido.enums.NoteOrderEnum
 
-class AnswerGivenEvent(val note: NoteOrderEnum) : Event()
+class AnswerGivenEvent(var note: NoteOrderEnum = NoteOrderEnum.C) : Event() {
+
+    override fun reset() {
+        super.reset()
+        note = NoteOrderEnum.C
+    }
+}
 
 class AnswerListener(private val handler: (event: AnswerGivenEvent) -> Boolean) : EventListener {
 

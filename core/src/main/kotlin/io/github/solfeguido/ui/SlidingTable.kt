@@ -8,6 +8,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.Cell
 import com.badlogic.gdx.scenes.scene2d.ui.Skin
 import com.badlogic.gdx.scenes.scene2d.ui.Table
 import com.badlogic.gdx.utils.Align
+import com.badlogic.gdx.utils.Pools
 import io.github.solfeguido.ui.events.LayoutEvent
 import io.github.solfeguido.ui.events.LayoutListener
 import ktx.actors.*
@@ -56,7 +57,7 @@ class SlidingTable(private val al: Int, skin: Skin) : Table(skin), KTable {
         if(!transitionDone) {
             transitionDone = true
             children!!.forEach {
-                it.fire(LayoutEvent())
+                it.fire(Pools.obtain(LayoutEvent::class.java))
             }
         }
     }

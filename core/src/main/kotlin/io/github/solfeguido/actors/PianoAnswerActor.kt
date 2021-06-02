@@ -4,6 +4,7 @@ import com.badlogic.gdx.Gdx
 import com.badlogic.gdx.scenes.scene2d.ui.Stack
 import com.badlogic.gdx.scenes.scene2d.ui.Table
 import com.badlogic.gdx.utils.Align
+import com.badlogic.gdx.utils.Pools
 import io.github.solfeguido.enums.NoteOrderEnum
 import io.github.solfeguido.enums.PianoKeyTypeEnum
 import io.github.solfeguido.factories.onAnswer
@@ -28,7 +29,7 @@ class PianoAnswerActor : Stack() {
         val createWhiteKey = { note: NoteOrderEnum ->
             val key = PianoKey(type = PianoKeyTypeEnum.White)
             key.onClick {
-                this@PianoAnswerActor.fire(AnswerGivenEvent(note))
+                this@PianoAnswerActor.fire(Pools.obtain(AnswerGivenEvent::class.java).apply { this.note = note })
             }
             whiteKeys.add(key).grow()
         }
@@ -36,7 +37,7 @@ class PianoAnswerActor : Stack() {
         val createBlackKey = { note: NoteOrderEnum, leftPad: Float, rightPad: Float ->
             val key = PianoKey(type = PianoKeyTypeEnum.Black)
             key.onClick {
-                this@PianoAnswerActor.fire(AnswerGivenEvent(note))
+                this@PianoAnswerActor.fire(Pools.obtain(AnswerGivenEvent::class.java).apply { this.note = note })
             }
             blackKeys.add(key).grow()
                 .pad(0f, leftPad, 0f, rightPad)
