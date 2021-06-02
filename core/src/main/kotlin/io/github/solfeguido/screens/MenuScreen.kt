@@ -126,7 +126,6 @@ class MenuScreen(context: Context) : UIScreen(context) {
     }
 
     override fun create(settings: StateParameter) {
-        println(settings)
         shownMenu = settings.getOrDefault(VisibleMenu.Root)
         super.create(settings)
     }
@@ -213,22 +212,15 @@ class MenuScreen(context: Context) : UIScreen(context) {
                                 context.inject<StateMachine>().switch<LevelSelectionScreen>()
                             }
                         }
-                        // Later
-                        // borderButton("Competitive") {
-                        //     icon(IconName.Speedometer, 0.9f).left()
-                        //     label.setAlignment(Align.right)
-                        //     pad(10f)
-                        //     onClick { pushActor(classicOptions)  }
-                        // }
-                        borderButton("Ear training") {
-                            icon(IconName.Eacute, 0.9f).left()
-                            label.setAlignment(Align.right)
-                            pad(10f)
-                            onClick {
-                                //TODO go to play scene
-                                info { "Doing ear training" }
-                            }
-                        }
+//                        borderButton("Ear training") {
+//                            icon(IconName.Eacute, 0.9f).left()
+//                            label.setAlignment(Align.right)
+//                            pad(10f)
+//                            onClick {
+//                                //TODO go to play scene
+//                                info { "Doing ear training" }
+//                            }
+//                        }
                         // borderButton("Custom") {
                         //     icon(IconName.Road, 0.9f).left()
                         //     label.setAlignment(Align.right)
@@ -247,12 +239,19 @@ class MenuScreen(context: Context) : UIScreen(context) {
                         //         context.inject<StateMachine>().switch<GameCreationScreen>()
                         //     }
                         // }
-                        borderButton("Key Signature") {
-                            icon(IconName.SharpAccidental, 0.9f).left()
-                            label.setAlignment(Align.right)
-                            pad(10f)
-                            onClick { pushActor(keyOptions) }
-                        }
+//                        borderButton("Key Signature") {
+//                            icon(IconName.SharpAccidental, 0.9f).left()
+//                            label.setAlignment(Align.right)
+//                            pad(10f)
+//                            onClick { pushActor(keyOptions) }
+//                        }
+                        // Later
+                        // borderButton("Competitive") {
+                        //     icon(IconName.Speedometer, 0.9f).left()
+                        //     label.setAlignment(Align.right)
+                        //     pad(10f)
+                        //     onClick { pushActor(classicOptions)  }
+                        // }
                         fill()
                         center()
                         padTop(10f)
@@ -260,7 +259,7 @@ class MenuScreen(context: Context) : UIScreen(context) {
                         this.space(10f)
                     }
                 }
-                if(shownMenu == VisibleMenu.Play) {
+                if (shownMenu == VisibleMenu.Play) {
                     widgetStack.add(playOptions)
                     updateBackButton()
                 }
