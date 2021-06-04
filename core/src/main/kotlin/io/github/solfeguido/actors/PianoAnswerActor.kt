@@ -29,7 +29,9 @@ class PianoAnswerActor : Stack() {
         val createWhiteKey = { note: NoteOrderEnum ->
             val key = PianoKey(type = PianoKeyTypeEnum.White)
             key.onClick {
-                this@PianoAnswerActor.fire(Pools.obtain(AnswerGivenEvent::class.java).apply { this.note = note })
+                val event = Pools.obtain(AnswerGivenEvent::class.java).apply { this.note = note }
+                this@PianoAnswerActor.fire(event)
+                Pools.free(event)
             }
             whiteKeys.add(key).grow()
         }
@@ -37,7 +39,9 @@ class PianoAnswerActor : Stack() {
         val createBlackKey = { note: NoteOrderEnum, leftPad: Float, rightPad: Float ->
             val key = PianoKey(type = PianoKeyTypeEnum.Black)
             key.onClick {
-                this@PianoAnswerActor.fire(Pools.obtain(AnswerGivenEvent::class.java).apply { this.note = note })
+                val event = Pools.obtain(AnswerGivenEvent::class.java).apply { this.note = note }
+                this@PianoAnswerActor.fire(event)
+                Pools.free(event)
             }
             blackKeys.add(key).grow()
                 .pad(0f, leftPad, 0f, rightPad)
