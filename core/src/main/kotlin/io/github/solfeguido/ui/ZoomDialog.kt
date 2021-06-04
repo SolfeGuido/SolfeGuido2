@@ -67,7 +67,9 @@ class ZoomDialog(style: String, skin: Skin) : Dialog("", skin, style) {
     }
 
     override fun hide() {
-        fire(Pools.obtain(DialogHideEvent::class.java))
+        val event = Pools.obtain(DialogHideEvent::class.java)
+        fire(event)
+        Pools.free(event)
         super.hide(
                 Actions.fadeOut(0.4f, Interpolation.fade) /
                         Actions.scaleTo(0f, 0f, 0.4f, Interpolation.exp10Out)
