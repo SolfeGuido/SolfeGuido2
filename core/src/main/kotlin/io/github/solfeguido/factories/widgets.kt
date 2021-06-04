@@ -1,25 +1,17 @@
 package io.github.solfeguido.factories
 
 import com.badlogic.gdx.scenes.scene2d.Actor
-import com.badlogic.gdx.scenes.scene2d.Group
 import com.badlogic.gdx.scenes.scene2d.ui.Label
 import com.badlogic.gdx.scenes.scene2d.ui.Skin
-import com.badlogic.gdx.utils.IntIntMap
-import io.github.solfeguido.actors.ButtonAnswerActor
-import io.github.solfeguido.actors.MeasureActor
-import io.github.solfeguido.actors.PianoAnswerActor
-import io.github.solfeguido.actors.TimerActor
+import io.github.solfeguido.actors.*
 import io.github.solfeguido.enums.ClefEnum
 import io.github.solfeguido.enums.IconName
 import io.github.solfeguido.enums.KeySignatureEnum
 import io.github.solfeguido.settings.TimeSettings
 import io.github.solfeguido.ui.*
-import ktx.collections.defaultLoadFactor
-import ktx.collections.defaultMapSize
-import ktx.collections.set
+import ktx.collections.GdxArray
 import ktx.inject.Context
 import ktx.scene2d.*
-import kotlin.contracts.ExperimentalContracts
 import kotlin.contracts.InvocationKind
 import kotlin.contracts.contract
 
@@ -99,4 +91,12 @@ inline fun RootWidget.zoomDialog(
 ): ZoomDialog {
     contract { callsInPlace(init, InvocationKind.EXACTLY_ONCE) }
     return storeActor(ZoomDialog(style, skin)).apply(init)
+}
+
+inline fun <S, T> KWidget<S>.iconCheckBox(
+        icon: IconName,
+        data: T,
+        init: IconCheckBox<T>.(S) -> Unit = {}) : IconCheckBox<T> {
+ contract { callsInPlace(init, InvocationKind.EXACTLY_ONCE) }
+ return actor(IconCheckBox(icon, data), init)
 }

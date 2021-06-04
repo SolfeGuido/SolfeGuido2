@@ -6,14 +6,13 @@ import io.github.solfeguido.core.StateParameter
 import io.github.solfeguido.enums.ClefEnum
 import io.github.solfeguido.enums.IconName
 import io.github.solfeguido.factories.iconButton
+import io.github.solfeguido.factories.iconCheckBox
 import io.github.solfeguido.factories.measure
+import ktx.actors.onChange
 import ktx.actors.onClick
 import ktx.actors.plusAssign
 import ktx.inject.Context
-import ktx.scene2d.label
-import ktx.scene2d.scene2d
-import ktx.scene2d.stack
-import ktx.scene2d.table
+import ktx.scene2d.*
 
 class ClassicSelectionScreen(context: Context) : UIScreen(context) {
 
@@ -44,6 +43,21 @@ class ClassicSelectionScreen(context: Context) : UIScreen(context) {
             row()
             stack {
                 measure(ClefEnum.GClef)
+
+                buttonGroup(1, 1) {
+
+                    iconCheckBox(IconName.GClef, ClefEnum.GClef) {
+
+                    }
+
+                    checkBox("")
+                    checkBox("")
+
+                    onChange {
+                        //println(this.buttonGroup.checked)
+                    }
+                }
+
                 it.grow()
             }
 

@@ -116,5 +116,18 @@ fun getDefaultSkin(assetManager: AssetStorage): Skin{
             vScrollKnob =  colorDrawable(TRANSPARENT)// colorDrawable(self.getColor("font"),10)
         }
 
+        checkBox {
+            font = primaryFont
+            fontColor = gCol("font")
+            checkboxOff = borderColorDrawable(100, 100, 10, gCol("font"), Color.WHITE)
+            checkboxOn = borderColorDrawable(100, 100, 1, gCol("font"), gCol("font"))
+            this.checkedFontColor = Color.BLUE
+        }
+
+        checkBox("icon") {
+            font = iconFont
+            fontColor = gCol("font")
+        }
+
     }
 }
