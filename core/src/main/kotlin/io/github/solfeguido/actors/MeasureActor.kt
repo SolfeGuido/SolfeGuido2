@@ -52,11 +52,13 @@ class MeasureActor(
             this.expected = expected
             this.actual = note
         }
+        val isCorrect = event.isCorrect
         this.fire(event)
-        currentNote().consume(event.isCorrect)
+        Pools.free(event)
+        currentNote().consume(isCorrect)
 
         currentNoteIndex++
-        return event.isCorrect
+        return isCorrect
     }
 
     override fun act(delta: Float) {

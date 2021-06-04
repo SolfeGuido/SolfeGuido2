@@ -57,7 +57,9 @@ class SlidingTable(private val al: Int, skin: Skin) : Table(skin), KTable {
         if(!transitionDone) {
             transitionDone = true
             children!!.forEach {
-                it.fire(Pools.obtain(LayoutEvent::class.java))
+                val event = Pools.obtain(LayoutEvent::class.java)
+                it.fire(event)
+                Pools.free(event)
             }
         }
     }
