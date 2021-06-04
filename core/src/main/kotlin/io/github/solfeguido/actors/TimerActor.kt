@@ -80,7 +80,9 @@ class TimerActor(context: Context, settings: TimeSettings) : WidgetGroup() {
 
         current += delta * direction
         if (current !in 0f..max) {
-            fire(Pools.obtain(TimerEvent::class.java))
+            val event = Pools.obtain(TimerEvent::class.java)
+            fire(event)
+            Pools.free(event)
             running = false
         }
     }
