@@ -32,13 +32,13 @@ class STextButton(text: String, buttonStyle: STextButtonStyle) : Button(buttonSt
     private val mBorderDrawable: Drawable
     private val mBackgroundDrawable: Drawable
 
-    constructor(text: String, style: String, skin: Skin): this(text, skin.get<STextButtonStyle>(style))
+    constructor(text: String, style: String, skin: Skin) : this(text, skin.get<STextButtonStyle>(style))
 
     fun setBackgroundColor(color: Color) {
         this += Actions.color(color, 0.5f, Interpolation.exp10Out)
     }
 
-    fun icon(icon: IconName, scale: Float = 1f) : Cell<Group>{
+    fun icon(icon: IconName, scale: Float = 1f): Cell<Group> {
         this.clearChildren()
         val grp = Group()
         val lbl = label(icon.value, "iconStyle") {
@@ -75,9 +75,9 @@ class STextButton(text: String, buttonStyle: STextButtonStyle) : Button(buttonSt
 
     override fun draw(batch: Batch, parentAlpha: Float) {
         applyTransform(batch, computeTransform())
-        val c= color
+        val c = color
         batch.setColor(c.r, c.g, c.b, c.a * parentAlpha)
-        if(style.borderThickness > 0f) {
+        if (style.borderThickness > 0f) {
             mBorderDrawable.draw(batch, -style.borderThickness, -style.borderThickness, width + (style.borderThickness * 2), height + (style.borderThickness * 2))
         }
 
@@ -89,12 +89,12 @@ class STextButton(text: String, buttonStyle: STextButtonStyle) : Button(buttonSt
         super.draw(batch, parentAlpha)
     }
 
-    private fun initialize(){
+    private fun initialize() {
         val self = this
-        addListener(object: ClickListener() {
+        addListener(object : ClickListener() {
             override fun enter(event: InputEvent?, x: Float, y: Float, pointer: Int, fromActor: Actor?) {
                 super.enter(event, x, y, pointer, fromActor)
-                if(self.isDisabled) return
+                if (self.isDisabled) return
                 self.label.addAction(Actions.color(gCol("fontHover"), 0.2f))
             }
 
@@ -111,14 +111,14 @@ class STextButton(text: String, buttonStyle: STextButtonStyle) : Button(buttonSt
 
             override fun touchDown(event: InputEvent?, x: Float, y: Float, pointer: Int, button: Int): Boolean {
                 val res = super.touchDown(event, x, y, pointer, button)
-                if(self.isDisabled) return res
+                if (self.isDisabled) return res
                 self.addAction(Actions.scaleTo(Constants.PRESSED_SCALING, Constants.PRESSED_SCALING, .2f, Interpolation.exp10Out))
                 return res
             }
 
             override fun touchUp(event: InputEvent?, x: Float, y: Float, pointer: Int, button: Int) {
                 super.touchUp(event, x, y, pointer, button)
-                if(isDisabled) return
+                if (isDisabled) return
                 self.addAction(Actions.scaleTo(1f, 1f, .2f, Interpolation.exp10Out))
             }
         })
@@ -128,7 +128,7 @@ class STextButton(text: String, buttonStyle: STextButtonStyle) : Button(buttonSt
     class STextButtonStyle : ButtonStyle() {
 
         var fontColor: Color = gCol("font")
-        var labelStyle : String = defaultStyle
+        var labelStyle: String = defaultStyle
         var borderColor: Color? = null
         var backgroundColor: Color? = null
         var borderThickness = 1f

@@ -44,17 +44,37 @@ class ClassicSelectionScreen(context: Context) : UIScreen(context) {
             stack {
                 measure(ClefEnum.GClef)
 
-                buttonGroup(1, 1) {
+                table {
+                    buttonGroup(1, 1) {
 
-                    iconCheckBox(IconName.GClef, ClefEnum.GClef) {
+                        iconCheckBox(IconName.GClef, ClefEnum.GClef) {
 
+                        }
+                        iconCheckBox(IconName.FClef, ClefEnum.FClef) {
+
+                        }
+
+                        iconCheckBox(IconName.CClef3, ClefEnum.CClef3) {
+
+                        }
+
+                        iconCheckBox(IconName.CClef4, ClefEnum.CClef4) {
+
+                        }
+                        onChange {
+                            //println(this.buttonGroup.checked)
+                        }
                     }
 
-                    checkBox("")
-                    checkBox("")
+                    row()
+                    buttonGroup(1, 1) {
+                        iconCheckBox(IconName.Infinity, 0) {
 
-                    onChange {
-                        //println(this.buttonGroup.checked)
+                        }
+
+                        iconCheckBox(IconName.Speedometer, 2) {
+
+                        }
                     }
                 }
 
