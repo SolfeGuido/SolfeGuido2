@@ -9,8 +9,6 @@ import io.github.solfeguido.config.Constants
 import io.github.solfeguido.core.Jingles
 import io.github.solfeguido.core.SoundHelper
 import io.github.solfeguido.core.StateMachine
-import io.github.solfeguido.core.StateParameter
-import io.github.solfeguido.enums.ClefEnum
 import io.github.solfeguido.factories.ParticlePool
 import io.github.solfeguido.factories.gCol
 import io.github.solfeguido.screens.*
@@ -28,19 +26,20 @@ class SolfeGuido : ApplicationListener {
     private lateinit var stateMachine: StateMachine
     private val bgColor: Color by lazy { gCol("background") }
 
-    override fun create() { 
+    override fun create() {
         KtxAsync.initiate()
         context = Context()
         Scene2DSkin.defaultSkin = getPreloadSkin()
 
         stateMachine = StateMachine(context)
-                .addCurrentScreen<SplashScreen>()
-                .addScreen<MenuScreen>()
-                .addScreen<GameCreationScreen>()
-                .addScreen<LevelSelectionScreen>()
-                .addScreen<OptionScreen>()
-                .addScreen<PlayScreen>()
-                .addScreen<ClassicSelectionScreen>()
+            .addCurrentScreen<SplashScreen>()
+            .addScreen<TransitionScreen>()
+            .addScreen<MenuScreen>()
+            .addScreen<GameCreationScreen>()
+            .addScreen<LevelSelectionScreen>()
+            .addScreen<OptionScreen>()
+            .addScreen<PlayScreen>()
+            .addScreen<ClassicSelectionScreen>()
 
 
         context.register {

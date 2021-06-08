@@ -8,6 +8,7 @@ import com.badlogic.gdx.scenes.scene2d.Actor
 import com.badlogic.gdx.scenes.scene2d.InputEvent
 import com.badlogic.gdx.scenes.scene2d.InputListener
 import com.badlogic.gdx.scenes.scene2d.actions.Actions
+import com.badlogic.gdx.scenes.scene2d.ui.Label
 import com.badlogic.gdx.scenes.scene2d.ui.ScrollPane
 import com.badlogic.gdx.scenes.scene2d.ui.Table
 import com.badlogic.gdx.utils.Align
@@ -17,10 +18,7 @@ import io.github.solfeguido.core.StateMachine
 import io.github.solfeguido.core.StateParameter
 import io.github.solfeguido.enums.ClefEnum
 import io.github.solfeguido.enums.IconName
-import io.github.solfeguido.factories.borderButton
-import io.github.solfeguido.factories.iconButton
-import io.github.solfeguido.factories.measure
-import io.github.solfeguido.factories.zoomDialog
+import io.github.solfeguido.factories.*
 import ktx.actors.div
 import ktx.actors.onClick
 import ktx.actors.plus
@@ -200,7 +198,8 @@ class MenuScreen(context: Context) : UIScreen(context) {
                             left()
                             pad(10f)
                             onClick {
-                                context.inject<StateMachine>().switch<ClassicSelectionScreen>()
+                                val label = Label("Loading", Scene2DSkin.defaultSkin, "contentLabelStyle")
+                                context.inject<StateMachine>().switch<ClassicSelectionScreen>(actor = label)
                             }
                         }
                         borderButton("Levels") {

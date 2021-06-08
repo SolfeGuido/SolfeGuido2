@@ -7,6 +7,10 @@ fun gdxIntArrayOf(vararg element: Int) = GdxIntArray().also {
     it.addAll(*element)
 }
 
+fun gdxFloatArrayOf(vararg elements: Float) = GdxFloatArray().also {
+    it.addAll(*elements)
+}
+
 fun gdxIntArrayOf(range: IntRange) = GdxIntArray().also {
     it.addAll(*range.toList().toIntArray())
 }
