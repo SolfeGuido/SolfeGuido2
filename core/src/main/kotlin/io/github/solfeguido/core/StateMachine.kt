@@ -62,7 +62,11 @@ class StateMachine(val context: Context) : Screen {
         return this
     }
 
-    internal inline fun <reified Type : UIScreen> switch(param: StateParameter = StateParameter.empty(), actor: Actor? = null): StateMachine {
+    internal inline fun <reified Type : UIScreen> switch(
+        param: StateParameter = StateParameter.empty(),
+        align: Int = Align.left,
+        actor: Actor? = null
+    ): StateMachine {
         val typeClass = Type::class.java
         if (!constructors.containsKey(typeClass)) {
             throw Exception("The constructor $typeClass is not configured in the state machine")
@@ -73,7 +77,7 @@ class StateMachine(val context: Context) : Screen {
                 createScreen(
                     TransitionScreen::class.java, StateParameter.witType(
                         TransitionScreen.TransitionData(
-                            Align.left,
+                            align,
                             Type::class.java,
                             param,
                             actor

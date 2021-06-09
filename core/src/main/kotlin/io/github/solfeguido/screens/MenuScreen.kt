@@ -18,7 +18,10 @@ import io.github.solfeguido.core.StateMachine
 import io.github.solfeguido.core.StateParameter
 import io.github.solfeguido.enums.ClefEnum
 import io.github.solfeguido.enums.IconName
-import io.github.solfeguido.factories.*
+import io.github.solfeguido.factories.borderButton
+import io.github.solfeguido.factories.iconButton
+import io.github.solfeguido.factories.measure
+import io.github.solfeguido.factories.zoomDialog
 import ktx.actors.div
 import ktx.actors.onClick
 import ktx.actors.plus
@@ -199,7 +202,8 @@ class MenuScreen(context: Context) : UIScreen(context) {
                             pad(10f)
                             onClick {
                                 val label = Label("Loading", Scene2DSkin.defaultSkin, "contentLabelStyle")
-                                context.inject<StateMachine>().switch<ClassicSelectionScreen>(actor = label)
+                                context.inject<StateMachine>()
+                                    .switch<ClassicSelectionScreen>(align = Align.top, actor = label)
                             }
                         }
                         borderButton("Levels") {
@@ -207,8 +211,7 @@ class MenuScreen(context: Context) : UIScreen(context) {
                             label.setAlignment(Align.right)
                             pad(10f)
                             onClick {
-                                //TODO smooth transition
-                                context.inject<StateMachine>().switch<LevelSelectionScreen>()
+                                context.inject<StateMachine>().switch<LevelSelectionScreen>(align = Align.bottom)
                             }
                         }
 //                        borderButton("Ear training") {

@@ -25,7 +25,7 @@ class LevelSelectionScreen(context: Context) : UIScreen(context) {
             align(Align.center)
 
             slidingTable(Align.top) {
-                iconButton(IconName.ChevronLeft) {
+                iconButton(IconName.Home) {
                     onClick {
                         context.inject<StateMachine>().switch<MenuScreen>(StateParameter.witType(MenuScreen.VisibleMenu.Play))
                     }

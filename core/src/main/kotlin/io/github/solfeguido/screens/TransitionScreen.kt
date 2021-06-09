@@ -3,6 +3,7 @@ package io.github.solfeguido.screens
 import com.badlogic.gdx.Gdx
 import com.badlogic.gdx.graphics.Color
 import com.badlogic.gdx.math.Interpolation
+import com.badlogic.gdx.math.Vector2
 import com.badlogic.gdx.scenes.scene2d.Actor
 import com.badlogic.gdx.scenes.scene2d.actions.Actions
 import com.badlogic.gdx.scenes.scene2d.ui.Table
@@ -37,6 +38,14 @@ class TransitionScreen(context: Context) : UIScreen(context) {
         else -> throw Error("nope")
     }
 
+    private fun originToCoordinates(origin: Int) = when {
+        Align.isLeft(origin) -> Vector2(-Gdx.graphics.width.toFloat(), 0f)
+        Align.isRight(origin) -> Vector2(Gdx.graphics.width.toFloat(), 0f)
+        Align.isTop(origin) -> Vector2(0f, Gdx.graphics.height.toFloat())
+        Align.isBottom(origin) -> Vector2(0f, -Gdx.graphics.height.toFloat())
+        else -> throw Error("$origin is not a valid origin")
+    }
+
     override fun create(settings: StateParameter) {
         super.create(settings)
         val transition: TransitionData<UIScreen> = settings.get()
@@ -44,14 +53,16 @@ class TransitionScreen(context: Context) : UIScreen(context) {
 
         transition.actor?.let { mainWidget.add(it) }
 
-        this.mainWidget += Actions.moveTo(
+        val origin = originToCoordinates(transition.origin)
+
+        this.mainWidget += Actions.moveTo(origin.x, origin.y) + Actions.moveTo(
             0f,
             0f,
             0.3f,
             Interpolation.exp10Out
         ) + Actions.run {
             stateMachine.replaceBeforeLast(transition.clazz, transition.parameter)
-        } + Actions.delay(0.1f) + Actions.moveTo(Gdx.graphics.width.toFloat(), 0f, 0.3f, Interpolation.exp10Out) + Actions.run {
+        } + Actions.delay(0.1f) + Actions.moveTo(-origin.x, -origin.y, 0.3f, Interpolation.exp10Out) + Actions.run {
             stateMachine.pop()
         }
     }
@@ -63,11 +74,9 @@ class TransitionScreen(context: Context) : UIScreen(context) {
             isTransform = true
             background = colorDrawable(Color.WHITE, Gdx.graphics.width, Gdx.graphics.height)
             setFillParent(true)
-            setPosition(-Gdx.graphics.width.toFloat(), 0f)
+            setPosition(0f, 0f)
             align(Align.center)
         }
-
-
         stage += mainWidget
     }
 }
