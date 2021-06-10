@@ -69,7 +69,6 @@ class TransitionScreen(context: Context) : UIScreen(context) {
 
     override fun show() {
         super.show()
-
         mainWidget = scene2d.table {
             isTransform = true
             background = colorDrawable(Color.WHITE, Gdx.graphics.width, Gdx.graphics.height)

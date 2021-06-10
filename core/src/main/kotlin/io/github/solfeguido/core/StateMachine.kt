@@ -1,5 +1,6 @@
 package io.github.solfeguido.core
 
+import com.badlogic.gdx.Gdx
 import com.badlogic.gdx.Screen
 import com.badlogic.gdx.scenes.scene2d.Actor
 import com.badlogic.gdx.utils.Align
@@ -19,8 +20,9 @@ class StateMachine(val context: Context) : Screen {
 
 
     private fun performChanges() {
-        changes.map { it.invoke() }
-        changes.clear()
+        while(changes.isNotEmpty()) {
+            changes.removeFirst().invoke()
+        }
     }
 
     internal inline fun <reified Type : UIScreen> addScreen(): StateMachine {
@@ -65,14 +67,14 @@ class StateMachine(val context: Context) : Screen {
     internal inline fun <reified Type : UIScreen> switch(
         param: StateParameter = StateParameter.empty(),
         align: Int = Align.left,
-        actor: Actor? = null
+        actor: Actor? = null,
     ): StateMachine {
         val typeClass = Type::class.java
         if (!constructors.containsKey(typeClass)) {
             throw Exception("The constructor $typeClass is not configured in the state machine")
         }
 
-        changes.add {
+         changes.add {
             stack.add(
                 createScreen(
                     TransitionScreen::class.java, StateParameter.witType(
@@ -85,10 +87,6 @@ class StateMachine(val context: Context) : Screen {
                     )
                 )
             )
-            // hide()
-            // dispose()
-            // stack.clear()
-            // stack.add(createScreen(Type::class.java, param))
         }
         return this
     }

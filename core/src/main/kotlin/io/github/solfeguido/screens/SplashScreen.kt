@@ -5,7 +5,6 @@ import com.badlogic.gdx.audio.Sound
 import com.badlogic.gdx.graphics.Texture
 import com.badlogic.gdx.graphics.g2d.BitmapFont
 import com.badlogic.gdx.graphics.g2d.freetype.FreeTypeFontGenerator
-import com.badlogic.gdx.scenes.scene2d.Stage
 import com.badlogic.gdx.scenes.scene2d.ui.Label
 import com.badlogic.gdx.scenes.scene2d.ui.ProgressBar
 import io.github.solfeguido.config.Constants
@@ -16,14 +15,14 @@ import io.github.solfeguido.core.StateParameter
 import io.github.solfeguido.enums.ClefEnum
 import io.github.solfeguido.enums.IconName
 import io.github.solfeguido.loaders.FontLoader
-import io.github.solfeguido.midi.MidiFile
 import io.github.solfeguido.loaders.MidiLoader
+import io.github.solfeguido.midi.MidiFile
 import io.github.solfeguido.skins.getDefaultSkin
 import kotlinx.coroutines.launch
 import ktx.actors.plusAssign
 import ktx.assets.async.AssetStorage
-import ktx.inject.Context
 import ktx.async.KtxAsync
+import ktx.inject.Context
 import ktx.scene2d.*
 
 
@@ -113,11 +112,11 @@ class SplashScreen(context: Context) : UIScreen(context) {
                     }
                 })
             }
-
+        }.invokeOnCompletion {
             Scene2DSkin.defaultSkin = getDefaultSkin(assetManager)
             jingles.registerJingles(assetManager)
             jingles.playJingle("Startup")
-            if(System.getenv("START_STATE") == "PlayScreen") {
+            if (System.getenv("START_STATE") == "PlayScreen") {
                 context.inject<StateMachine>().switch<PlayScreen>(StateParameter.witType(ClefEnum.GClef))
             } else {
                 context.inject<StateMachine>().switch<MenuScreen>()
@@ -131,7 +130,7 @@ class SplashScreen(context: Context) : UIScreen(context) {
         if (prog.isFailed) {
             Gdx.app.exit()
         } else {
-            val progress = (  (prog.loaded * 100f) / toLoad)
+            val progress = ((prog.loaded * 100f) / toLoad)
             progressLabel.setText("${progress.toInt()}%")
             pBar.value = progress
         }
