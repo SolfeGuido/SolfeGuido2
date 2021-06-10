@@ -3,13 +3,15 @@ package io.github.solfeguido.screens
 import com.badlogic.gdx.Gdx
 import com.badlogic.gdx.InputMultiplexer
 import com.badlogic.gdx.InputProcessor
-import com.badlogic.gdx.graphics.g2d.SpriteBatch
 import com.badlogic.gdx.input.GestureDetector
 import com.badlogic.gdx.math.Vector2
+import com.badlogic.gdx.scenes.scene2d.Actor
 import com.badlogic.gdx.scenes.scene2d.Stage
 import com.badlogic.gdx.scenes.scene2d.ui.Skin
 import io.github.solfeguido.core.StateParameter
 import io.github.solfeguido.ui.SlidingTable
+import ktx.actors.minusAssign
+import ktx.actors.plusAssign
 import ktx.app.KtxScreen
 import ktx.inject.Context
 import ktx.scene2d.KWidget
@@ -19,17 +21,22 @@ import ktx.scene2d.actor
 abstract class UIScreen(protected val context: Context) : KtxScreen, InputProcessor, GestureDetector.GestureListener {
 
     protected val stage: Stage = context.inject()
-    private val batch: SpriteBatch = context.inject()
+    protected lateinit var rootActor: Actor
     private val slidingTables = mutableListOf<SlidingTable>()
 
-    override fun show() {
+    override fun dispose() {
+        Gdx.app.log("${this.javaClass}", "byyye")
+        stage -= rootActor
+    }
+
+    fun create(settings: StateParameter) {
         super.show()
+        rootActor = setup(settings)
+        stage += rootActor
         Gdx.input.inputProcessor = InputMultiplexer(GestureDetector(this), this)
     }
 
-    open fun create(settings: StateParameter) {
-        this.show()
-    }
+    protected abstract fun setup(settings: StateParameter): Actor
 
     override fun resize(width: Int, height: Int) {
         super.resize(width, height)

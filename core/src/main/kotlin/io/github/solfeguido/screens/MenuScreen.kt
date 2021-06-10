@@ -126,17 +126,14 @@ class MenuScreen(context: Context) : UIScreen(context) {
         return true
     }
 
-    override fun create(settings: StateParameter) {
-        shownMenu = settings.getOrDefault(VisibleMenu.Root)
-        super.create(settings)
-    }
 
-    override fun show() {
-        super.show()
+    override fun setup(settings: StateParameter): Actor {
+        shownMenu = settings.getOrDefault(VisibleMenu.Root)
+
         lateinit var playMenu: Table
         lateinit var playOptions: ScrollPane
         lateinit var keyOptions: Actor
-        stage += scene2d.table {
+        return scene2d.table {
             setFillParent(true)
             setPosition(0f, 0f)
             align(Align.center)
@@ -268,30 +265,29 @@ class MenuScreen(context: Context) : UIScreen(context) {
                 it.grow()
             }
         }
-        addListeners()
     }
 
     override fun fling(velocityX: Float, velocityY: Float, button: Int) =
         velocityX > 1000f && popActor()
 
-    private fun addListeners() {
-        val isBackKey: (Int) -> Boolean = { it == Input.Keys.ESCAPE || it == Input.Keys.BACK }
-        stage.addListener(object : InputListener() {
-            override fun keyTyped(event: InputEvent, character: Char): Boolean {
-                if (widgetStack.size == 1) {
-                    if (isBackKey(event.keyCode)) {
-                        Gdx.app.exit()
-                        return true
-                    }
-                    return false
-                }
-                if (isBackKey(event.keyCode) && !popActor()) {
-                    return true
-                }
-                return false
-            }
-        })
-
-    }
+    //TODO: handle this on the uiscreen
+//    private fun addListeners() {
+//        val isBackKey: (Int) -> Boolean = { it == Input.Keys.ESCAPE || it == Input.Keys.BACK }
+//        stage.addListener(object : InputListener() {
+//            override fun keyTyped(event: InputEvent, character: Char): Boolean {
+//                if (widgetStack.size == 1) {
+//                    if (isBackKey(event.keyCode)) {
+//                        Gdx.app.exit()
+//                        return true
+//                    }
+//                    return false
+//                }
+//                if (isBackKey(event.keyCode) && !popActor()) {
+//                    return true
+//                }
+//                return false
+//            }
+//        })
+    //}
 
 }

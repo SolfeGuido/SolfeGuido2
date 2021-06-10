@@ -1,6 +1,7 @@
 package io.github.solfeguido.screens
 
 import com.badlogic.gdx.Gdx
+import com.badlogic.gdx.scenes.scene2d.Actor
 import com.badlogic.gdx.utils.Align
 import io.github.solfeguido.core.StateMachine
 import io.github.solfeguido.core.StateParameter
@@ -9,10 +10,12 @@ import io.github.solfeguido.factories.*
 import io.github.solfeguido.settings.GameSettings
 import io.github.solfeguido.settings.TimeSettings
 import io.github.solfeguido.settings.gamemode.IGameModeOptions
-import ktx.actors.plusAssign
 import ktx.inject.Context
 import ktx.log.info
-import ktx.scene2d.*
+import ktx.scene2d.container
+import ktx.scene2d.scene2d
+import ktx.scene2d.stack
+import ktx.scene2d.table
 
 class PlayScreen(context: Context) : UIScreen(context) {
 
@@ -20,20 +23,15 @@ class PlayScreen(context: Context) : UIScreen(context) {
     private lateinit var timer: TimeSettings
 
 
-    override fun create(settings: StateParameter) {
+    override fun setup(settings: StateParameter): Actor {
         val options: GameSettings = settings.get()
         game = options.options
         timer = options.time
-        super.create(settings)
-    }
-
-    override fun show() {
-        super.show()
         Gdx.input.inputProcessor = null
 
         info { "Init stage" }
 
-        stage += scene2d.table {
+        return scene2d.table {
             debug = true
             setFillParent(true)
             setPosition(0f, 0f)
@@ -78,6 +76,5 @@ class PlayScreen(context: Context) : UIScreen(context) {
             }
         }
 
-        Gdx.input.inputProcessor = stage
     }
 }

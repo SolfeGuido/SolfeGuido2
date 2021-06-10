@@ -1,5 +1,6 @@
 package io.github.solfeguido.screens
 
+import com.badlogic.gdx.scenes.scene2d.Actor
 import com.badlogic.gdx.utils.Align
 import io.github.solfeguido.core.StateMachine
 import io.github.solfeguido.core.StateParameter
@@ -16,10 +17,8 @@ import ktx.scene2d.table
 class LevelSelectionScreen(context: Context) : UIScreen(context) {
 
 
-    override fun show() {
-        super.show()
-
-        stage += scene2d.table {
+    override fun setup(settings: StateParameter): Actor {
+        return scene2d.table {
             setFillParent(true)
             setPosition(0f, 0f)
             align(Align.center)

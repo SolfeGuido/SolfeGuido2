@@ -41,9 +41,7 @@ class SolfeGuido : ApplicationListener {
             .addCurrentScreen<SplashScreen>()
             .addScreen<TransitionScreen>()
             .addScreen<MenuScreen>()
-            .addScreen<GameCreationScreen>()
             .addScreen<LevelSelectionScreen>()
-            .addScreen<OptionScreen>()
             .addScreen<PlayScreen>()
             .addScreen<ClassicSelectionScreen>()
 

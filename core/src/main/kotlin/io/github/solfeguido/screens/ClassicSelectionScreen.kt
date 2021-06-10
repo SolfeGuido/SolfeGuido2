@@ -1,5 +1,6 @@
 package io.github.solfeguido.screens
 
+import com.badlogic.gdx.scenes.scene2d.Actor
 import com.badlogic.gdx.utils.Align
 import io.github.solfeguido.core.StateMachine
 import io.github.solfeguido.core.StateParameter
@@ -10,17 +11,14 @@ import io.github.solfeguido.factories.iconCheckBox
 import io.github.solfeguido.factories.measure
 import ktx.actors.onChange
 import ktx.actors.onClick
-import ktx.actors.plusAssign
 import ktx.inject.Context
 import ktx.scene2d.*
 
 class ClassicSelectionScreen(context: Context) : UIScreen(context) {
 
 
-    override fun show() {
-        super.show()
-
-        stage += scene2d.table {
+    override fun setup(settings: StateParameter): Actor {
+        return scene2d.table {
             setFillParent(true)
             setPosition(0f, 0f)
             align(Align.center)
@@ -28,7 +26,8 @@ class ClassicSelectionScreen(context: Context) : UIScreen(context) {
             slidingTable(Align.top) {
                 iconButton(IconName.Home) {
                     onClick {
-                        context.inject<StateMachine>().switch<MenuScreen>(StateParameter.witType(MenuScreen.VisibleMenu.Play))
+                        context.inject<StateMachine>()
+                            .switch<MenuScreen>(StateParameter.witType(MenuScreen.VisibleMenu.Play))
                     }
                     pad(5f)
                     it.top().left()

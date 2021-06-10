@@ -5,6 +5,7 @@ import com.badlogic.gdx.audio.Sound
 import com.badlogic.gdx.graphics.Texture
 import com.badlogic.gdx.graphics.g2d.BitmapFont
 import com.badlogic.gdx.graphics.g2d.freetype.FreeTypeFontGenerator
+import com.badlogic.gdx.scenes.scene2d.Actor
 import com.badlogic.gdx.scenes.scene2d.ui.Label
 import com.badlogic.gdx.scenes.scene2d.ui.ProgressBar
 import io.github.solfeguido.config.Constants
@@ -19,7 +20,6 @@ import io.github.solfeguido.loaders.MidiLoader
 import io.github.solfeguido.midi.MidiFile
 import io.github.solfeguido.skins.getDefaultSkin
 import kotlinx.coroutines.launch
-import ktx.actors.plusAssign
 import ktx.assets.async.AssetStorage
 import ktx.async.KtxAsync
 import ktx.inject.Context
@@ -34,19 +34,7 @@ class SplashScreen(context: Context) : UIScreen(context) {
 
     private var toLoad = 0
 
-    override fun show() {
-        super.show()
-        stage += scene2d.table {
-            setFillParent(true)
-            progressLabel = label("0%")
-            row()
-            pBar = progressBar {
-                this.setRange(0f, 100f)
-                this.setAnimateDuration(0.1f)
-                it.expandX().fillX()
-            }
-        }
-
+    override fun setup(settings: StateParameter): Actor {
         toLoad = 7
         val jingles: Jingles = context.inject()
 
@@ -122,6 +110,18 @@ class SplashScreen(context: Context) : UIScreen(context) {
                 context.inject<StateMachine>().switch<MenuScreen>()
             }
         }
+
+        return scene2d.table {
+            setFillParent(true)
+            progressLabel = label("0%")
+            row()
+            pBar = progressBar {
+                this.setRange(0f, 100f)
+                this.setAnimateDuration(0.1f)
+                it.expandX().fillX()
+            }
+        }
+
     }
 
     override fun render(delta: Float) {
