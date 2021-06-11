@@ -1,7 +1,13 @@
 package io.github.solfeguido.config
 
+import com.badlogic.gdx.Gdx
+
 object Constants {
 
+    val WIDTH
+        get() = Gdx.graphics.width
+    val HEIGHT
+        get() = Gdx.graphics.height
 
     const val TITLE_SIZE = 50
     const val PREFERENCES_NAME = "solfeguido"

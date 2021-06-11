@@ -66,7 +66,7 @@ class MeasureActor(
         val current = currentNote()
         var maxLeft = 0f
         val end = (signatureActor.x + signatureActor.width) + current.width
-        val start = Gdx.graphics.width.toFloat() + 100f
+        val start = Constants.WIDTH + 100f
         val nwPos = Interpolation.exp10Out.apply(start, end, (start - current.x) / (start - end))
         val moveBy = (current.x - nwPos) * delta
 

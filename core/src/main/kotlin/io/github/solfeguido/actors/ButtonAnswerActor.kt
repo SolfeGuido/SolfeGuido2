@@ -3,6 +3,7 @@ package io.github.solfeguido.actors
 import com.badlogic.gdx.Gdx
 import com.badlogic.gdx.graphics.Color
 import com.badlogic.gdx.scenes.scene2d.ui.Table
+import io.github.solfeguido.config.Constants
 import io.github.solfeguido.enums.IconName
 import io.github.solfeguido.enums.NoteAccidentalEnum
 import io.github.solfeguido.factories.*
@@ -69,6 +70,6 @@ class ButtonAnswerActor : Table(), KTable {
         it.grow()
     }
 
-    override fun getPrefWidth() = Gdx.graphics.width.toFloat()
-    override fun getPrefHeight() = Gdx.graphics.height/ 4f
+    override fun getPrefWidth() = Constants.WIDTH.toFloat()
+    override fun getPrefHeight() = Constants.HEIGHT / 4f
 }

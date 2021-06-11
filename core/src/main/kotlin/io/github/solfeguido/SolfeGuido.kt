@@ -7,6 +7,7 @@ import com.badlogic.gdx.graphics.Color
 import com.badlogic.gdx.graphics.GL20
 import com.badlogic.gdx.graphics.g2d.SpriteBatch
 import com.badlogic.gdx.scenes.scene2d.Stage
+import com.badlogic.gdx.utils.viewport.ExtendViewport
 import com.badlogic.gdx.utils.viewport.FillViewport
 import io.github.solfeguido.config.Constants
 import io.github.solfeguido.core.Jingles
@@ -28,8 +29,6 @@ class SolfeGuido : ApplicationListener {
 
     private lateinit var context: Context;
     private lateinit var stateMachine: StateMachine
-    private lateinit var batch: SpriteBatch
-    private lateinit var stage: Stage
     private val bgColor: Color by lazy { gCol("background") }
 
     override fun create() {
@@ -46,8 +45,6 @@ class SolfeGuido : ApplicationListener {
             .addScreen<ClassicSelectionScreen>()
 
 
-        batch = SpriteBatch()
-        stage = stage(batch, FillViewport(Gdx.graphics.width.toFloat(), Gdx.graphics.height.toFloat()))
         context.register {
             bindSingleton(Gdx.app.getPreferences(Constants.PREFERENCES_NAME))
             bindSingleton(ParticlePool(context))
@@ -55,8 +52,6 @@ class SolfeGuido : ApplicationListener {
             bindSingleton(AssetStorage(asyncContext = newAsyncContext(2)))
             bindSingleton(SoundHelper(context))
             bindSingleton(stateMachine)
-            bindSingleton(batch)
-            bindSingleton(stage)
         }
 
         Gdx.input.setCatchKey(Input.Keys.BACK, true)
@@ -68,9 +63,8 @@ class SolfeGuido : ApplicationListener {
         Gdx.gl.glClearColor(bg.r, bg.b, bg.b, bg.a)
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT)
         val delta = Gdx.graphics.deltaTime
-        stage.act(delta)
-        stage.draw()
-        stateMachine.render(Gdx.graphics.deltaTime)
+        // Calls "draw" on the stage only once
+        stateMachine.render(delta)
     }
 
     override fun pause() {

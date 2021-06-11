@@ -20,7 +20,7 @@ class StateMachine(val context: Context) : Screen {
 
 
     private fun performChanges() {
-        while(changes.isNotEmpty()) {
+        while (changes.isNotEmpty()) {
             changes.removeFirst().invoke()
         }
     }
@@ -36,8 +36,10 @@ class StateMachine(val context: Context) : Screen {
         return push(Type::class.java)
     }
 
-    private fun <Type : UIScreen> createScreen(type: Class<Type>, param: StateParameter): UIScreen =
-        constructors[type]().also { it.create(param) }
+    private fun <Type : UIScreen> createScreen(
+        type: Class<Type>,
+        param: StateParameter,
+    ): UIScreen = constructors[type]().also { it.create(param) }
 
     fun peek() = stack.last()
 
@@ -74,7 +76,7 @@ class StateMachine(val context: Context) : Screen {
             throw Exception("The constructor $typeClass is not configured in the state machine")
         }
 
-         changes.add {
+        changes.add {
             stack.add(
                 createScreen(
                     TransitionScreen::class.java, StateParameter.witType(
@@ -97,41 +99,38 @@ class StateMachine(val context: Context) : Screen {
         }
 
         changes.add {
-            val beforeLast = stack[stack.size - 2];
-            stack[stack.size - 2] = createScreen(clazz, param)
+            val beforeLast = stack[stack.size - 2]
+            val nwScreen = createScreen(clazz, param)
+            stack[stack.size - 2] = nwScreen
             beforeLast.dispose()
         }
 
         return this
     }
 
-    override fun hide() {
-        stack.reversed().map { it.hide() }
-    }
-
-    override fun show() {
-        stack.reversed().map { it.show() }
-    }
+    override fun hide() = Unit
+    override fun show() = Unit
 
     override fun render(delta: Float) {
-        stack.map { it.render(delta) }
+        stack.forEach { it.render(delta) }
         performChanges()
     }
 
     override fun pause() {
-        stack.map { it.pause() }
+        stack.forEach { it.pause() }
     }
 
     override fun resume() {
-        stack.map { it.resume() }
+        stack.forEach { it.resume() }
     }
 
     override fun resize(width: Int, height: Int) {
-        stack.map { it.resize(width, height) }
+        Gdx.app.log("RESIZE", "Resize to $width, $height")
+        stack.forEach { it.resize(width, height) }
     }
 
     override fun dispose() {
-        stack.map { it.dispose() }
+        stack.forEach { it.dispose() }
     }
 
 }

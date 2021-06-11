@@ -1,19 +1,19 @@
 package io.github.solfeguido.screens
 
-import com.badlogic.gdx.Gdx
 import com.badlogic.gdx.graphics.Color
 import com.badlogic.gdx.math.Interpolation
 import com.badlogic.gdx.math.Vector2
 import com.badlogic.gdx.scenes.scene2d.Actor
 import com.badlogic.gdx.scenes.scene2d.actions.Actions
 import com.badlogic.gdx.utils.Align
+import io.github.solfeguido.config.Constants
 import io.github.solfeguido.core.StateMachine
 import io.github.solfeguido.core.StateParameter
 import io.github.solfeguido.factories.colorDrawable
-import ktx.actors.minusAssign
 import ktx.actors.plus
 import ktx.actors.plusAssign
 import ktx.inject.Context
+import ktx.scene2d.label
 import ktx.scene2d.scene2d
 import ktx.scene2d.table
 
@@ -27,10 +27,10 @@ class TransitionScreen(context: Context) : UIScreen(context) {
     )
 
     private fun originToCoordinates(origin: Int) = when {
-        Align.isLeft(origin) -> Vector2(-Gdx.graphics.width.toFloat(), 0f)
-        Align.isRight(origin) -> Vector2(Gdx.graphics.width.toFloat(), 0f)
-        Align.isTop(origin) -> Vector2(0f, Gdx.graphics.height.toFloat())
-        Align.isBottom(origin) -> Vector2(0f, -Gdx.graphics.height.toFloat())
+        Align.isLeft(origin) -> Vector2(-Constants.WIDTH.toFloat(), 0f)
+        Align.isRight(origin) -> Vector2(Constants.WIDTH.toFloat(), 0f)
+        Align.isTop(origin) -> Vector2(0f, Constants.HEIGHT.toFloat())
+        Align.isBottom(origin) -> Vector2(0f, -Constants.HEIGHT.toFloat())
         else -> throw Error("$origin is not a valid origin")
     }
 
@@ -40,10 +40,9 @@ class TransitionScreen(context: Context) : UIScreen(context) {
 
 
         val origin = originToCoordinates(transition.origin)
-
         val res = scene2d.table {
             isTransform = true
-            background = colorDrawable(Color.WHITE, Gdx.graphics.width, Gdx.graphics.height)
+            background = colorDrawable(Color.WHITE, Constants.WIDTH, Constants.WIDTH)
             setFillParent(true)
             setPosition(0f, 0f)
             align(Align.center)
@@ -58,7 +57,7 @@ class TransitionScreen(context: Context) : UIScreen(context) {
             Interpolation.exp10Out
         ) + Actions.run {
             stateMachine.replaceBeforeLast(transition.clazz, transition.parameter)
-        } + Actions.delay(0.1f) + Actions.moveTo(-origin.x, -origin.y, 0.3f, Interpolation.exp10Out) + Actions.run {
+        } + Actions.delay(0.1f) + Actions.moveTo(-origin.x, -origin.y, 0.2f, Interpolation.exp10Out) + Actions.run {
             stateMachine.pop()
         }
 

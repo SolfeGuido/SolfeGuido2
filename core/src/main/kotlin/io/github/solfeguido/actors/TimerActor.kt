@@ -5,6 +5,7 @@ import com.badlogic.gdx.graphics.g2d.Batch
 import com.badlogic.gdx.graphics.g2d.ParticleEffect
 import com.badlogic.gdx.scenes.scene2d.ui.WidgetGroup
 import com.badlogic.gdx.utils.Pools
+import io.github.solfeguido.config.Constants
 import io.github.solfeguido.factories.ParticlePool
 import io.github.solfeguido.factories.colorDrawable
 import io.github.solfeguido.factories.gCol
@@ -88,7 +89,7 @@ class TimerActor(context: Context, settings: TimeSettings) : WidgetGroup() {
     }
 
     override fun getPrefHeight(): Float = 4f
-    override fun getPrefWidth(): Float = Gdx.graphics.width.toFloat()
+    override fun getPrefWidth(): Float = Constants.WIDTH.toFloat()
 
 
     override fun draw(batch: Batch, parentAlpha: Float) {

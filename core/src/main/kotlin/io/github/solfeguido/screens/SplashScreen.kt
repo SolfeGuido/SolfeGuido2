@@ -13,11 +13,11 @@ import io.github.solfeguido.core.Jingles
 import io.github.solfeguido.core.SoundHelper
 import io.github.solfeguido.core.StateMachine
 import io.github.solfeguido.core.StateParameter
-import io.github.solfeguido.enums.ClefEnum
 import io.github.solfeguido.enums.IconName
 import io.github.solfeguido.loaders.FontLoader
 import io.github.solfeguido.loaders.MidiLoader
 import io.github.solfeguido.midi.MidiFile
+import io.github.solfeguido.settings.GameSettings
 import io.github.solfeguido.skins.getDefaultSkin
 import kotlinx.coroutines.launch
 import ktx.assets.async.AssetStorage
@@ -37,7 +37,7 @@ class SplashScreen(context: Context) : UIScreen(context) {
     override fun setup(settings: StateParameter): Actor {
         toLoad = 7
         val jingles: Jingles = context.inject()
-
+        val start = System.currentTimeMillis()
 
         KtxAsync.launch {
             val soundHelper: SoundHelper = context.inject()
@@ -69,7 +69,7 @@ class SplashScreen(context: Context) : UIScreen(context) {
                 load("bigIcon.woff", FontLoader.FontLoaderParameter().also {
                     it.fontFileName = Constants.ICONS_PATH
                     it.fontParameters.apply {
-                        size = (Gdx.graphics.height / 2.7f).toInt()
+                        size = (Constants.HEIGHT / 2.7f).toInt()
                         minFilter = Texture.TextureFilter.Linear
                         magFilter = Texture.TextureFilter.Linear
                         characters = IconName.values().joinToString("") { icon -> icon.value }
@@ -101,13 +101,19 @@ class SplashScreen(context: Context) : UIScreen(context) {
                 })
             }
         }.invokeOnCompletion {
-            Scene2DSkin.defaultSkin = getDefaultSkin(assetManager)
-            jingles.registerJingles(assetManager)
-            jingles.playJingle("Startup")
-            if (System.getenv("START_STATE") == "PlayScreen") {
-                context.inject<StateMachine>().switch<PlayScreen>(StateParameter.witType(ClefEnum.GClef))
-            } else {
-                context.inject<StateMachine>().switch<MenuScreen>()
+            it?.let {
+                Gdx.app.error("FATAL", this.javaClass.toGenericString(), it)
+            } ?: kotlin.run {
+                val end = System.currentTimeMillis()
+                Gdx.app.log("START", "Loaded in ${end - start}ms")
+                Scene2DSkin.defaultSkin = getDefaultSkin(assetManager)
+                jingles.registerJingles(assetManager)
+                jingles.playJingle("Startup")
+                if (System.getenv("START_STATE") == "PlayScreen") {
+                    context.inject<StateMachine>().switch<PlayScreen>(StateParameter.witType(GameSettings()))
+                } else {
+                    context.inject<StateMachine>().switch<MenuScreen>()
+                }
             }
         }
 
@@ -128,6 +134,7 @@ class SplashScreen(context: Context) : UIScreen(context) {
         super.render(delta)
         val prog = assetManager.progress
         if (prog.isFailed) {
+            Gdx.app.log("[FATAL]", "Failed to load games assets")
             Gdx.app.exit()
         } else {
             val progress = ((prog.loaded * 100f) / toLoad)

@@ -133,7 +133,7 @@ class NoteActor : WidgetGroup(), Pool.Poolable {
         noteName.x = noteIcon.width + accidentalIcon.width
         noteName.pack()
         noteName.y = if (relativeMeasurePosition % 2 == 1) 0f else -measureActor.lineSpace
-        this.x = Gdx.graphics.width.toFloat()
+        this.x = Constants.WIDTH.toFloat()
     }
 
     fun consume(correct: Boolean) {
@@ -191,7 +191,7 @@ class NoteActor : WidgetGroup(), Pool.Poolable {
         batch.color = color
         batch.shader = shader
         shader.setUniformf("leftLimit", measure!!.leftLimit + 50)
-        shader.setUniformf("rightLimit", Gdx.graphics.width.toFloat() - 50)
+        shader.setUniformf("rightLimit", Constants.WIDTH - 50f)
         shader.setUniformf("noteWidth", width)
 
         if (relativeMeasurePosition == 0) drawLine(batch, bottom - lineSpace * 3)

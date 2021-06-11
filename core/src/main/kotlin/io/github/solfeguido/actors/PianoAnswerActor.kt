@@ -5,6 +5,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.Stack
 import com.badlogic.gdx.scenes.scene2d.ui.Table
 import com.badlogic.gdx.utils.Align
 import com.badlogic.gdx.utils.Pools
+import io.github.solfeguido.config.Constants
 import io.github.solfeguido.enums.NoteOrderEnum
 import io.github.solfeguido.enums.PianoKeyTypeEnum
 import io.github.solfeguido.factories.onAnswer
@@ -66,7 +67,7 @@ class PianoAnswerActor : Stack() {
     }
 
 
-    override fun getPrefWidth() = Gdx.graphics.width.toFloat()
-    override fun getPrefHeight() = Gdx.graphics.height / 4f
+    override fun getPrefWidth() = Constants.WIDTH.toFloat()
+    override fun getPrefHeight() = Constants.HEIGHT / 4f
 
 }

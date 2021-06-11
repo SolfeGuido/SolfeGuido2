@@ -6,12 +6,13 @@ import com.badlogic.gdx.InputProcessor
 import com.badlogic.gdx.input.GestureDetector
 import com.badlogic.gdx.math.Vector2
 import com.badlogic.gdx.scenes.scene2d.Actor
-import com.badlogic.gdx.scenes.scene2d.Stage
 import com.badlogic.gdx.scenes.scene2d.ui.Skin
+import com.badlogic.gdx.utils.viewport.FillViewport
 import io.github.solfeguido.core.StateParameter
 import io.github.solfeguido.ui.SlidingTable
 import ktx.actors.minusAssign
 import ktx.actors.plusAssign
+import ktx.actors.stage
 import ktx.app.KtxScreen
 import ktx.inject.Context
 import ktx.scene2d.KWidget
@@ -20,17 +21,12 @@ import ktx.scene2d.actor
 
 abstract class UIScreen(protected val context: Context) : KtxScreen, InputProcessor, GestureDetector.GestureListener {
 
-    protected val stage: Stage = context.inject()
-    protected lateinit var rootActor: Actor
+    lateinit var rootActor: Actor
     private val slidingTables = mutableListOf<SlidingTable>()
+    val stage = stage(viewport = FillViewport(Gdx.graphics.width.toFloat(), Gdx.graphics.height.toFloat()))
 
-    override fun dispose() {
-        Gdx.app.log("${this.javaClass}", "byyye")
-        stage -= rootActor
-    }
 
     fun create(settings: StateParameter) {
-        super.show()
         rootActor = setup(settings)
         stage += rootActor
         Gdx.input.inputProcessor = InputMultiplexer(GestureDetector(this), this)
@@ -38,10 +34,6 @@ abstract class UIScreen(protected val context: Context) : KtxScreen, InputProces
 
     protected abstract fun setup(settings: StateParameter): Actor
 
-    override fun resize(width: Int, height: Int) {
-        super.resize(width, height)
-        stage.viewport.update(width, height)
-    }
 
     fun <S> KWidget<S>.slidingTable(
         align: Int,
@@ -53,7 +45,15 @@ abstract class UIScreen(protected val context: Context) : KtxScreen, InputProces
         return act
     }
 
-    override fun render(delta: Float) = Unit
+    override fun render(delta: Float) {
+        stage.act(delta)
+        stage.viewport.apply()
+        stage.draw()
+    }
+
+    override fun resize(width: Int, height: Int) {
+        stage.viewport.update(width, height)
+    }
 
     override fun keyDown(keycode: Int) = stage.keyDown(keycode)
     override fun keyTyped(character: Char) = stage.keyTyped(character)
