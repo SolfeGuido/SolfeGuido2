@@ -23,6 +23,7 @@ import kotlinx.coroutines.launch
 import ktx.assets.async.AssetStorage
 import ktx.async.KtxAsync
 import ktx.inject.Context
+import ktx.log.info
 import ktx.scene2d.*
 
 
@@ -102,10 +103,10 @@ class SplashScreen(context: Context) : UIScreen(context) {
             }
         }.invokeOnCompletion {
             it?.let {
-                Gdx.app.error("FATAL", this.javaClass.toGenericString(), it)
+                ktx.log.error(it, "FATAL") { "Failed to load game assets" }
             } ?: kotlin.run {
                 val end = System.currentTimeMillis()
-                Gdx.app.log("START", "Loaded in ${end - start}ms")
+                info("START") { "Assets loaded in ${end - start}ms" }
                 Scene2DSkin.defaultSkin = getDefaultSkin(assetManager)
                 jingles.registerJingles(assetManager)
                 jingles.playJingle("Startup")

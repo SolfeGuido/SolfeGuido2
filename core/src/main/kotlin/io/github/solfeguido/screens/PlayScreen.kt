@@ -11,7 +11,6 @@ import io.github.solfeguido.settings.GameSettings
 import io.github.solfeguido.settings.TimeSettings
 import io.github.solfeguido.settings.gamemode.IGameModeOptions
 import ktx.inject.Context
-import ktx.log.info
 import ktx.scene2d.container
 import ktx.scene2d.scene2d
 import ktx.scene2d.stack
@@ -29,7 +28,6 @@ class PlayScreen(context: Context) : UIScreen(context) {
         timer = options.time
         Gdx.input.inputProcessor = null
 
-        info { "Init stage" }
 
         return scene2d.table {
             debug = true

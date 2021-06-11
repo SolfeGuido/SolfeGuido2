@@ -124,7 +124,6 @@ class STextButton(text: String, buttonStyle: STextButtonStyle) : Button(buttonSt
         })
     }
 
-
     class STextButtonStyle : ButtonStyle() {
 
         var fontColor: Color = gCol("font")

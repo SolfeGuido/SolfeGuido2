@@ -93,10 +93,9 @@ inline fun RootWidget.zoomDialog(
     return storeActor(ZoomDialog(style, skin)).apply(init)
 }
 
-inline fun <S, T> KWidget<S>.iconCheckBox(
+inline fun <S> KWidget<S>.iconCheckBox(
         icon: IconName,
-        data: T,
-        init: IconCheckBox<T>.(S) -> Unit = {}) : IconCheckBox<T> {
+        init: IconCheckBox.(S) -> Unit = {}) : IconCheckBox {
  contract { callsInPlace(init, InvocationKind.EXACTLY_ONCE) }
- return actor(IconCheckBox(icon, data), init)
+ return actor(IconCheckBox(icon), init)
 }

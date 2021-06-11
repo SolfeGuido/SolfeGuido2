@@ -6,22 +6,34 @@ import io.github.solfeguido.core.StateMachine
 import io.github.solfeguido.core.StateParameter
 import io.github.solfeguido.enums.ClefEnum
 import io.github.solfeguido.enums.IconName
+import io.github.solfeguido.factories.borderButton
 import io.github.solfeguido.factories.iconButton
 import io.github.solfeguido.factories.iconCheckBox
 import io.github.solfeguido.factories.measure
-import ktx.actors.onChange
+import io.github.solfeguido.settings.GameSettings
+import io.github.solfeguido.settings.MeasureSettings
+import io.github.solfeguido.settings.gamemode.NoteGuessOptions
 import ktx.actors.onClick
+import ktx.collections.gdxArrayOf
 import ktx.inject.Context
 import ktx.scene2d.*
 
 class ClassicSelectionScreen(context: Context) : UIScreen(context) {
 
+    private var selectedClef = ClefEnum.GClef
 
     override fun setup(settings: StateParameter): Actor {
+        val clefClick: (Actor, ClefEnum) -> Unit = { test, clef ->
+            test.onClick {
+                this@ClassicSelectionScreen.selectedClef = clef
+            }
+        }
         return scene2d.table {
             setFillParent(true)
             setPosition(0f, 0f)
             align(Align.center)
+
+
 
             slidingTable(Align.top) {
                 iconButton(IconName.Home) {
@@ -46,40 +58,46 @@ class ClassicSelectionScreen(context: Context) : UIScreen(context) {
                 table {
                     buttonGroup(1, 1) {
 
-                        iconCheckBox(IconName.GClef, ClefEnum.GClef) {
-
+                        iconCheckBox(IconName.GClef) {
+                            clefClick(this, ClefEnum.GClef)
                         }
-                        iconCheckBox(IconName.FClef, ClefEnum.FClef) {
-
+                        iconCheckBox(IconName.FClef) {
+                            clefClick(this, ClefEnum.FClef)
                         }
-
-                        iconCheckBox(IconName.CClef3, ClefEnum.CClef3) {
-
+                        iconCheckBox(IconName.CClef3) {
+                            clefClick(this, ClefEnum.CClef3)
                         }
-
-                        iconCheckBox(IconName.CClef4, ClefEnum.CClef4) {
-
-                        }
-                        onChange {
-                            //println(this.buttonGroup.checked)
+                        iconCheckBox(IconName.CClef4) {
+                            clefClick(this, ClefEnum.CClef4)
                         }
                     }
 
                     row()
                     buttonGroup(1, 1) {
-                        iconCheckBox(IconName.Infinity, 0) {
+                        iconCheckBox(IconName.Infinity)
+                        iconCheckBox(IconName.Speedometer)
+                    }
+                    row()
 
-                        }
+                    borderButton("Play") {
+                        icon(IconName.Play, 0.9f).pad(5f)
+                        pad(5f)
 
-                        iconCheckBox(IconName.Speedometer, 2) {
-
+                        onClick {
+                            context.inject<StateMachine>().switch<PlayScreen>(
+                                StateParameter.witType(
+                                    GameSettings(
+                                        options = NoteGuessOptions(gdxArrayOf(MeasureSettings(this@ClassicSelectionScreen.selectedClef)))
+                                    )
+                                ),
+                                Align.right
+                            )
                         }
                     }
                 }
 
                 it.grow()
             }
-
         }
     }
 

@@ -125,7 +125,6 @@ class StateMachine(val context: Context) : Screen {
     }
 
     override fun resize(width: Int, height: Int) {
-        Gdx.app.log("RESIZE", "Resize to $width, $height")
         stack.forEach { it.resize(width, height) }
     }
 

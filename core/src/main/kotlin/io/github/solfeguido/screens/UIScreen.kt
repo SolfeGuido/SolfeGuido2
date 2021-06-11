@@ -10,7 +10,6 @@ import com.badlogic.gdx.scenes.scene2d.ui.Skin
 import com.badlogic.gdx.utils.viewport.FillViewport
 import io.github.solfeguido.core.StateParameter
 import io.github.solfeguido.ui.SlidingTable
-import ktx.actors.minusAssign
 import ktx.actors.plusAssign
 import ktx.actors.stage
 import ktx.app.KtxScreen

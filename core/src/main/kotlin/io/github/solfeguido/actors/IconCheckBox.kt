@@ -11,7 +11,7 @@ import ktx.actors.plusAssign
 import ktx.scene2d.KTable
 import ktx.scene2d.Scene2DSkin
 
-class IconCheckBox<T>(val icon: IconName,  val data : T ) : CheckBox(icon.value, Scene2DSkin.defaultSkin, "icon"), KTable {
+class IconCheckBox(val icon: IconName) : CheckBox(icon.value, Scene2DSkin.defaultSkin, "icon"), KTable {
 
     init {
         setOrigin(Align.center)
