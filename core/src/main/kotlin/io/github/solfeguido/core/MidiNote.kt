@@ -10,7 +10,6 @@ import io.github.solfeguido.enums.NoteNameEnum
 import io.github.solfeguido.enums.NoteAccidentalEnum
 import io.github.solfeguido.enums.NoteOrderEnum
 import ktx.collections.gdxArrayOf
-import kotlin.math.sign
 
 data class MidiNote(
     var midiIndex: Int = 60

@@ -5,7 +5,6 @@ import io.github.solfeguido.ui.STextButton
 import ktx.style.SkinDsl
 import ktx.style.addStyle
 import ktx.style.defaultStyle
-import kotlin.contracts.ExperimentalContracts
 import kotlin.contracts.InvocationKind
 import kotlin.contracts.contract
 
@@ -13,7 +12,7 @@ import kotlin.contracts.contract
 inline fun Skin.borderButton(
         name: String = defaultStyle,
         init: (@SkinDsl STextButton.STextButtonStyle).() -> Unit = {}
-):STextButton.STextButtonStyle {
+): STextButton.STextButtonStyle {
     contract { callsInPlace(init, InvocationKind.EXACTLY_ONCE) }
     return addStyle(name, STextButton.STextButtonStyle(), init)
 }

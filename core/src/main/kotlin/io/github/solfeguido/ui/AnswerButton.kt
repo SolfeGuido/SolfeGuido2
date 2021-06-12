@@ -15,14 +15,14 @@ import io.github.solfeguido.enums.IconName
 import io.github.solfeguido.factories.borderContainer
 import io.github.solfeguido.factories.gCol
 import ktx.scene2d.*
-import  ktx.actors.*
+import ktx.actors.*
 
-class AnswerButton(note: String): Stack(), KGroup, Disableable {
+class AnswerButton(note: String) : Stack(), KGroup, Disableable {
 
     private var _disabled = false
     private var disableOnPressed = false
     private val isIconShown
-            get() = currentIcon != IconName.Empty
+        get() = currentIcon != IconName.Empty
     private var currentIcon: IconName = IconName.Empty
     private val accidentalLabel: Label
     private val labelParent: BorderContainer<Actor>
@@ -55,7 +55,7 @@ class AnswerButton(note: String): Stack(), KGroup, Disableable {
 
     private fun queueActions(action: Action) {
         val currentActions = labelParent.actions
-        if(currentActions.size == 0) {
+        if (currentActions.size == 0) {
             labelParent += action
             return
         }
@@ -64,19 +64,19 @@ class AnswerButton(note: String): Stack(), KGroup, Disableable {
     }
 
     private fun hideIcon(delay: Float = 0f) {
-        if(!isIconShown) return
+        if (!isIconShown) return
         currentIcon = IconName.Empty
         val hideAnim = Actions.delay(delay) then Actions.scaleTo(0f, 0f, 0.2f, Interpolation.exp10In)
         queueActions(hideAnim)
     }
 
     fun toggleIcon(icon: IconName, delay: Float = 0f): IconName {
-        if(icon == currentIcon) {
+        if (icon == currentIcon) {
             hideIcon(delay)
             return currentIcon
         }
-        val showAnim = if(isIconShown) {
-            Actions.delay(delay) then Actions.scaleTo(0f, 0f, 0.2f, Interpolation.exp10In)  then Actions.run {
+        val showAnim = if (isIconShown) {
+            Actions.delay(delay) then Actions.scaleTo(0f, 0f, 0.2f, Interpolation.exp10In) then Actions.run {
                 accidentalLabel.setText(icon.value)
             } then Actions.scaleTo(1f, 1f, 0.25f, Interpolation.swingOut)
         } else {
@@ -93,12 +93,12 @@ class AnswerButton(note: String): Stack(), KGroup, Disableable {
         setOrigin(width / 2, height / 2)
     }
 
-    private fun initialize(){
+    private fun initialize() {
         val self = this
-        addListener(object: ClickListener() {
+        addListener(object : ClickListener() {
             override fun enter(event: InputEvent?, x: Float, y: Float, pointer: Int, fromActor: Actor?) {
                 super.enter(event, x, y, pointer, fromActor)
-                if(self.isDisabled) return
+                if (self.isDisabled) return
                 self.addAction(Actions.color(gCol("fontHover"), 0.2f))
             }
 
@@ -114,7 +114,7 @@ class AnswerButton(note: String): Stack(), KGroup, Disableable {
 
             override fun touchDown(event: InputEvent?, x: Float, y: Float, pointer: Int, button: Int): Boolean {
                 val res = super.touchDown(event, x, y, pointer, button)
-                if(self.isDisabled) return res
+                if (self.isDisabled) return res
                 self.addAction(Actions.scaleTo(Constants.PRESSED_SCALING, Constants.PRESSED_SCALING, .2f, Interpolation.exp10Out))
                 return res
             }

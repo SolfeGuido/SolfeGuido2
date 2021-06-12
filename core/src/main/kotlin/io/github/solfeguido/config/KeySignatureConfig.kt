@@ -4,7 +4,6 @@ import io.github.solfeguido.core.MidiNote
 import io.github.solfeguido.enums.*
 import ktx.collections.gdxArrayOf
 import ktx.collections.gdxMapOf
-import kotlin.math.sign
 
 object KeySignatureConfig {
 

@@ -9,7 +9,6 @@ import io.github.solfeguido.factories.borderColorDrawable
 import io.github.solfeguido.factories.colorDrawable
 import io.github.solfeguido.factories.gCol
 import ktx.assets.async.AssetStorage
-import ktx.scene2d.dialog
 import ktx.style.*
 
 fun copyFont(font: BitmapFont) = BitmapFont(font.data, font.region, font.usesIntegerPositions())

@@ -1,7 +1,5 @@
 package io.github.solfeguido.actors
 
-import com.badlogic.gdx.Gdx
-import com.badlogic.gdx.graphics.Color
 import com.badlogic.gdx.scenes.scene2d.ui.Table
 import io.github.solfeguido.config.Constants
 import io.github.solfeguido.enums.IconName

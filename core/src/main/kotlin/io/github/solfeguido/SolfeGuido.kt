@@ -5,10 +5,6 @@ import com.badlogic.gdx.Gdx
 import com.badlogic.gdx.Input
 import com.badlogic.gdx.graphics.Color
 import com.badlogic.gdx.graphics.GL20
-import com.badlogic.gdx.graphics.g2d.SpriteBatch
-import com.badlogic.gdx.scenes.scene2d.Stage
-import com.badlogic.gdx.utils.viewport.ExtendViewport
-import com.badlogic.gdx.utils.viewport.FillViewport
 import io.github.solfeguido.config.Constants
 import io.github.solfeguido.core.Jingles
 import io.github.solfeguido.core.SoundHelper
@@ -17,7 +13,6 @@ import io.github.solfeguido.factories.ParticlePool
 import io.github.solfeguido.factories.gCol
 import io.github.solfeguido.screens.*
 import io.github.solfeguido.skins.getPreloadSkin
-import ktx.actors.stage
 import ktx.assets.async.AssetStorage
 import ktx.async.KtxAsync
 import ktx.async.newAsyncContext

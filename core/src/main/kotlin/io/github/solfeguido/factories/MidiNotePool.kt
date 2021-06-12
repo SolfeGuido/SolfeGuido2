@@ -4,7 +4,6 @@ import com.badlogic.gdx.utils.Pools
 import io.github.solfeguido.enums.NoteNameEnum
 import io.github.solfeguido.core.MidiNote
 import io.github.solfeguido.enums.NoteAccidentalEnum
-import io.github.solfeguido.enums.NoteOrderEnum
 import ktx.collections.GdxArray
 import ktx.collections.gdxArrayOf
 

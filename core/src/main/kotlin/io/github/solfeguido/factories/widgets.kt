@@ -9,7 +9,6 @@ import io.github.solfeguido.enums.IconName
 import io.github.solfeguido.enums.KeySignatureEnum
 import io.github.solfeguido.settings.TimeSettings
 import io.github.solfeguido.ui.*
-import ktx.collections.GdxArray
 import ktx.inject.Context
 import ktx.scene2d.*
 import kotlin.contracts.InvocationKind
