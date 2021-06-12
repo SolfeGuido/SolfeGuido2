@@ -63,7 +63,9 @@ class ButtonAnswerActor : Table(), KTable {
     }
 
     private fun noteButton(note: String) = answerButton(note) {
-        onClick { println(note) }
+        onClick {
+            //TODO?
+        }
         this@ButtonAnswerActor.noteList.add(this)
         it.grow()
     }

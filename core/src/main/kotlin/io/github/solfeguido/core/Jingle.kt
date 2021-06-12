@@ -24,7 +24,6 @@ class Jingles(
         var wait = 3000
         (33..90).forEach {
             schedule(wait / 1000f){
-                println("Play $it")
                 context.inject<SoundHelper>().playNote(it)
             }
             wait += 500

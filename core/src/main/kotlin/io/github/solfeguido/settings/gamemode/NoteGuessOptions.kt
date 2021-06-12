@@ -38,7 +38,7 @@ class NoteGuessOptions(
     override fun populateScene(parent: KStack, resultCallback: (ResultEvent) -> Unit) {
         currentMeasure = 0
         actors = measures.map {
-            parent.measure {
+            parent.measure(it.clef) {
                 onResult { resultCallback(it) }
             }
         }.toGdxArray()

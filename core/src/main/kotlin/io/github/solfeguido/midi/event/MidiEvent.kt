@@ -18,6 +18,7 @@
 package io.github.solfeguido.midi.event
 
 
+import com.badlogic.gdx.Gdx
 import io.github.solfeguido.midi.event.meta.MetaEvent
 import io.github.solfeguido.midi.util.VariableLengthInt
 import java.io.IOException
@@ -83,7 +84,7 @@ abstract class MidiEvent(var tick: Long, delta: Long) : Comparable<MidiEvent?> {
                 input.read(data)
                 return SystemExclusiveEvent(sId, tick, delta, data)
             } else {
-                println("Unable to handle status byte, skipping: $sId")
+                Gdx.app.log("WARNING", "Unable to handle status byte, skipping: $sId")
                 if (reset) {
                     input.read()
                 }

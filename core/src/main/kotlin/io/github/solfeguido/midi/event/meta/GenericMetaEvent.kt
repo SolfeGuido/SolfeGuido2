@@ -18,6 +18,7 @@
 package io.github.solfeguido.midi.event.meta
 
 
+import com.badlogic.gdx.Gdx
 import io.github.solfeguido.midi.event.MidiEvent
 import java.io.OutputStream
 
@@ -33,7 +34,7 @@ class GenericMetaEvent constructor(tick: Long, delta: Long, info: MetaEventData)
     }
 
     override fun compareTo(other: MidiEvent?): Int {
-        if(other !is MidiEvent) return -1;
+        if (other !is MidiEvent) return -1;
         if (mTick != other.mTick) {
             return if (mTick < other.mTick) -1 else 1
         }
@@ -43,6 +44,6 @@ class GenericMetaEvent constructor(tick: Long, delta: Long, info: MetaEventData)
     }
 
     init {
-        println("""Warning: GenericMetaEvent used because type (${info.type}) wasn't recognized or unexpected data length (${info.length.varValue}) for type.""")
+        Gdx.app.log("WARNING", "GenericMetaEvent used because type (${info.type}) wasn't recognized or unexpected data length (${info.length.varValue}) for type.")
     }
 }

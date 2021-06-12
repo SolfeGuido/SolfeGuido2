@@ -87,7 +87,6 @@ abstract class MetaEvent protected constructor(tick: Long, delta: Long, type: In
                 TIME_SIGNATURE -> return TimeSignature.parseTimeSignature(tick, delta, eventData)
                 KEY_SIGNATURE -> return KeySignature.parseKeySignature(tick, delta, eventData)
             }
-            println("Completely broken in MetaEvent.parseMetaEvent()")
             return EmptyEvent(tick, delta)
         }
 
