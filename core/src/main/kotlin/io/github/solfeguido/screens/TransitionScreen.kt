@@ -10,6 +10,7 @@ import io.github.solfeguido.config.Constants
 import io.github.solfeguido.core.StateMachine
 import io.github.solfeguido.core.StateParameter
 import io.github.solfeguido.factories.colorDrawable
+import io.github.solfeguido.factories.gCol
 import ktx.actors.plus
 import ktx.actors.plusAssign
 import ktx.inject.Context
@@ -42,7 +43,7 @@ class TransitionScreen(context: Context) : UIScreen(context) {
         val origin = originToCoordinates(transition.origin)
         val res = scene2d.table {
             isTransform = true
-            background = colorDrawable(Color.WHITE, Constants.WIDTH, Constants.WIDTH)
+            background = colorDrawable(gCol("background"), Constants.WIDTH, Constants.WIDTH)
             setFillParent(true)
             setPosition(0f, 0f)
             align(Align.center)

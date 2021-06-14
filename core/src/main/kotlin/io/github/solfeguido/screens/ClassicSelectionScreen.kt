@@ -48,7 +48,10 @@ class ClassicSelectionScreen(context: Context) : UIScreen(context) {
                 iconButton(IconName.Home) {
                     onClick {
                         context.inject<StateMachine>()
-                            .switch<MenuScreen>(StateParameter.witType(MenuScreen.VisibleMenu.Play))
+                            .switch<MenuScreen>(
+                                StateParameter.witType(MenuScreen.VisibleMenu.Play),
+                                Align.bottom
+                            )
                     }
                     pad(5f)
                     it.top().left()
