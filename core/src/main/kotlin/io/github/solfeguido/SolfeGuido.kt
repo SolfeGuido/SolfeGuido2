@@ -58,7 +58,6 @@ class SolfeGuido : ApplicationListener {
         Gdx.gl.glClearColor(bg.r, bg.b, bg.b, bg.a)
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT)
         val delta = Gdx.graphics.deltaTime
-        // Calls "draw" on the stage only once
         stateMachine.render(delta)
     }
 

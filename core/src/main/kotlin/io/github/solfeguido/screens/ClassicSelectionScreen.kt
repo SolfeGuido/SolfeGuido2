@@ -12,6 +12,7 @@ import io.github.solfeguido.factories.iconCheckBox
 import io.github.solfeguido.factories.measure
 import io.github.solfeguido.settings.GameSettings
 import io.github.solfeguido.settings.MeasureSettings
+import io.github.solfeguido.settings.TimeSettings
 import io.github.solfeguido.settings.gamemode.NoteGuessOptions
 import ktx.actors.onClick
 import ktx.collections.gdxArrayOf
@@ -21,6 +22,7 @@ import ktx.scene2d.*
 class ClassicSelectionScreen(context: Context) : UIScreen(context) {
 
     private var selectedClef = ClefEnum.GClef
+    private var timeSettings = TimeSettings.ClassicCountdownMode
 
     override fun setup(settings: StateParameter): Actor {
         val clefClick: (Actor, ClefEnum) -> Unit = { test, clef ->
@@ -28,6 +30,13 @@ class ClassicSelectionScreen(context: Context) : UIScreen(context) {
                 this@ClassicSelectionScreen.selectedClef = clef
             }
         }
+
+        val timeClick: (Actor, TimeSettings) -> Unit = { btn, time ->
+            btn.onClick {
+                this@ClassicSelectionScreen.timeSettings = time
+            }
+        }
+
         return scene2d.table {
             setFillParent(true)
             setPosition(0f, 0f)
@@ -74,8 +83,8 @@ class ClassicSelectionScreen(context: Context) : UIScreen(context) {
 
                     row()
                     buttonGroup(1, 1) {
-                        iconCheckBox(IconName.Infinity)
-                        iconCheckBox(IconName.Speedometer)
+                        iconCheckBox(IconName.Speedometer) { timeClick(this, TimeSettings.ClassicCountdownMode) }
+                        iconCheckBox(IconName.Infinity) { timeClick(this, TimeSettings.InfiniteMode) }
                     }
                     row()
 
@@ -87,7 +96,12 @@ class ClassicSelectionScreen(context: Context) : UIScreen(context) {
                             context.inject<StateMachine>().switch<PlayScreen>(
                                 StateParameter.witType(
                                     GameSettings(
-                                        options = NoteGuessOptions(gdxArrayOf(MeasureSettings(this@ClassicSelectionScreen.selectedClef)))
+                                        options = NoteGuessOptions(
+                                            gdxArrayOf(
+                                                MeasureSettings(this@ClassicSelectionScreen.selectedClef)
+                                            )
+                                        ),
+                                        time = timeSettings
                                     )
                                 ),
                                 Align.right
