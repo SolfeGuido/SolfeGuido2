@@ -44,8 +44,7 @@ class PlayScreen(context: Context) : UIScreen(context) {
                         setOrigin(Align.center)
 
                         onDialogHide {
-                            //TODO: smooth transition
-                            context.inject<StateMachine>().switch<MenuScreen>()
+                            context.inject<StateMachine>().switch<MenuScreen>(align = Align.top)
                         }
                     }.show(this.stage)
                 }
