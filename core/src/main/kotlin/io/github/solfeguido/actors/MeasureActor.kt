@@ -47,15 +47,14 @@ class MeasureActor(
 
     fun checkNote(note: NoteOrderEnum) : Boolean {
         val expected = currentNote().note?.noteOrder ?: return false
-        val event = Pools.obtain(ResultEvent::class.java).apply {
-            this.expected = expected
-            this.actual = note
+        val isCorrect = withPooled<ResultEvent, Boolean> { result ->
+            result.expected = expected
+            result.actual = note
+            val res = result.isCorrect
+            this.fire(result)
+            res
         }
-        val isCorrect = event.isCorrect
-        this.fire(event)
-        Pools.free(event)
         currentNote().consume(isCorrect)
-
         currentNoteIndex++
         return isCorrect
     }
