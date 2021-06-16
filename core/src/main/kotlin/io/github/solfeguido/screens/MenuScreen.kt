@@ -69,17 +69,16 @@ class MenuScreen(context: Context) : UIScreen(context) {
     }
 
     private fun updateBackButton() {
+        // backButton.clearActions()
         if (widgetStack.size > 1) {
-            backButton.clearActions()
             backButton += (Actions.moveTo(
                 -backButton.width,
-                backButton.y
-            ) + Actions.visible(true)) + Actions.moveTo(5f, backButton.y, 0.4f, Interpolation.fade)
+                20f
+            ) + Actions.visible(true)) + Actions.moveTo(5f, 20f, 0.4f, Interpolation.fade)
         } else {
-            backButton.clearActions()
             backButton += Actions.moveTo(
                 -backButton.width,
-                backButton.y,
+                20f,
                 0.4f,
                 Interpolation.fade
             ) + Actions.visible(false)
