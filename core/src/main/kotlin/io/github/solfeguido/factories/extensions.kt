@@ -2,6 +2,7 @@ package io.github.solfeguido.factories
 
 
 import com.badlogic.gdx.scenes.scene2d.Actor
+import com.badlogic.gdx.scenes.scene2d.Event
 import com.badlogic.gdx.utils.Pools
 import io.github.solfeguido.ui.events.*
 
@@ -43,12 +44,18 @@ inline fun <T : Actor> T.onDialogHide(crossinline listener: T.(event: DialogHide
         addListener(it)
     }
 
-inline fun <reified T, R> withPooled(crossinline consumer: (T) -> R): R {
+inline fun <reified T, R : Any> withPooled(crossinline consumer: (T) -> R): R {
     val obtained = Pools.obtain(T::class.java)
     try {
         return consumer.invoke(obtained)
     } finally {
         Pools.free(obtained)
     }
+}
 
+inline fun <reified T : Event> Actor.firePooled(crossinline applier: T.() -> Unit = {}) {
+    withPooled<T, Unit> {
+        applier.invoke(it)
+        this.fire(it)
+    }
 }

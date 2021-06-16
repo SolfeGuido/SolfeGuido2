@@ -12,16 +12,14 @@ import com.badlogic.gdx.scenes.scene2d.ui.Dialog
 import com.badlogic.gdx.scenes.scene2d.ui.Label
 import com.badlogic.gdx.scenes.scene2d.ui.Skin
 import com.badlogic.gdx.utils.Align
-import com.badlogic.gdx.utils.Pools
 import io.github.solfeguido.enums.IconName
 import io.github.solfeguido.factories.colorDrawable
-import io.github.solfeguido.factories.gCol
+import io.github.solfeguido.factories.firePooled
 import io.github.solfeguido.factories.inside
 import io.github.solfeguido.ui.events.DialogHideEvent
 import ktx.actors.div
 import ktx.actors.onClick
 import ktx.actors.plus
-import ktx.actors.plusAssign
 import ktx.scene2d.Scene2DSkin
 import ktx.scene2d.defaultStyle
 import ktx.style.get
@@ -67,9 +65,7 @@ class ZoomDialog(style: String, skin: Skin) : Dialog("", skin, style) {
     }
 
     override fun hide() {
-        val event = Pools.obtain(DialogHideEvent::class.java)
-        fire(event)
-        Pools.free(event)
+        firePooled<DialogHideEvent>()
         super.hide(
                 Actions.fadeOut(0.4f, Interpolation.fade) /
                         Actions.scaleTo(0f, 0f, 0.4f, Interpolation.exp10Out)

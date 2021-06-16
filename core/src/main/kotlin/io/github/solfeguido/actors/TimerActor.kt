@@ -3,11 +3,8 @@ package io.github.solfeguido.actors
 import com.badlogic.gdx.graphics.g2d.Batch
 import com.badlogic.gdx.graphics.g2d.ParticleEffect
 import com.badlogic.gdx.scenes.scene2d.ui.WidgetGroup
-import com.badlogic.gdx.utils.Pools
 import io.github.solfeguido.config.Constants
-import io.github.solfeguido.factories.ParticlePool
-import io.github.solfeguido.factories.colorDrawable
-import io.github.solfeguido.factories.gCol
+import io.github.solfeguido.factories.*
 import io.github.solfeguido.settings.TimeSettings
 import io.github.solfeguido.ui.events.TimerEvent
 import ktx.inject.Context
@@ -80,9 +77,7 @@ class TimerActor(context: Context, settings: TimeSettings) : WidgetGroup() {
 
         current += delta * direction
         if (current !in 0f..max) {
-            val event = Pools.obtain(TimerEvent::class.java)
-            fire(event)
-            Pools.free(event)
+            firePooled<TimerEvent>()
             running = false
         }
     }

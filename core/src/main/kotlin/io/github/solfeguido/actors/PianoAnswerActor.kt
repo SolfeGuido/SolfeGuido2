@@ -3,10 +3,10 @@ package io.github.solfeguido.actors
 import com.badlogic.gdx.scenes.scene2d.ui.Stack
 import com.badlogic.gdx.scenes.scene2d.ui.Table
 import com.badlogic.gdx.utils.Align
-import com.badlogic.gdx.utils.Pools
 import io.github.solfeguido.config.Constants
 import io.github.solfeguido.enums.NoteOrderEnum
 import io.github.solfeguido.enums.PianoKeyTypeEnum
+import io.github.solfeguido.factories.firePooled
 import io.github.solfeguido.ui.PianoKey
 import io.github.solfeguido.ui.events.AnswerGivenEvent
 import ktx.actors.onClick
@@ -26,9 +26,7 @@ class PianoAnswerActor : Stack() {
         val createWhiteKey = { note: NoteOrderEnum ->
             val key = PianoKey(type = PianoKeyTypeEnum.White)
             key.onClick {
-                val event = Pools.obtain(AnswerGivenEvent::class.java).apply { this.note = note }
-                this@PianoAnswerActor.fire(event)
-                Pools.free(event)
+                firePooled<AnswerGivenEvent> { this.note = note }
             }
             whiteKeys.add(key).grow()
         }
@@ -36,9 +34,7 @@ class PianoAnswerActor : Stack() {
         val createBlackKey = { note: NoteOrderEnum, leftPad: Float, rightPad: Float ->
             val key = PianoKey(type = PianoKeyTypeEnum.Black)
             key.onClick {
-                val event = Pools.obtain(AnswerGivenEvent::class.java).apply { this.note = note }
-                this@PianoAnswerActor.fire(event)
-                Pools.free(event)
+                firePooled<AnswerGivenEvent> { this.note = note }
             }
             blackKeys.add(key).grow()
                 .pad(0f, leftPad, 0f, rightPad)
