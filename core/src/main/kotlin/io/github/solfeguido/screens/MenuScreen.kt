@@ -43,6 +43,7 @@ class MenuScreen(context: Context) : UIScreen(context) {
     private lateinit var backButton: Actor
     private lateinit var shownMenu: VisibleMenu
 
+    private val stateMachine : StateMachine = context.inject()
     private val widgetStack = gdxArrayOf<Actor>()
 
 //    override fun keyTyped(character: Char): Boolean {
@@ -154,7 +155,7 @@ class MenuScreen(context: Context) : UIScreen(context) {
                     onClick {
                         context.inject<AssetStorage>().get<Sound>(Constants.CLICK_SOUND).play()
                         this.addAction(Actions.rotateBy(360f, 0.3f))
-                        info { "Show options" }
+                        stateMachine.switch<OptionScreen>()
                     }
                     pad(5f)
                     it.expandX().top().right()
@@ -198,8 +199,8 @@ class MenuScreen(context: Context) : UIScreen(context) {
                             pad(10f)
                             onClick {
                                 val label = Label("Loading", Scene2DSkin.defaultSkin, "contentLabelStyle")
-                                context.inject<StateMachine>()
-                                    .switch<ClassicSelectionScreen>(align = Align.top, actor = label)
+                                stateMachine.switch<ClassicSelectionScreen>(align = Align.top, actor = label)
+
                             }
                         }
                         borderButton("Levels") {
@@ -207,7 +208,7 @@ class MenuScreen(context: Context) : UIScreen(context) {
                             label.setAlignment(Align.right)
                             pad(10f)
                             onClick {
-                                context.inject<StateMachine>().switch<LevelSelectionScreen>(align = Align.bottom)
+                                stateMachine.switch<LevelSelectionScreen>(align = Align.bottom)
                             }
                         }
 //                        borderButton("Ear training") {
@@ -233,7 +234,6 @@ class MenuScreen(context: Context) : UIScreen(context) {
                         //     label.setAlignment(Align.right)
                         //     pad(10f)
                         //     onClick {
-                        //         //TODO: smooth transition
                         //         context.inject<StateMachine>().switch<GameCreationScreen>()
                         //     }
                         // }

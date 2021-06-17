@@ -58,7 +58,7 @@ class TransitionScreen(context: Context) : UIScreen(context) {
             Interpolation.exp10Out
         ) + Actions.run {
             stateMachine.replaceBeforeLast(transition.clazz, transition.parameter)
-        } + Actions.delay(0.1f) + Actions.moveTo(-origin.x, -origin.y, 0.2f, Interpolation.exp10Out) + Actions.run {
+        } + Actions.delay(0.1f) + Actions.moveTo(-origin.x, -origin.y, 0.4f, Interpolation.exp10Out) + Actions.run {
             stateMachine.pop()
         }
 
