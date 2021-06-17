@@ -54,8 +54,9 @@ inline  fun <S> KWidget<S>.timer(
 ) = actor(TimerActor(context, settings), init)
 
 inline fun <S> KWidget<S>.pianoAnswer(
+        showNotes: Boolean = false,
         init: (@Scene2dDsl PianoAnswerActor).(S) -> Unit = {}
-) = actor(PianoAnswerActor(), init)
+) = actor(PianoAnswerActor(showNotes), init)
 
 inline fun <S> KWidget<S>.buttonAnswer(
         init: (@Scene2dDsl ButtonAnswerActor).(S) -> Unit = {}

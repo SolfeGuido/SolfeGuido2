@@ -10,6 +10,7 @@ import io.github.solfeguido.config.Constants
 import io.github.solfeguido.core.StateMachine
 import io.github.solfeguido.core.StateParameter
 import io.github.solfeguido.enums.IconName
+import io.github.solfeguido.enums.PreferenceEnum
 import io.github.solfeguido.factories.borderButton
 import io.github.solfeguido.factories.iconButton
 import io.github.solfeguido.factories.iconCheckBox
@@ -23,14 +24,14 @@ class OptionScreen(context: Context) : UIScreen(context) {
 
     private val preferences: Preferences = context.inject()
 
-    private inline fun <reified T : Any, S> KWidget<S>.preferenceCheckBox(
+    private inline fun <S> KWidget<S>.preferenceCheckBox(
         icon: IconName,
         prefName: String,
-        prefValue: T
+        prefValue: PreferenceEnum
     ): IconCheckBox {
-        val actualValue: T? = preferences[prefName]
+        val actualValue: Int? = preferences[prefName]
         val res = IconCheckBox(icon)
-        res.isChecked = actualValue == prefValue
+        res.isChecked = actualValue == prefValue.value
         res.onClick {
             preferences[prefName] = prefValue
             preferences.flush()
@@ -74,8 +75,8 @@ class OptionScreen(context: Context) : UIScreen(context) {
                         setFontScale(0.7f)
                     }
                     buttonGroup(1, 1) {
-                        preferenceCheckBox(IconName.Mobile, Constants.Preferences.VIBRATIONS, false)
-                        preferenceCheckBox(IconName.MobileVibrate, Constants.Preferences.VIBRATIONS, true)
+                        preferenceCheckBox(IconName.Mobile, Constants.Preferences.VIBRATIONS, PreferenceEnum.Enabled)
+                        preferenceCheckBox(IconName.MobileVibrate, Constants.Preferences.VIBRATIONS, PreferenceEnum.Disabled)
                     }
                     row()
                 }
@@ -84,9 +85,9 @@ class OptionScreen(context: Context) : UIScreen(context) {
                     setFontScale(0.7f)
                 }
                 buttonGroup(1, 1) {
-                    preferenceCheckBox(IconName.RomanNotes, Constants.Preferences.NOTE_STYLE, 0)
-                    preferenceCheckBox(IconName.LatinNotes, Constants.Preferences.NOTE_STYLE, 1)
-                    preferenceCheckBox(IconName.EnglishNotes, Constants.Preferences.NOTE_STYLE, 2)
+                    preferenceCheckBox(IconName.RomanNotes, Constants.Preferences.NOTE_STYLE, PreferenceEnum.RomanNotes)
+                    preferenceCheckBox(IconName.LatinNotes, Constants.Preferences.NOTE_STYLE, PreferenceEnum.LatinNotes)
+                    preferenceCheckBox(IconName.EnglishNotes, Constants.Preferences.NOTE_STYLE, PreferenceEnum.EnglishNotes)
                     it.right()
                 }
 
@@ -96,9 +97,9 @@ class OptionScreen(context: Context) : UIScreen(context) {
                     setFontScale(0.7f)
                 }
                 buttonGroup(1, 1) {
-                    preferenceCheckBox(IconName.NotesButton, Constants.Preferences.BUTTON_STYLE, 0)
-                    preferenceCheckBox(IconName.PianoKeys, Constants.Preferences.BUTTON_STYLE, 1)
-                    preferenceCheckBox(IconName.PianoWithNotes, Constants.Preferences.BUTTON_STYLE, 2)
+                    preferenceCheckBox(IconName.NotesButton, Constants.Preferences.BUTTON_STYLE, PreferenceEnum.NotesButton)
+                    preferenceCheckBox(IconName.PianoKeys, Constants.Preferences.BUTTON_STYLE, PreferenceEnum.PianoKeys)
+                    preferenceCheckBox(IconName.PianoWithNotes, Constants.Preferences.BUTTON_STYLE, PreferenceEnum.PianoWithNotes)
                     it.right()
                 }
 
@@ -108,8 +109,8 @@ class OptionScreen(context: Context) : UIScreen(context) {
                     setFontScale(0.7f)
                 }
                 buttonGroup(1, 1) {
-                    preferenceCheckBox(IconName.Sun, Constants.Preferences.THEME, 0)
-                    preferenceCheckBox(IconName.Moon, Constants.Preferences.THEME, 1)
+                    preferenceCheckBox(IconName.Sun, Constants.Preferences.THEME, PreferenceEnum.Light)
+                    preferenceCheckBox(IconName.Moon, Constants.Preferences.THEME, PreferenceEnum.Dark)
                     it.right()
                 }
 

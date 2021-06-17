@@ -12,7 +12,7 @@ import io.github.solfeguido.ui.events.AnswerGivenEvent
 import ktx.actors.onClick
 
 
-class PianoAnswerActor : Stack() {
+class PianoAnswerActor(val showNotes: Boolean = false) : Stack() {
 
     init {
         debug = false
@@ -24,7 +24,8 @@ class PianoAnswerActor : Stack() {
         //blackKeys.space(10f)
 
         val createWhiteKey = { note: NoteOrderEnum ->
-            val key = PianoKey(type = PianoKeyTypeEnum.White)
+            val text = if(showNotes) note.name else ""
+            val key = PianoKey(text, type = PianoKeyTypeEnum.White)
             key.onClick {
                 firePooled<AnswerGivenEvent> { this.note = note }
             }
@@ -32,7 +33,8 @@ class PianoAnswerActor : Stack() {
         }
 
         val createBlackKey = { note: NoteOrderEnum, leftPad: Float, rightPad: Float ->
-            val key = PianoKey(type = PianoKeyTypeEnum.Black)
+            val text = if(showNotes) note.name else ""
+            val key = PianoKey(text, type = PianoKeyTypeEnum.Black)
             key.onClick {
                 firePooled<AnswerGivenEvent> { this.note = note }
             }

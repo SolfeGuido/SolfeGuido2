@@ -6,6 +6,7 @@ import io.github.solfeguido.enums.IconName
 import io.github.solfeguido.enums.NoteAccidentalEnum
 import io.github.solfeguido.factories.*
 import io.github.solfeguido.ui.AnswerButton
+import io.github.solfeguido.ui.events.AnswerGivenEvent
 import ktx.actors.onClick
 import ktx.collections.GdxArray
 import ktx.collections.gdxArrayOf
@@ -43,6 +44,9 @@ class ButtonAnswerActor : Table(), KTable {
                 }
                 it.grow().pad(5f)
             }
+
+            // Declaring outside of init scope because
+            // we need the "flatBtn" var to make it work
             sharpBtn.onClick {
                 this@ButtonAnswerActor.switchButtonIcons(IconName.SharpAccidental)
                 self.currentAccidental = if(self.currentAccidental == NoteAccidentalEnum.Sharp) {
@@ -64,7 +68,8 @@ class ButtonAnswerActor : Table(), KTable {
 
     private fun noteButton(note: String) = answerButton(note) {
         onClick {
-            //TODO?
+            //TODO: give the correct answer
+            firePooled<AnswerGivenEvent>()
         }
         this@ButtonAnswerActor.noteList.add(this)
         it.grow()
