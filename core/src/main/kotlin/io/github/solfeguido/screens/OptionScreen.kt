@@ -2,24 +2,48 @@ package io.github.solfeguido.screens
 
 import com.badlogic.gdx.Application
 import com.badlogic.gdx.Gdx
+import com.badlogic.gdx.Preferences
 import com.badlogic.gdx.scenes.scene2d.Actor
 import com.badlogic.gdx.utils.Align
+import io.github.solfeguido.actors.IconCheckBox
+import io.github.solfeguido.config.Constants
 import io.github.solfeguido.core.StateMachine
 import io.github.solfeguido.core.StateParameter
 import io.github.solfeguido.enums.IconName
+import io.github.solfeguido.factories.borderButton
 import io.github.solfeguido.factories.iconButton
 import io.github.solfeguido.factories.iconCheckBox
-import io.github.solfeguido.factories.measure
 import ktx.actors.onClick
 import ktx.inject.Context
-import ktx.scene2d.buttonGroup
-import ktx.scene2d.label
-import ktx.scene2d.scene2d
-import ktx.scene2d.table
+import ktx.preferences.get
+import ktx.preferences.set
+import ktx.scene2d.*
 
 class OptionScreen(context: Context) : UIScreen(context) {
 
+    private val preferences: Preferences = context.inject()
+
+    private inline fun <reified T : Any, S> KWidget<S>.preferenceCheckBox(
+        icon: IconName,
+        prefName: String,
+        prefValue: T
+    ): IconCheckBox {
+        val actualValue: T? = preferences[prefName]
+        val res = IconCheckBox(icon)
+        res.isChecked = actualValue == prefValue
+        res.onClick {
+            preferences[prefName] = prefValue
+            preferences.flush()
+        }
+        return actor(res)
+    }
+
     override fun setup(settings: StateParameter): Actor {
+
+        val preferences: Preferences = context.inject()
+        val vibrations: Boolean = preferences["vibrations"] ?: true
+        val noteStyle: Int = preferences["noteStyle"] ?: 0
+        val buttons: Int = preferences["buttonStyle"] ?: 0
 
         return scene2d.table {
             setFillParent(true)
@@ -45,28 +69,72 @@ class OptionScreen(context: Context) : UIScreen(context) {
             }
             row()
             table {
-
                 if (Gdx.app.type == Application.ApplicationType.Android) {
+                    label("Vibrations : ", "contentLabelStyle") {
+                        setFontScale(0.7f)
+                    }
                     buttonGroup(1, 1) {
-                        iconCheckBox(IconName.Mobile)
-                        iconCheckBox(IconName.MobileVibrate)
+                        preferenceCheckBox(IconName.Mobile, Constants.Preferences.VIBRATIONS, false)
+                        preferenceCheckBox(IconName.MobileVibrate, Constants.Preferences.VIBRATIONS, true)
                     }
                     row()
                 }
 
+                label("Note style : ", "contentLabelStyle") {
+                    setFontScale(0.7f)
+                }
                 buttonGroup(1, 1) {
-                    iconCheckBox(IconName.RomanNotes)
-                    iconCheckBox(IconName.LatinNotes)
-                    iconCheckBox(IconName.EnglishNotes)
+                    preferenceCheckBox(IconName.RomanNotes, Constants.Preferences.NOTE_STYLE, 0)
+                    preferenceCheckBox(IconName.LatinNotes, Constants.Preferences.NOTE_STYLE, 1)
+                    preferenceCheckBox(IconName.EnglishNotes, Constants.Preferences.NOTE_STYLE, 2)
+                    it.right()
                 }
 
                 row()
 
-                buttonGroup(1, 1) {
-                    iconCheckBox(IconName.NotesButton)
-                    iconCheckBox(IconName.PianoKeys)
-                    iconCheckBox(IconName.PianoWithNotes)
+                label("Buttons : ", "contentLabelStyle") {
+                    setFontScale(0.7f)
                 }
+                buttonGroup(1, 1) {
+                    preferenceCheckBox(IconName.NotesButton, Constants.Preferences.BUTTON_STYLE, 0)
+                    preferenceCheckBox(IconName.PianoKeys, Constants.Preferences.BUTTON_STYLE, 1)
+                    preferenceCheckBox(IconName.PianoWithNotes, Constants.Preferences.BUTTON_STYLE, 2)
+                    it.right()
+                }
+
+                row()
+
+                label("Theme : ", "contentLabelStyle") {
+                    setFontScale(0.7f)
+                }
+                buttonGroup(1, 1) {
+                    preferenceCheckBox(IconName.Sun, Constants.Preferences.THEME, 0)
+                    preferenceCheckBox(IconName.Moon, Constants.Preferences.THEME, 1)
+                    it.right()
+                }
+
+                row()
+                label("Sound : ", "contentLabelStyle") {
+                    setFontScale(0.7f)
+                }
+                buttonGroup(1, 1) {
+                    iconCheckBox(IconName.VolumeOn)
+                    iconCheckBox(IconName.VolumeOff)
+                    it.right()
+                }
+
+                row()
+
+                borderButton("Menu") {
+                    this.pad(10f)
+                    it.colspan(2)
+                    it.pad(10f)
+
+                    onClick {
+                        context.inject<StateMachine>().switch<MenuScreen>()
+                    }
+                }
+
                 it.grow()
             }
 
