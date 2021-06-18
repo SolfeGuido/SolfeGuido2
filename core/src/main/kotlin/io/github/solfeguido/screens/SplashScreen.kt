@@ -36,7 +36,7 @@ class SplashScreen(context: Context) : UIScreen(context) {
     private var toLoad = 0
 
     override fun setup(settings: StateParameter): Actor {
-        toLoad = 7
+        toLoad = 10
         val jingles: Jingles = context.inject()
         val start = System.currentTimeMillis()
 
@@ -55,6 +55,10 @@ class SplashScreen(context: Context) : UIScreen(context) {
             assetManager.apply {
                 load<Texture>("images/particle.png")
                 load<Texture>("images/appIcon.png")
+                //TODO: could use a texture atlat to load a single file instead
+                load<Texture>("images/flags/en.png")
+                load<Texture>("images/flags/fr.png")
+                load<Texture>("images/flags/sv.png")
 
 
                 jingles.allJingles.map { loadAsync<MidiFile>(it.path()) }.toTypedArray()
@@ -135,7 +139,7 @@ class SplashScreen(context: Context) : UIScreen(context) {
         super.render(delta)
         val prog = assetManager.progress
         if (prog.isFailed) {
-            Gdx.app.log("[FATAL]", "Failed to load games assets")
+            Gdx.app.log("FATAL", "Failed to load games assets")
             Gdx.app.exit()
         } else {
             val progress = ((prog.loaded * 100f) / toLoad)
