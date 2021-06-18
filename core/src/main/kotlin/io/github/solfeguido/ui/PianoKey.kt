@@ -13,6 +13,7 @@ import io.github.solfeguido.factories.colorDrawable
 import io.github.solfeguido.factories.gCol
 import ktx.scene2d.KTable
 import ktx.scene2d.Scene2DSkin
+import ktx.scene2d.label
 import ktx.style.get
 
 class PianoKey(text: String = "", private val type: PianoKeyTypeEnum = PianoKeyTypeEnum.White) :
@@ -26,6 +27,9 @@ class PianoKey(text: String = "", private val type: PianoKeyTypeEnum = PianoKeyT
 
 
     init {
+        if (this.type == PianoKeyTypeEnum.White) {
+            label(text, "contentLabelStyle")
+        }
         this.isTransform = true
         setupListeners()
     }
@@ -45,7 +49,7 @@ class PianoKey(text: String = "", private val type: PianoKeyTypeEnum = PianoKeyT
 
         backgroundDrawable.draw(batch, 0f, 0f, width, height)
         borderDrawable.draw(batch, 0f, 0f, width, BORDER_TICKNESS)
-        borderDrawable.draw(batch, 0f,  height - BORDER_TICKNESS, width, BORDER_TICKNESS)
+        borderDrawable.draw(batch, 0f, height - BORDER_TICKNESS, width, BORDER_TICKNESS)
         borderDrawable.draw(batch, 0f, 0f, BORDER_TICKNESS, height)
         borderDrawable.draw(batch, width - BORDER_TICKNESS, 0f, BORDER_TICKNESS, height)
 
