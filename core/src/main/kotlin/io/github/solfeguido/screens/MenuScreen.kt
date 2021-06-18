@@ -5,8 +5,6 @@ import com.badlogic.gdx.Input
 import com.badlogic.gdx.audio.Sound
 import com.badlogic.gdx.math.Interpolation
 import com.badlogic.gdx.scenes.scene2d.Actor
-import com.badlogic.gdx.scenes.scene2d.InputEvent
-import com.badlogic.gdx.scenes.scene2d.InputListener
 import com.badlogic.gdx.scenes.scene2d.actions.Actions
 import com.badlogic.gdx.scenes.scene2d.ui.Label
 import com.badlogic.gdx.scenes.scene2d.ui.ScrollPane
@@ -29,7 +27,6 @@ import ktx.actors.plusAssign
 import ktx.assets.async.AssetStorage
 import ktx.collections.gdxArrayOf
 import ktx.inject.Context
-import ktx.log.info
 import ktx.scene2d.*
 
 class MenuScreen(context: Context) : UIScreen(context) {
@@ -43,7 +40,7 @@ class MenuScreen(context: Context) : UIScreen(context) {
     private lateinit var backButton: Actor
     private lateinit var shownMenu: VisibleMenu
 
-    private val stateMachine : StateMachine = context.inject()
+    private val stateMachine: StateMachine = context.inject()
     private val widgetStack = gdxArrayOf<Actor>()
 
 //    override fun keyTyped(character: Char): Boolean {
@@ -269,24 +266,18 @@ class MenuScreen(context: Context) : UIScreen(context) {
     override fun fling(velocityX: Float, velocityY: Float, button: Int) =
         velocityX > 1000f && popActor()
 
-    //TODO: handle this on the uiscreen
-//    private fun addListeners() {
-//        val isBackKey: (Int) -> Boolean = { it == Input.Keys.ESCAPE || it == Input.Keys.BACK }
-//        stage.addListener(object : InputListener() {
-//            override fun keyTyped(event: InputEvent, character: Char): Boolean {
-//                if (widgetStack.size == 1) {
-//                    if (isBackKey(event.keyCode)) {
-//                        Gdx.app.exit()
-//                        return true
-//                    }
-//                    return false
-//                }
-//                if (isBackKey(event.keyCode) && !popActor()) {
-//                    return true
-//                }
-//                return false
-//            }
-//        })
-    //}
+
+    override fun keyUp(keycode: Int): Boolean {
+        if (super.keyUp(keycode)) return true
+        val isBackKey: (Int) -> Boolean = { it == Input.Keys.ESCAPE || it == Input.Keys.BACK }
+        if (widgetStack.size == 1) {
+            if (isBackKey(keycode)) {
+                Gdx.app.exit()
+                return true
+            }
+            return false
+        }
+        return isBackKey(keycode) && !popActor()
+    }
 
 }
