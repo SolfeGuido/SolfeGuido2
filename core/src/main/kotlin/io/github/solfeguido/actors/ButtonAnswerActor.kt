@@ -4,6 +4,8 @@ import com.badlogic.gdx.scenes.scene2d.ui.Table
 import io.github.solfeguido.config.Constants
 import io.github.solfeguido.enums.IconName
 import io.github.solfeguido.enums.NoteAccidentalEnum
+import io.github.solfeguido.enums.NoteNameEnum
+import io.github.solfeguido.enums.NoteOrderEnum
 import io.github.solfeguido.factories.*
 import io.github.solfeguido.ui.AnswerButton
 import io.github.solfeguido.ui.events.AnswerGivenEvent
@@ -15,13 +17,14 @@ import ktx.scene2d.table
 
 class ButtonAnswerActor : Table(), KTable {
 
+
     private val noteList : GdxArray<AnswerButton> = gdxArrayOf()
 
     private var currentAccidental: NoteAccidentalEnum = NoteAccidentalEnum.Natural
 
     init {
         debug = false
-        arrayOf("Do", "Ré", "Mi", "Fa", "Sol", "La", "Si").forEach {
+        NoteNameEnum.values().dropLast(1).forEach {
             noteButton(it)
         }
         val self = this
@@ -66,10 +69,18 @@ class ButtonAnswerActor : Table(), KTable {
         answerButton.toggleIcon(icon, index / 40f)
     }
 
-    private fun noteButton(note: String) = answerButton(note) {
+    private fun noteButton(noteName: NoteNameEnum) = answerButton(noteName.value) {
+        val order = noteName.orderEnum
         onClick {
-            //TODO: give the correct answer
-            firePooled<AnswerGivenEvent>()
+            firePooled<AnswerGivenEvent> {
+                val accidental = this@ButtonAnswerActor.currentAccidental
+                note = when(accidental) {
+                    NoteAccidentalEnum.Flat -> order.previous()
+                    NoteAccidentalEnum.Sharp -> order.next()
+                    else -> order
+                }
+                println(note)
+            }
         }
         this@ButtonAnswerActor.noteList.add(this)
         it.grow()

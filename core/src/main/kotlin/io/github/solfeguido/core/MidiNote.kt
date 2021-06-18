@@ -42,7 +42,7 @@ data class MidiNote(
             get() = NOTE_NAMES.size
 
         fun naturalIndexOf(name: NoteNameEnum) =
-            NOTE_NAMES.indexOfFirst { it.getNaturalNote() == name }
+            NOTE_NAMES.indexOfFirst { it.naturalNote == name }
     }
 
     fun getMeasurePosition(base: Int, signature: KeySignatureEnum): Int {

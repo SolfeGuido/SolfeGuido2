@@ -51,7 +51,7 @@ enum class KeySignatureEnum(val symbol: NoteAccidentalEnum, val numberOf: Int, v
 
     fun extractNoteName(note: PossibleNote): NoteNameEnum {
         if(!note.hasNaturalNote()) return note.firstName(symbol)
-        return note.getNaturalNote()
+        return note.naturalNote
     }
 
 }

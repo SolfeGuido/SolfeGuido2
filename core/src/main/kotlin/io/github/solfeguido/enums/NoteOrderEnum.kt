@@ -1,7 +1,5 @@
 package io.github.solfeguido.enums
 
-import java.lang.Error
-
 enum class NoteOrderEnum(val index: Int) {
     C(0),
     CSharp(1),
@@ -16,9 +14,12 @@ enum class NoteOrderEnum(val index: Int) {
     ASharp(10),
     B(11);
 
+    fun previous() = fromIndex(index - 1)
+    fun next() = fromIndex(index + 1)
+
     companion object {
 
-        fun fromIndex(idx: Int): NoteOrderEnum = when (idx) {
+        fun fromIndex(idx: Int): NoteOrderEnum = when (idx.mod(values().size)) {
             0 -> C
             1 -> CSharp
             2 -> D
