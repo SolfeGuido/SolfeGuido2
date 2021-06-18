@@ -33,7 +33,7 @@ class OptionScreen(context: Context) : UIScreen(context) {
         val res = IconCheckBox(icon)
         res.isChecked = actualValue == prefValue.value
         res.onClick {
-            preferences[prefName] = prefValue
+            preferences[prefName] = prefValue.value
             preferences.flush()
         }
         return actor(res)
