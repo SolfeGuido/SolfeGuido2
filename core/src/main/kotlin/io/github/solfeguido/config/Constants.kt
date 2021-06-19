@@ -33,6 +33,9 @@ object Constants {
     const val PIANO_PRESSED_SCALING = 0.9f
     const val FADEOUT_DURATION = 3f
 
+    // Others
+    const val CLASSIC_TIME = 120f
+
     object Preferences {
         const val NOTE_STYLE = "noteStyle"
         const val BUTTON_STYLE = "buttonStyle"
