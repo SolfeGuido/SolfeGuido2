@@ -7,6 +7,7 @@ import com.badlogic.gdx.utils.Align
 import io.github.solfeguido.config.Constants
 import io.github.solfeguido.core.StateMachine
 import io.github.solfeguido.core.StateParameter
+import io.github.solfeguido.core.StatsManager
 import io.github.solfeguido.enums.IconName
 import io.github.solfeguido.enums.PreferenceEnum
 import io.github.solfeguido.factories.*
@@ -26,6 +27,7 @@ class PlayScreen(context: Context) : UIScreen(context) {
     private lateinit var timer: TimeSettings
 
     private val preferences: Preferences = context.inject()
+    private val stats : StatsManager = context.inject()
 
     override fun setup(settings: StateParameter): Actor {
         val options: GameSettings = settings.get()
@@ -58,6 +60,7 @@ class PlayScreen(context: Context) : UIScreen(context) {
             row()
             stack {
                 game.populateScene(this) { result ->
+                    stats.registerResult(result)
                     if (!result.isCorrect) {
                         timer.wrong()
                     } else {
