@@ -1,5 +1,6 @@
 package io.github.solfeguido.core
 
+import com.badlogic.gdx.Gdx
 import com.badlogic.gdx.Screen
 import com.badlogic.gdx.scenes.scene2d.Actor
 import com.badlogic.gdx.utils.Align
@@ -73,6 +74,11 @@ class StateMachine(val context: Context) : Screen {
         val typeClass = Type::class.java
         if (!constructors.containsKey(typeClass)) {
             throw Exception("The constructor $typeClass is not configured in the state machine")
+        }
+
+        if(peek() is TransitionScreen) {
+            // No transition during transition
+            return this
         }
 
         changes.add {
