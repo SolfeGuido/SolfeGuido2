@@ -3,6 +3,7 @@ package io.github.solfeguido.settings.gamemode
 import com.badlogic.gdx.utils.Json
 import com.badlogic.gdx.utils.JsonValue
 import io.github.solfeguido.actors.MeasureActor
+import io.github.solfeguido.core.StatsManager
 import io.github.solfeguido.enums.NoteOrderEnum
 import io.github.solfeguido.factories.measure
 import io.github.solfeguido.factories.onResult
@@ -13,12 +14,14 @@ import io.github.solfeguido.ui.events.ResultEvent
 import ktx.collections.GdxArray
 import ktx.collections.gdxArrayOf
 import ktx.collections.toGdxArray
+import ktx.inject.Context
 import ktx.json.readValue
 import ktx.scene2d.KStack
 
 class NoteGuessOptions(
     var measures: GdxArray<MeasureSettings> = gdxArrayOf(),
-    var generator: IGeneratorOptions = RandomGenerator()
+    var generator: IGeneratorOptions = RandomGenerator(),
+    var isCustom: Boolean = true
 ) : IGameModeOptions {
 
     var currentMeasure = 0
@@ -27,12 +30,14 @@ class NoteGuessOptions(
     override fun read(json: Json, jsonData: JsonValue) {
         measures = json.readValue(jsonData, "measures")
         generator = IGeneratorOptions.toInstance(json, jsonData)
+        isCustom = json.readValue(jsonData, "isCustom")
     }
 
     override fun write(json: Json) {
         super.write(json)
         json.writeValue("measures", measures)
         json.writeValue("generator", generator)
+        json.writeValue("isCustom", isCustom)
     }
 
     override fun populateScene(parent: KStack, resultCallback: (ResultEvent) -> Unit) {
@@ -44,9 +49,13 @@ class NoteGuessOptions(
         }.toGdxArray()
     }
 
-    override fun endGame() {
+    override fun endGame(context: Context, score: Int) {
         actors.forEach {
             it.terminate()
+        }
+
+        if(measures.size == 1 && !isCustom) {
+            context.inject<StatsManager>().saveGameScore(measures[0].clef, score)
         }
     }
 
@@ -55,4 +64,5 @@ class NoteGuessOptions(
         currentMeasure = (currentMeasure + 1) % actors.size
         return measure.checkNote(note)
     }
+
 }

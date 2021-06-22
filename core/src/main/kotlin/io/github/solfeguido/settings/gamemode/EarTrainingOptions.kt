@@ -8,6 +8,7 @@ import io.github.solfeguido.settings.MeasureSettings
 import io.github.solfeguido.settings.generator.IGeneratorOptions
 import io.github.solfeguido.settings.generator.RandomGenerator
 import io.github.solfeguido.ui.events.ResultEvent
+import ktx.inject.Context
 import ktx.json.*
 import ktx.scene2d.KStack
 
@@ -34,7 +35,7 @@ class EarTrainingOptions : IGameModeOptions {
     // TODO
     }
 
-    override fun endGame() {
+    override fun endGame(context: Context, score: Int) {
         // TODO
     }
 

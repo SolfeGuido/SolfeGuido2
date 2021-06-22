@@ -7,6 +7,7 @@ import io.github.solfeguido.enums.KeySignatureEnum
 import io.github.solfeguido.enums.NoteOrderEnum
 import io.github.solfeguido.ui.events.ResultEvent
 import ktx.collections.gdxArrayOf
+import ktx.inject.Context
 import ktx.json.*
 import ktx.scene2d.KStack
 
@@ -27,7 +28,7 @@ class KeySignatureGuessOptions : IGameModeOptions {
 
     }
 
-    override fun endGame() {
+    override fun endGame(context: Context, score: Int) {
         // TODO
     }
 

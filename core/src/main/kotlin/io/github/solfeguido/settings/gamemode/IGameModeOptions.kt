@@ -8,6 +8,7 @@ import io.github.solfeguido.enums.NoteOrderEnum
 import io.github.solfeguido.settings.MeasureSettings
 import io.github.solfeguido.ui.events.ResultEvent
 import ktx.collections.gdxArrayOf
+import ktx.inject.Context
 import ktx.json.readValue
 import ktx.scene2d.KStack
 
@@ -51,5 +52,6 @@ sealed interface IGameModeOptions : Json.Serializable {
 
     fun validateNote(note: NoteOrderEnum): Boolean
 
-    fun endGame()
+    fun endGame(context: Context, score: Int)
+
 }
