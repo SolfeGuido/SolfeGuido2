@@ -9,10 +9,7 @@ import com.badlogic.gdx.scenes.scene2d.Actor
 import com.badlogic.gdx.scenes.scene2d.ui.Label
 import com.badlogic.gdx.scenes.scene2d.ui.ProgressBar
 import io.github.solfeguido.config.Constants
-import io.github.solfeguido.core.Jingles
-import io.github.solfeguido.core.SoundHelper
-import io.github.solfeguido.core.StateMachine
-import io.github.solfeguido.core.StateParameter
+import io.github.solfeguido.core.*
 import io.github.solfeguido.enums.IconName
 import io.github.solfeguido.loaders.FontLoader
 import io.github.solfeguido.loaders.MidiLoader
@@ -42,6 +39,10 @@ class SplashScreen(context: Context) : UIScreen(context) {
 
         KtxAsync.launch {
             val soundHelper: SoundHelper = context.inject()
+            val stats : StatsManager = context.inject()
+
+            stats.loadSave()
+
             toLoad += jingles.allJingles.size + soundHelper.existingSounds.size
 
             // Set midi file loader

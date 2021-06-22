@@ -41,15 +41,16 @@ class SolfeGuido : ApplicationListener {
             .addScreen<ClassicSelectionScreen>()
             .addScreen<OptionScreen>()
 
+        val gamePreferences = Gdx.app.getPreferences(Constants.PREFERENCES_NAME)
 
         context.register {
-            bindSingleton(Gdx.app.getPreferences(Constants.PREFERENCES_NAME))
+            bindSingleton(gamePreferences)
             bindSingleton(ParticlePool(context))
             bindSingleton(Jingles(context))
             bindSingleton(AssetStorage(asyncContext = newAsyncContext(2)))
             bindSingleton(SoundHelper(context))
             bindSingleton(stateMachine)
-            bindSingleton(StatsManager())
+            bindSingleton(StatsManager(gamePreferences))
         }
 
         Gdx.input.setCatchKey(Input.Keys.BACK, true)

@@ -27,7 +27,7 @@ class PlayScreen(context: Context) : UIScreen(context) {
     private lateinit var timer: TimeSettings
 
     private val preferences: Preferences = context.inject()
-    private val stats : StatsManager = context.inject()
+    private val stats: StatsManager = context.inject()
 
     override fun setup(settings: StateParameter): Actor {
         val options: GameSettings = settings.get()
@@ -52,7 +52,10 @@ class PlayScreen(context: Context) : UIScreen(context) {
                         setOrigin(Align.center)
 
                         onDialogHide {
-                            context.inject<StateMachine>().switch<MenuScreen>(align = Align.top)
+                            context.inject<StateMachine>().switch<MenuScreen>(
+                                align = Align.top,
+                                param = StateParameter.witType(MenuScreen.VisibleMenu.Play)
+                            )
                         }
                     }.show(this.stage)
                 }

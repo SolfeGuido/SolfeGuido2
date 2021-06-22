@@ -51,5 +51,5 @@ sealed interface IGameModeOptions : Json.Serializable {
 
     fun validateNote(note: NoteOrderEnum): Boolean
 
-    fun endGame() : Unit
+    fun endGame()
 }
