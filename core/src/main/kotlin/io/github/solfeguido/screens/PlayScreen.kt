@@ -4,6 +4,7 @@ import com.badlogic.gdx.Gdx
 import com.badlogic.gdx.Preferences
 import com.badlogic.gdx.scenes.scene2d.Actor
 import com.badlogic.gdx.utils.Align
+import io.github.solfeguido.actors.ScoreActor
 import io.github.solfeguido.config.Constants
 import io.github.solfeguido.core.StateMachine
 import io.github.solfeguido.core.StateParameter
@@ -36,6 +37,7 @@ class PlayScreen(context: Context) : UIScreen(context) {
         Gdx.input.inputProcessor = null
 
         val answerType: Int? = preferences[Constants.Preferences.BUTTON_STYLE] ?: 0
+        lateinit var scoreActor: ScoreActor
 
         return scene2d.table {
             debug = true
@@ -44,11 +46,11 @@ class PlayScreen(context: Context) : UIScreen(context) {
             align(Align.center)
             val timer = timer(context, timer) {
                 onTimerEnd {
-                    game.endGame(context, 0)
+                    game.endGame(context, scoreActor.score)
 
                     scene2d.zoomDialog {
                         title("Finished !")
-                        line("your score is ...")
+                        line("your score is ... ${scoreActor.score}")
                         borderButton("Ok").actor.icon(IconName.Check, 0.5f)
                         setOrigin(Align.center)
 
@@ -63,11 +65,19 @@ class PlayScreen(context: Context) : UIScreen(context) {
             }
             row()
             stack {
+                scoreActor = score(0) {
+                    setFillParent(true)
+                    align(Align.topLeft)
+                    pad(2f, 10f, 0f, 10f)
+                    setPosition(0f, 0f)
+                }
                 game.populateScene(this) { result ->
                     stats.registerResult(result)
                     if (!result.isCorrect) {
+                        scoreActor.negativeAnimation()
                         timer.wrong()
                     } else {
+                        scoreActor.addPoint()
                         timer.correct()
                     }
                 }
