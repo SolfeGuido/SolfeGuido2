@@ -1,6 +1,7 @@
 package io.github.solfeguido.screens
 
 import com.badlogic.gdx.Gdx
+import com.badlogic.gdx.Input
 import com.badlogic.gdx.InputMultiplexer
 import com.badlogic.gdx.InputProcessor
 import com.badlogic.gdx.input.GestureDetector
@@ -33,6 +34,7 @@ abstract class UIScreen(protected val context: Context) : KtxScreen, InputProces
 
     protected abstract fun setup(settings: StateParameter): Actor
 
+    protected open fun back(): Boolean = false
 
     fun <S> KWidget<S>.slidingTable(
         align: Int,
@@ -56,7 +58,9 @@ abstract class UIScreen(protected val context: Context) : KtxScreen, InputProces
 
     override fun keyDown(keycode: Int) = stage.keyDown(keycode)
     override fun keyTyped(character: Char) = stage.keyTyped(character)
-    override fun keyUp(keycode: Int) = stage.keyUp(keycode)
+    override fun keyUp(keycode: Int) =
+        stage.keyUp(keycode) || (keycode == Input.Keys.ESCAPE || keycode == Input.Keys.BACK) && back()
+
     override fun mouseMoved(screenX: Int, screenY: Int) = stage.mouseMoved(screenX, screenY)
     override fun scrolled(amountX: Float, amountY: Float) = stage.scrolled(amountX, amountY)
     override fun touchDown(screenX: Int, screenY: Int, pointer: Int, button: Int) =

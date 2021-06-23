@@ -98,6 +98,5 @@ class PlayScreen(context: Context) : UIScreen(context) {
                 }
             }
         }
-
     }
 }

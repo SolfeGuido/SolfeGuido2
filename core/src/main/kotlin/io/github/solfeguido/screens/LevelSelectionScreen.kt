@@ -8,12 +8,12 @@ import io.github.solfeguido.enums.IconName
 import io.github.solfeguido.factories.borderButton
 import io.github.solfeguido.factories.iconButton
 import ktx.actors.onClick
-import ktx.actors.plusAssign
 import ktx.inject.Context
 import ktx.scene2d.*
 
 class LevelSelectionScreen(context: Context) : UIScreen(context) {
 
+    private val stateMachine: StateMachine = context.inject()
 
     override fun setup(settings: StateParameter): Actor {
         return scene2d.table {
@@ -24,7 +24,7 @@ class LevelSelectionScreen(context: Context) : UIScreen(context) {
             slidingTable(Align.top) {
                 iconButton(IconName.Home) {
                     onClick {
-                        context.inject<StateMachine>().switch<MenuScreen>(
+                        stateMachine.switch<MenuScreen>(
                             StateParameter.witType(MenuScreen.VisibleMenu.LevelKeySelection),
                             Align.top
                         )
@@ -46,7 +46,7 @@ class LevelSelectionScreen(context: Context) : UIScreen(context) {
                 fadeScrollBars = false
                 setOrigin(Align.center)
                 verticalGroup {
-                    for(i in 1..20) {
+                    for (i in 1..20) {
                         borderButton("Level $i") {
                             icon(IconName.FullStar)
                         }
@@ -62,5 +62,13 @@ class LevelSelectionScreen(context: Context) : UIScreen(context) {
                 it.grow()
             }
         }
+    }
+
+    override fun back(): Boolean {
+        stateMachine.switch<MenuScreen>(
+            align = Align.top,
+            param = StateParameter.witType(MenuScreen.VisibleMenu.LevelKeySelection)
+        )
+        return true
     }
 }

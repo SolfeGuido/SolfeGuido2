@@ -24,6 +24,8 @@ class ClassicSelectionScreen(context: Context) : UIScreen(context) {
     private var selectedClef = ClefEnum.GClef
     private var timeSettings = TimeSettings.ClassicCountdownMode
 
+    private val stateMachine: StateMachine = context.inject()
+
     override fun setup(settings: StateParameter): Actor {
         val clefClick: (Actor, ClefEnum) -> Unit = { test, clef ->
             test.onClick {
@@ -47,11 +49,10 @@ class ClassicSelectionScreen(context: Context) : UIScreen(context) {
             slidingTable(Align.top) {
                 iconButton(IconName.Home) {
                     onClick {
-                        context.inject<StateMachine>()
-                            .switch<MenuScreen>(
-                                StateParameter.witType(MenuScreen.VisibleMenu.Play),
-                                Align.bottom
-                            )
+                        stateMachine.switch<MenuScreen>(
+                            StateParameter.witType(MenuScreen.VisibleMenu.Play),
+                            Align.bottom
+                        )
                     }
                     pad(5f)
                     it.top().left()
@@ -96,7 +97,7 @@ class ClassicSelectionScreen(context: Context) : UIScreen(context) {
                         pad(5f)
 
                         onClick {
-                            context.inject<StateMachine>().switch<PlayScreen>(
+                            stateMachine.switch<PlayScreen>(
                                 StateParameter.witType(
                                     GameSettings(
                                         options = NoteGuessOptions(
@@ -116,6 +117,14 @@ class ClassicSelectionScreen(context: Context) : UIScreen(context) {
                 it.grow()
             }
         }
+    }
+
+    override fun back(): Boolean {
+        stateMachine.switch<MenuScreen>(
+            align = Align.bottom,
+            param = StateParameter.witType(MenuScreen.VisibleMenu.Play)
+        )
+        return true
     }
 
 }

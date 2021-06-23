@@ -304,17 +304,12 @@ class MenuScreen(context: Context) : UIScreen(context) {
         velocityX > 1000f && popActor()
 
 
-    override fun keyUp(keycode: Int): Boolean {
-        if (super.keyUp(keycode)) return true
-        val isBackKey: (Int) -> Boolean = { it == Input.Keys.ESCAPE || it == Input.Keys.BACK }
-        if (widgetStack.size == 1) {
-            if (isBackKey(keycode)) {
-                Gdx.app.exit()
-                return true
-            }
-            return false
+    override fun back(): Boolean {
+        if(widgetStack.size == 1) {
+            Gdx.app.exit()
+            return true
         }
-        return isBackKey(keycode) && !popActor()
+        return popActor()
     }
 
 }
