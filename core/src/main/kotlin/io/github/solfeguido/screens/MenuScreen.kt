@@ -33,7 +33,8 @@ class MenuScreen(context: Context) : UIScreen(context) {
 
     enum class VisibleMenu {
         Root,
-        Play
+        Play,
+        LevelKeySelection
     }
 
     private lateinit var measure: MeasureActor
@@ -68,13 +69,14 @@ class MenuScreen(context: Context) : UIScreen(context) {
 
     private fun updateBackButton() {
         // backButton.clearActions()
-        if (widgetStack.size > 1) {
-            backButton += (Actions.moveTo(
+        backButton += if (widgetStack.size > 1) {
+            if(backButton.isVisible) return
+            (Actions.moveTo(
                 -backButton.width,
                 20f
             ) + Actions.visible(true)) + Actions.moveTo(5f, 20f, 0.4f, Interpolation.fade)
         } else {
-            backButton += Actions.moveTo(
+            Actions.moveTo(
                 -backButton.width,
                 20f,
                 0.4f,
@@ -87,7 +89,7 @@ class MenuScreen(context: Context) : UIScreen(context) {
         val top = widgetStack.last()
         top.clearActions()
         actor.clearActions()
-        val shift = if (widgetStack.size == 1) -stage.width else -(top.width / 4f)
+        val shift = -stage.width
 
         top += Actions.moveBy(shift, 0f, 0.4f, Interpolation.exp10Out) + Actions.visible(
             widgetStack.size != 1
@@ -129,6 +131,7 @@ class MenuScreen(context: Context) : UIScreen(context) {
 
         lateinit var playMenu: Table
         lateinit var playOptions: ScrollPane
+        lateinit var levelKeyOptions: ScrollPane
         lateinit var keyOptions: Actor
         return scene2d.table {
             setFillParent(true)
@@ -205,7 +208,7 @@ class MenuScreen(context: Context) : UIScreen(context) {
                             label.setAlignment(Align.right)
                             pad(10f)
                             onClick {
-                                stateMachine.switch<LevelSelectionScreen>(align = Align.bottom)
+                                pushActor(levelKeyOptions)
                             }
                         }
 //                        borderButton("Ear training") {
@@ -254,8 +257,42 @@ class MenuScreen(context: Context) : UIScreen(context) {
                         this.space(10f)
                     }
                 }
+
+                levelKeyOptions = scrollPane {
+                    this.setScrollbarsVisible(false)
+                    fadeScrollBars = false
+                    setOrigin(Align.center)
+                    isVisible = shownMenu == VisibleMenu.LevelKeySelection
+                    verticalGroup {
+
+                        ClefEnum.values().forEach { clef ->
+                            borderButton(clef.name) {
+                                icon(clef.icon)
+                                label.setAlignment(Align.right)
+                                pad(10f)
+                                onClick {
+                                    stateMachine.switch<LevelSelectionScreen>(
+                                        align = Align.bottom,
+                                        param = StateParameter.witType(clef)
+                                    )
+                                }
+                            }
+                        }
+
+                        fill()
+                        center()
+                        padTop(10f)
+                        padBottom(10f)
+                        this.space(10f)
+                    }
+                }
+
                 if (shownMenu == VisibleMenu.Play) {
                     widgetStack.add(playOptions)
+                    updateBackButton()
+                } else if(shownMenu == VisibleMenu.LevelKeySelection) {
+                    widgetStack.add(playOptions)
+                    widgetStack.add(levelKeyOptions)
                     updateBackButton()
                 }
                 it.grow()

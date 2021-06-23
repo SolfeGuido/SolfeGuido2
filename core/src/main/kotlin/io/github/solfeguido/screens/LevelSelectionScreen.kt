@@ -27,7 +27,7 @@ class LevelSelectionScreen(context: Context) : UIScreen(context) {
                 iconButton(IconName.Home) {
                     onClick {
                         context.inject<StateMachine>().switch<MenuScreen>(
-                            StateParameter.witType(MenuScreen.VisibleMenu.Play),
+                            StateParameter.witType(MenuScreen.VisibleMenu.LevelKeySelection),
                             Align.top
                         )
                     }

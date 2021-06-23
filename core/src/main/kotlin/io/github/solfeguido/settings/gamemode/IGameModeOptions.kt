@@ -34,9 +34,10 @@ sealed interface IGameModeOptions : Json.Serializable {
                     clef = clef,
                     canHaveAccidentals = false,
                     minNote = 60,
-                    maxNote = 90
-                )
-            )
+                    maxNote = 90,
+                    )
+            ),
+            isCustom = false
         )
 
     }
