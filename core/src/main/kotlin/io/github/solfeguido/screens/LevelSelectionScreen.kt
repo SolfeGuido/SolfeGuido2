@@ -5,14 +5,12 @@ import com.badlogic.gdx.utils.Align
 import io.github.solfeguido.core.StateMachine
 import io.github.solfeguido.core.StateParameter
 import io.github.solfeguido.enums.IconName
+import io.github.solfeguido.factories.borderButton
 import io.github.solfeguido.factories.iconButton
 import ktx.actors.onClick
 import ktx.actors.plusAssign
 import ktx.inject.Context
-import ktx.scene2d.label
-import ktx.scene2d.scene2d
-import ktx.scene2d.stack
-import ktx.scene2d.table
+import ktx.scene2d.*
 
 class LevelSelectionScreen(context: Context) : UIScreen(context) {
 
@@ -43,8 +41,24 @@ class LevelSelectionScreen(context: Context) : UIScreen(context) {
 
             row()
 
-            stack {
-                label("Test")
+            scrollPane {
+                this.setScrollbarsVisible(false)
+                fadeScrollBars = false
+                setOrigin(Align.center)
+                verticalGroup {
+                    for(i in 1..20) {
+                        borderButton("Level $i") {
+                            icon(IconName.FullStar)
+                        }
+                    }
+
+                    fill()
+                    center()
+                    padTop(10f)
+                    padBottom(10f)
+                    space(10f)
+                }
+
                 it.grow()
             }
         }
