@@ -41,5 +41,6 @@ object Constants {
         const val BUTTON_STYLE = "buttonStyle"
         const val VIBRATIONS = "vibrations"
         const val THEME = "theme"
+        const val LEVELS = "level"
     }
 }

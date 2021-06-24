@@ -6,10 +6,7 @@ import com.badlogic.gdx.Input
 import com.badlogic.gdx.graphics.Color
 import com.badlogic.gdx.graphics.GL20
 import io.github.solfeguido.config.Constants
-import io.github.solfeguido.core.Jingles
-import io.github.solfeguido.core.SoundHelper
-import io.github.solfeguido.core.StateMachine
-import io.github.solfeguido.core.StatsManager
+import io.github.solfeguido.core.*
 import io.github.solfeguido.factories.ParticlePool
 import io.github.solfeguido.factories.gCol
 import io.github.solfeguido.screens.*
@@ -51,6 +48,7 @@ class SolfeGuido : ApplicationListener {
             bindSingleton(SoundHelper(context))
             bindSingleton(stateMachine)
             bindSingleton(StatsManager(gamePreferences))
+            bindSingleton(LevelManager(gamePreferences))
         }
 
         Gdx.input.setCatchKey(Input.Keys.BACK, true)

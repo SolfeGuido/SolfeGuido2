@@ -40,8 +40,10 @@ class SplashScreen(context: Context) : UIScreen(context) {
         KtxAsync.launch {
             val soundHelper: SoundHelper = context.inject()
             val stats : StatsManager = context.inject()
+            val levels : LevelManager = context.inject()
 
             stats.loadSave()
+            levels.load()
 
             toLoad += jingles.allJingles.size + soundHelper.existingSounds.size
 
