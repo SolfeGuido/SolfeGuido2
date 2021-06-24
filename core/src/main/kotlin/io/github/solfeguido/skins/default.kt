@@ -72,6 +72,7 @@ fun getDefaultSkin(assetManager: AssetStorage): Skin{
             labelStyle = "contentLabelStyle"
             borderThickness = 1.3f
             borderColor = gCol("font")
+            //disabledColor = gCol("fontHover")
         }
 
         textButton(name = "blackPianoKey")  {

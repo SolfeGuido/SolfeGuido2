@@ -19,7 +19,6 @@ class LevelSelectionScreen(context: Context) : UIScreen(context) {
     private val stateMachine: StateMachine = context.inject()
 
     override fun setup(settings: StateParameter): Actor {
-        val labels = mutableListOf<Label>()
         return scene2d.table {
             setFillParent(true)
             setPosition(0f, 0f)

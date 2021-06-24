@@ -7,7 +7,10 @@ import com.badlogic.gdx.scenes.scene2d.Actor
 import com.badlogic.gdx.scenes.scene2d.Group
 import com.badlogic.gdx.scenes.scene2d.InputEvent
 import com.badlogic.gdx.scenes.scene2d.actions.Actions
-import com.badlogic.gdx.scenes.scene2d.ui.*
+import com.badlogic.gdx.scenes.scene2d.ui.Button
+import com.badlogic.gdx.scenes.scene2d.ui.Cell
+import com.badlogic.gdx.scenes.scene2d.ui.Label
+import com.badlogic.gdx.scenes.scene2d.ui.Skin
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener
 import com.badlogic.gdx.scenes.scene2d.utils.Drawable
 import com.badlogic.gdx.utils.Align
@@ -16,9 +19,11 @@ import io.github.solfeguido.enums.IconName
 import io.github.solfeguido.factories.colorDrawable
 import io.github.solfeguido.factories.gCol
 import ktx.actors.plusAssign
-import ktx.scene2d.*
-import  ktx.style.get
+import ktx.scene2d.KTable
+import ktx.scene2d.Scene2dDsl
+import ktx.scene2d.label
 import ktx.style.defaultStyle
+import ktx.style.get
 
 @Scene2dDsl
 class STextButton(text: String, buttonStyle: STextButtonStyle) : Button(buttonStyle), KTable {
@@ -73,10 +78,18 @@ class STextButton(text: String, buttonStyle: STextButtonStyle) : Button(buttonSt
 
     override fun draw(batch: Batch, parentAlpha: Float) {
         applyTransform(batch, computeTransform())
+        val alphaMult = if(isDisabled) 0.5f else 1f
         val c = color
-        batch.setColor(c.r, c.g, c.b, c.a * parentAlpha)
+        val alpha = c.a * parentAlpha * alphaMult
+        batch.setColor(c.r, c.g, c.b, alpha)
         if (style.borderThickness > 0f) {
-            mBorderDrawable.draw(batch, -style.borderThickness, -style.borderThickness, width + (style.borderThickness * 2), height + (style.borderThickness * 2))
+            mBorderDrawable.draw(
+                batch,
+                -style.borderThickness,
+                -style.borderThickness,
+                width + (style.borderThickness * 2),
+                height + (style.borderThickness * 2)
+            )
         }
 
         mBackgroundDrawable.draw(batch, 0f, 0f, width, height)
@@ -84,7 +97,7 @@ class STextButton(text: String, buttonStyle: STextButtonStyle) : Button(buttonSt
         resetTransform(batch)
 
 
-        super.draw(batch, parentAlpha)
+        super.draw(batch, alpha)
     }
 
     private fun initialize() {
@@ -103,14 +116,20 @@ class STextButton(text: String, buttonStyle: STextButtonStyle) : Button(buttonSt
 
             override fun clicked(event: InputEvent?, x: Float, y: Float) {
                 super.clicked(event, x, y)
-
                 self.isDisabled = self.disableOnPressed
             }
 
             override fun touchDown(event: InputEvent?, x: Float, y: Float, pointer: Int, button: Int): Boolean {
                 if (self.isDisabled) return false
                 val res = super.touchDown(event, x, y, pointer, button)
-                self.addAction(Actions.scaleTo(Constants.PRESSED_SCALING, Constants.PRESSED_SCALING, .2f, Interpolation.exp10Out))
+                self.addAction(
+                    Actions.scaleTo(
+                        Constants.PRESSED_SCALING,
+                        Constants.PRESSED_SCALING,
+                        .2f,
+                        Interpolation.exp10Out
+                    )
+                )
                 return res
             }
 
