@@ -1,11 +1,14 @@
 package io.github.solfeguido.screens
 
 import com.badlogic.gdx.scenes.scene2d.Actor
+import com.badlogic.gdx.scenes.scene2d.ui.Label
 import com.badlogic.gdx.utils.Align
 import io.github.solfeguido.core.StateMachine
 import io.github.solfeguido.core.StateParameter
 import io.github.solfeguido.enums.IconName
 import io.github.solfeguido.factories.borderButton
+import io.github.solfeguido.factories.gCol
+import io.github.solfeguido.factories.icon
 import io.github.solfeguido.factories.iconButton
 import ktx.actors.onClick
 import ktx.inject.Context
@@ -16,6 +19,7 @@ class LevelSelectionScreen(context: Context) : UIScreen(context) {
     private val stateMachine: StateMachine = context.inject()
 
     override fun setup(settings: StateParameter): Actor {
+        val labels = mutableListOf<Label>()
         return scene2d.table {
             setFillParent(true)
             setPosition(0f, 0f)
@@ -45,23 +49,31 @@ class LevelSelectionScreen(context: Context) : UIScreen(context) {
                 this.setScrollbarsVisible(false)
                 fadeScrollBars = false
                 setOrigin(Align.center)
-                verticalGroup {
+                table {
                     for (i in 1..20) {
-                        borderButton("Level $i") {
-                            icon(IconName.FullStar)
+                        for(star in 1..5) {
+                            icon(IconName.FullStar) {
+                                color = gCol("font")
+                                it.pad(15f, 2f, 15f, 2f)
+                            }
                         }
+                        borderButton("Level $i") {
+                            pad(5f)
+                            isDisabled = i >= 10
+                            icon(if(isDisabled) IconName.Lock else IconName.Play).right()
+                            label.setAlignment(Align.right)
+                            it.fill()
+                        }
+                        row()
                     }
 
-                    fill()
                     center()
-                    padTop(10f)
-                    padBottom(10f)
-                    space(10f)
                 }
 
                 it.grow()
             }
         }
+
     }
 
     override fun back(): Boolean {

@@ -91,8 +91,8 @@ class STextButton(text: String, buttonStyle: STextButtonStyle) : Button(buttonSt
         val self = this
         addListener(object : ClickListener() {
             override fun enter(event: InputEvent?, x: Float, y: Float, pointer: Int, fromActor: Actor?) {
-                super.enter(event, x, y, pointer, fromActor)
                 if (self.isDisabled) return
+                super.enter(event, x, y, pointer, fromActor)
                 self.label.addAction(Actions.color(gCol("fontHover"), 0.2f))
             }
 
@@ -108,15 +108,15 @@ class STextButton(text: String, buttonStyle: STextButtonStyle) : Button(buttonSt
             }
 
             override fun touchDown(event: InputEvent?, x: Float, y: Float, pointer: Int, button: Int): Boolean {
+                if (self.isDisabled) return false
                 val res = super.touchDown(event, x, y, pointer, button)
-                if (self.isDisabled) return res
                 self.addAction(Actions.scaleTo(Constants.PRESSED_SCALING, Constants.PRESSED_SCALING, .2f, Interpolation.exp10Out))
                 return res
             }
 
             override fun touchUp(event: InputEvent?, x: Float, y: Float, pointer: Int, button: Int) {
-                super.touchUp(event, x, y, pointer, button)
                 if (isDisabled) return
+                super.touchUp(event, x, y, pointer, button)
                 self.addAction(Actions.scaleTo(1f, 1f, .2f, Interpolation.exp10Out))
             }
         })
