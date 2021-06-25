@@ -111,6 +111,7 @@ class SplashScreen(context: Context) : UIScreen(context) {
         }.invokeOnCompletion {
             it?.let {
                 ktx.log.error(it, "FATAL") { "Failed to load game assets" }
+                Gdx.app.exit()
             } ?: kotlin.run {
                 val end = System.currentTimeMillis()
                 info("START") { "Assets loaded in ${end - start}ms" }
