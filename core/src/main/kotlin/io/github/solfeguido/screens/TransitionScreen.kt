@@ -1,6 +1,5 @@
 package io.github.solfeguido.screens
 
-import com.badlogic.gdx.graphics.Color
 import com.badlogic.gdx.math.Interpolation
 import com.badlogic.gdx.math.Vector2
 import com.badlogic.gdx.scenes.scene2d.Actor
@@ -14,7 +13,6 @@ import io.github.solfeguido.factories.gCol
 import ktx.actors.plus
 import ktx.actors.plusAssign
 import ktx.inject.Context
-import ktx.scene2d.label
 import ktx.scene2d.scene2d
 import ktx.scene2d.table
 

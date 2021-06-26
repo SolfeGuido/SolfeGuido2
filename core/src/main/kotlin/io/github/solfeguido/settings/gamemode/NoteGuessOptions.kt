@@ -18,7 +18,7 @@ import ktx.inject.Context
 import ktx.json.readValue
 import ktx.scene2d.KStack
 
-class NoteGuessOptions(
+open class NoteGuessOptions(
     var measures: GdxArray<MeasureSettings> = gdxArrayOf(),
     var generator: IGeneratorOptions = RandomGenerator(),
     var isCustom: Boolean = true

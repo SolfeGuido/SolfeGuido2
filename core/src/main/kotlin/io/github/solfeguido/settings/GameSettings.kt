@@ -19,6 +19,11 @@ class GameSettings(
             options = IGameModeOptions.classicGame(clef)
         )
 
+        fun levelGame(clef: ClefEnum, level: Int) = GameSettings(
+            time = TimeSettings.ClassicCountdownMode,
+            options = IGameModeOptions.levelGame(clef, level)
+        )
+
     }
 
     override fun write(json: Json) {

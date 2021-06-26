@@ -22,6 +22,7 @@ class LevelManager(private val preferences: Preferences) {
         val exist = levelScores.get(clef, obj)
         if (exist.score < score) {
             levelScores[clef] = obj
+            save()
             return true
         }
         return false

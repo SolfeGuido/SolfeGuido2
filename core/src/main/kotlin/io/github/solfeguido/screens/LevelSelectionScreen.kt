@@ -1,24 +1,29 @@
 package io.github.solfeguido.screens
 
 import com.badlogic.gdx.scenes.scene2d.Actor
-import com.badlogic.gdx.scenes.scene2d.ui.Label
 import com.badlogic.gdx.utils.Align
 import io.github.solfeguido.core.StateMachine
 import io.github.solfeguido.core.StateParameter
+import io.github.solfeguido.enums.ClefEnum
 import io.github.solfeguido.enums.IconName
 import io.github.solfeguido.factories.borderButton
 import io.github.solfeguido.factories.gCol
 import io.github.solfeguido.factories.icon
 import io.github.solfeguido.factories.iconButton
+import io.github.solfeguido.settings.GameSettings
 import ktx.actors.onClick
 import ktx.inject.Context
-import ktx.scene2d.*
+import ktx.scene2d.label
+import ktx.scene2d.scene2d
+import ktx.scene2d.scrollPane
+import ktx.scene2d.table
 
 class LevelSelectionScreen(context: Context) : UIScreen(context) {
 
     private val stateMachine: StateMachine = context.inject()
 
     override fun setup(settings: StateParameter): Actor {
+        val clef = settings.get<ClefEnum>()
         return scene2d.table {
             setFillParent(true)
             setPosition(0f, 0f)
@@ -50,7 +55,7 @@ class LevelSelectionScreen(context: Context) : UIScreen(context) {
                 setOrigin(Align.center)
                 table {
                     for (i in 1..20) {
-                        for(star in 1..5) {
+                        for (star in 1..5) {
                             icon(IconName.FullStar) {
                                 color = gCol("font")
                                 it.pad(15f, 2f, 15f, 2f)
@@ -59,9 +64,18 @@ class LevelSelectionScreen(context: Context) : UIScreen(context) {
                         borderButton("Level $i") {
                             pad(5f)
                             isDisabled = i >= 10
-                            icon(if(isDisabled) IconName.Lock else IconName.Play).right()
+                            icon(if (isDisabled) IconName.Lock else IconName.Play).right()
                             label.setAlignment(Align.right)
                             it.fill()
+
+                            if (!isDisabled) {
+                                onClick {
+                                    context.inject<StateMachine>().switch<PlayScreen>(
+                                        StateParameter.witType(GameSettings.levelGame(clef, i)),
+                                        Align.right
+                                    )
+                                }
+                            }
                         }
                         row()
                     }

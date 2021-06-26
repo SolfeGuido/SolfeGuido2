@@ -35,10 +35,12 @@ sealed interface IGameModeOptions : Json.Serializable {
                     canHaveAccidentals = false,
                     minNote = 60,
                     maxNote = 90,
-                    )
+                )
             ),
             isCustom = false
         )
+
+        fun levelGame(clef: ClefEnum, level: Int) = LevelOptions(clef, level)
 
     }
 
