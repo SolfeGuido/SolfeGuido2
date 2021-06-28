@@ -12,7 +12,6 @@ import ktx.preferences.set
 
 class LevelManager(private val preferences: Preferences) {
 
-    data class ClefLevelScore(val level: Int = 0, val score: Int = 0)
     data class LevelRequirements(
         val minScore: Int,
         val lowerNote: Int,
@@ -20,27 +19,35 @@ class LevelManager(private val preferences: Preferences) {
         val hasAccidentals: Boolean = false
     )
 
-    data class LevelResult(val level: Int, val correctGuesses: Int, val wrongGuesses: Int)
+    data class LevelResult(val correctGuesses: Int, val wrongGuesses: Int)
 
-    private lateinit var levelScores: GdxMap<ClefEnum, ClefLevelScore>
-    private lateinit var levelRequirements: GdxMap<ClefEnum, List<LevelRequirements>>
+    private lateinit var levelScores: GdxMap<ClefEnum, GdxMap<Int, LevelResult>>
+    lateinit var levelRequirements: Map<ClefEnum, List<LevelRequirements>>
 
-    fun registerLevlScore(clef: ClefEnum, level: Int, score: Int): Boolean {
-        val obj = ClefLevelScore(level, score)
-        val exist = levelScores.get(clef, obj)
-        if (exist.score < score) {
-            levelScores[clef] = obj
+    private val EMPTY_RESULT = LevelResult(-1, 0)
+
+    fun registerLevelScore(clef: ClefEnum, level: Int, score: Int): Boolean {
+        val obj = LevelResult(score, 0)//TODO wrong guesses
+        if(!levelScores.containsKey(clef)) {
+            levelScores[clef] = gdxMapOf()
+        }
+
+        val exist = levelScores[clef].get(level, obj)
+        if (exist.correctGuesses < score) {
+            levelScores[clef][level] = obj
             save()
             return true
         }
         return false
     }
 
-    private fun serializer() = Json().also { it.addClassTag<ClefLevelScore>("clefLevelScore") }
+    private fun serializer() = Json().also { it.addClassTag<LevelResult>("levelResult") }
 
     private inline fun generateLevel(vararg levels: Pair<Int, Int>) = LevelDifficulty.values().flatMap { ld ->
         levels.map { (from, to) -> LevelRequirements(ld.minimumScore, from, to, ld.hasAccidentals) }
     }
+
+    fun levelResult(clef: ClefEnum, level: Int) = levelScores.get(clef, gdxMapOf()).get(level, EMPTY_RESULT)
 
     fun save() {
         preferences[Constants.Preferences.LEVELS] = serializer().toJson(levelScores)
@@ -51,7 +58,7 @@ class LevelManager(private val preferences: Preferences) {
         levelScores =
             preferences.getString(Constants.Preferences.LEVELS)?.let { serializer().fromJson(it) } ?: gdxMapOf()
 
-        levelRequirements = gdxMapOf(
+        levelRequirements = mapOf(
             ClefEnum.GClef to generateLevel(
                 60 to 66,
                 67 to 75,

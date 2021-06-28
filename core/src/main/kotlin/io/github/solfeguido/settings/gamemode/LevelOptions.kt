@@ -19,6 +19,6 @@ class LevelOptions(
     override fun endGame(context: Context, score: Int) {
         actors.forEach { it.terminate() }
         //TODO: add special effect is the level is unlocked
-        context.inject<LevelManager>().registerLevlScore(clef, level, score)
+        context.inject<LevelManager>().registerLevelScore(clef, level, score)
     }
 }

@@ -2,6 +2,7 @@ package io.github.solfeguido.screens
 
 import com.badlogic.gdx.scenes.scene2d.Actor
 import com.badlogic.gdx.utils.Align
+import io.github.solfeguido.core.LevelManager
 import io.github.solfeguido.core.StateMachine
 import io.github.solfeguido.core.StateParameter
 import io.github.solfeguido.enums.ClefEnum
@@ -24,6 +25,8 @@ class LevelSelectionScreen(context: Context) : UIScreen(context) {
 
     override fun setup(settings: StateParameter): Actor {
         val clef = settings.get<ClefEnum>()
+        val levelManager = context.inject<LevelManager>()
+        val clefRequirements = levelManager.levelRequirements[clef]!!
         return scene2d.table {
             setFillParent(true)
             setPosition(0f, 0f)
@@ -54,16 +57,18 @@ class LevelSelectionScreen(context: Context) : UIScreen(context) {
                 fadeScrollBars = false
                 setOrigin(Align.center)
                 table {
-                    for (i in 1..20) {
+                    clefRequirements.forEachIndexed { index, t ->
+                        val enabled = index == 0 || levelManager.levelResult(clef, index).correctGuesses >= t.minScore
                         for (star in 1..5) {
                             icon(IconName.FullStar) {
                                 color = gCol("font")
                                 it.pad(15f, 2f, 15f, 2f)
                             }
                         }
-                        borderButton("Level $i") {
+
+                        borderButton("Level ${index + 1}") {
                             pad(5f)
-                            isDisabled = i >= 10
+                            isDisabled = !enabled
                             icon(if (isDisabled) IconName.Lock else IconName.Play).right()
                             label.setAlignment(Align.right)
                             it.fill()
@@ -71,7 +76,7 @@ class LevelSelectionScreen(context: Context) : UIScreen(context) {
                             if (!isDisabled) {
                                 onClick {
                                     context.inject<StateMachine>().switch<PlayScreen>(
-                                        StateParameter.witType(GameSettings.levelGame(clef, i)),
+                                        StateParameter.witType(GameSettings.levelGame(clef, index)),
                                         Align.right
                                     )
                                 }
@@ -79,7 +84,6 @@ class LevelSelectionScreen(context: Context) : UIScreen(context) {
                         }
                         row()
                     }
-
                     center()
                 }
 
