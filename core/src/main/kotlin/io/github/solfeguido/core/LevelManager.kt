@@ -4,6 +4,7 @@ import com.badlogic.gdx.Preferences
 import com.badlogic.gdx.utils.Json
 import io.github.solfeguido.config.Constants
 import io.github.solfeguido.enums.ClefEnum
+import io.github.solfeguido.enums.LevelDifficulty
 import ktx.collections.*
 import ktx.json.addClassTag
 import ktx.json.fromJson
@@ -12,12 +13,17 @@ import ktx.preferences.set
 class LevelManager(private val preferences: Preferences) {
 
     data class ClefLevelScore(val level: Int = 0, val score: Int = 0)
-    data class LevelRequirements(val minScore: Int, val lowerNote: Int, val higherNote: Int)
+    data class LevelRequirements(
+        val minScore: Int,
+        val lowerNote: Int,
+        val higherNote: Int,
+        val hasAccidentals: Boolean = false
+    )
+
     data class LevelResult(val level: Int, val correctGuesses: Int, val wrongGuesses: Int)
 
-
     private lateinit var levelScores: GdxMap<ClefEnum, ClefLevelScore>
-    private val levelRequirements: GdxMap<ClefEnum, GdxArray<LevelRequirements>> = gdxMapOf()
+    private lateinit var levelRequirements: GdxMap<ClefEnum, List<LevelRequirements>>
 
     fun registerLevlScore(clef: ClefEnum, level: Int, score: Int): Boolean {
         val obj = ClefLevelScore(level, score)
@@ -32,6 +38,10 @@ class LevelManager(private val preferences: Preferences) {
 
     private fun serializer() = Json().also { it.addClassTag<ClefLevelScore>("clefLevelScore") }
 
+    private inline fun generateLevel(vararg levels: Pair<Int, Int>) = LevelDifficulty.values().flatMap { ld ->
+        levels.map { (from, to) -> LevelRequirements(ld.minimumScore, from, to, ld.hasAccidentals) }
+    }
+
     fun save() {
         preferences[Constants.Preferences.LEVELS] = serializer().toJson(levelScores)
         preferences.flush()
@@ -41,122 +51,35 @@ class LevelManager(private val preferences: Preferences) {
         levelScores =
             preferences.getString(Constants.Preferences.LEVELS)?.let { serializer().fromJson(it) } ?: gdxMapOf()
 
-        levelRequirements[ClefEnum.GClef] = gdxArrayOf(
-            // Difficulty 1
-            LevelRequirements(Constants.Difficulty.BEGINNER, 60, 66),
-            LevelRequirements(Constants.Difficulty.BEGINNER, 67, 75),
-            LevelRequirements(Constants.Difficulty.BEGINNER, 76, 82),
-            LevelRequirements(Constants.Difficulty.BEGINNER, 53, 59),
-            LevelRequirements(Constants.Difficulty.BEGINNER, 53, 82),//All notes
-
-            // Difficulty 2
-            LevelRequirements(Constants.Difficulty.EASY, 60, 66),
-            LevelRequirements(Constants.Difficulty.EASY, 67, 75),
-            LevelRequirements(Constants.Difficulty.EASY, 76, 82),
-            LevelRequirements(Constants.Difficulty.EASY, 53, 59),
-            LevelRequirements(Constants.Difficulty.EASY, 53, 82),//All notes
-
-            // Difficulty 3
-            LevelRequirements(Constants.Difficulty.NORMAL, 60, 66),
-            LevelRequirements(Constants.Difficulty.NORMAL, 67, 75),
-            LevelRequirements(Constants.Difficulty.NORMAL, 76, 82),
-            LevelRequirements(Constants.Difficulty.NORMAL, 53, 59),
-            LevelRequirements(Constants.Difficulty.NORMAL, 53, 82),//All notes
-
-            // Difficulty 4
-            LevelRequirements(Constants.Difficulty.HARD, 60, 66),
-            LevelRequirements(Constants.Difficulty.HARD, 67, 75),
-            LevelRequirements(Constants.Difficulty.HARD, 76, 82),
-            LevelRequirements(Constants.Difficulty.HARD, 53, 59),
-            LevelRequirements(Constants.Difficulty.HARD, 53, 82),//All notes
-        )
-        levelRequirements[ClefEnum.FClef] = gdxArrayOf(
-            // Difficulty 1
-            LevelRequirements(Constants.Difficulty.BEGINNER, 54, 60),
-            LevelRequirements(Constants.Difficulty.BEGINNER, 47, 53),
-            LevelRequirements(Constants.Difficulty.BEGINNER, 43, 49),
-            LevelRequirements(Constants.Difficulty.BEGINNER, 58, 64),
-            LevelRequirements(Constants.Difficulty.BEGINNER, 43, 64),//All notes
-
-            // Difficulty 2
-            LevelRequirements(Constants.Difficulty.EASY, 47, 53),
-            LevelRequirements(Constants.Difficulty.EASY, 43, 49),
-            LevelRequirements(Constants.Difficulty.EASY, 58, 64),
-            LevelRequirements(Constants.Difficulty.EASY, 54, 60),
-            LevelRequirements(Constants.Difficulty.EASY, 43, 64),//All notes
-
-            // Difficulty 3
-            LevelRequirements(Constants.Difficulty.NORMAL, 54, 60),
-            LevelRequirements(Constants.Difficulty.NORMAL, 47, 53),
-            LevelRequirements(Constants.Difficulty.NORMAL, 43, 49),
-            LevelRequirements(Constants.Difficulty.NORMAL, 58, 64),
-            LevelRequirements(Constants.Difficulty.NORMAL, 43, 64),//All notes
-
-            // Difficulty 4
-            LevelRequirements(Constants.Difficulty.HARD, 54, 60),
-            LevelRequirements(Constants.Difficulty.HARD, 47, 53),
-            LevelRequirements(Constants.Difficulty.HARD, 43, 49),
-            LevelRequirements(Constants.Difficulty.HARD, 58, 64),
-            LevelRequirements(Constants.Difficulty.HARD, 43, 64),//All notes
-        )
-
-        levelRequirements[ClefEnum.CClef3] = gdxArrayOf(
-            // Difficulty 1
-            LevelRequirements(Constants.Difficulty.BEGINNER, 53, 59),
-            LevelRequirements(Constants.Difficulty.BEGINNER, 43, 49),
-            LevelRequirements(Constants.Difficulty.BEGINNER, 47, 52),
-            LevelRequirements(Constants.Difficulty.BEGINNER, 60, 66),
-            LevelRequirements(Constants.Difficulty.BEGINNER, 43, 66),//All notes
-
-            // Difficulty 2
-            LevelRequirements(Constants.Difficulty.EASY, 53, 59),
-            LevelRequirements(Constants.Difficulty.EASY, 43, 49),
-            LevelRequirements(Constants.Difficulty.EASY, 47, 52),
-            LevelRequirements(Constants.Difficulty.EASY, 60, 66),
-            LevelRequirements(Constants.Difficulty.EASY, 43, 66),//All notes
-
-            // Difficulty 3
-            LevelRequirements(Constants.Difficulty.NORMAL, 53, 59),
-            LevelRequirements(Constants.Difficulty.NORMAL, 43, 49),
-            LevelRequirements(Constants.Difficulty.NORMAL, 47, 52),
-            LevelRequirements(Constants.Difficulty.NORMAL, 60, 66),
-            LevelRequirements(Constants.Difficulty.NORMAL, 43, 66),//All notes
-
-            // Difficulty 4
-            LevelRequirements(Constants.Difficulty.HARD, 53, 59),
-            LevelRequirements(Constants.Difficulty.HARD, 43, 49),
-            LevelRequirements(Constants.Difficulty.HARD, 47, 52),
-            LevelRequirements(Constants.Difficulty.HARD, 60, 66),
-            LevelRequirements(Constants.Difficulty.HARD, 43, 66),//All notes
-        )
-        levelRequirements[ClefEnum.CClef4] = gdxArrayOf(
-            // Difficulty 1
-            LevelRequirements(Constants.Difficulty.BEGINNER, 53, 59),
-            LevelRequirements(Constants.Difficulty.BEGINNER, 43, 49),
-            LevelRequirements(Constants.Difficulty.BEGINNER, 47, 52),
-            LevelRequirements(Constants.Difficulty.BEGINNER, 60, 66),
-            LevelRequirements(Constants.Difficulty.BEGINNER, 43, 66),//All notes
-
-            // Difficulty 2
-            LevelRequirements(Constants.Difficulty.BEGINNER, 53, 59),
-            LevelRequirements(Constants.Difficulty.BEGINNER, 43, 49),
-            LevelRequirements(Constants.Difficulty.BEGINNER, 47, 52),
-            LevelRequirements(Constants.Difficulty.BEGINNER, 60, 66),
-            LevelRequirements(Constants.Difficulty.BEGINNER, 43, 66),//All notes
-
-            // Difficulty 3
-            LevelRequirements(Constants.Difficulty.BEGINNER, 53, 59),
-            LevelRequirements(Constants.Difficulty.BEGINNER, 43, 49),
-            LevelRequirements(Constants.Difficulty.BEGINNER, 47, 52),
-            LevelRequirements(Constants.Difficulty.BEGINNER, 60, 66),
-            LevelRequirements(Constants.Difficulty.BEGINNER, 43, 66),//All notes
-
-            // Difficulty 4
-            LevelRequirements(Constants.Difficulty.BEGINNER, 53, 59),
-            LevelRequirements(Constants.Difficulty.BEGINNER, 43, 49),
-            LevelRequirements(Constants.Difficulty.BEGINNER, 47, 52),
-            LevelRequirements(Constants.Difficulty.BEGINNER, 60, 66),
-            LevelRequirements(Constants.Difficulty.BEGINNER, 43, 66),//All notes
+        levelRequirements = gdxMapOf(
+            ClefEnum.GClef to generateLevel(
+                60 to 66,
+                67 to 75,
+                76 to 82,
+                53 to 59,
+                53 to 82
+            ),
+            ClefEnum.FClef to generateLevel(
+                54 to 60,
+                47 to 53,
+                43 to 49,
+                58 to 64,
+                43 to 64
+            ),
+            ClefEnum.CClef3 to generateLevel(
+                53 to 59,
+                43 to 49,
+                47 to 53,
+                60 to 66,
+                43 to 66
+            ),
+            ClefEnum.CClef4 to generateLevel(
+                53 to 59,
+                43 to 49,
+                47 to 52,
+                60 to 66,
+                43 to 66
+            )
         )
     }
 }

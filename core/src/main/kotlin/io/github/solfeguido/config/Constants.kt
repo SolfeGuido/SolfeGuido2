@@ -36,13 +36,6 @@ object Constants {
     // Others
     const val CLASSIC_TIME = 120f
 
-    object Difficulty {
-        const val BEGINNER = 20
-        const val EASY = 30
-        const val NORMAL = 40
-        const val HARD = 50
-    }
-
     object Preferences {
         const val NOTE_STYLE = "noteStyle"
         const val BUTTON_STYLE = "buttonStyle"
