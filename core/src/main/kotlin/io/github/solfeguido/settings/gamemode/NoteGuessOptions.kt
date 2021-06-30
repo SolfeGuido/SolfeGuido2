@@ -20,7 +20,6 @@ import ktx.scene2d.KStack
 
 open class NoteGuessOptions(
     var measures: GdxArray<MeasureSettings> = gdxArrayOf(),
-    var generator: IGeneratorOptions = RandomGenerator(),
     var isCustom: Boolean = true
 ) : IGameModeOptions {
 
@@ -29,21 +28,19 @@ open class NoteGuessOptions(
 
     override fun read(json: Json, jsonData: JsonValue) {
         measures = json.readValue(jsonData, "measures")
-        generator = IGeneratorOptions.toInstance(json, jsonData)
         isCustom = json.readValue(jsonData, "isCustom")
     }
 
     override fun write(json: Json) {
         super.write(json)
         json.writeValue("measures", measures)
-        json.writeValue("generator", generator)
         json.writeValue("isCustom", isCustom)
     }
 
     override fun populateScene(parent: KStack, resultCallback: (ResultEvent) -> Unit) {
         currentMeasure = 0
         actors = measures.map {
-            parent.measure(it.clef) {
+            parent.measure(it) {
                 onResult { resultCallback(it) }
             }
         }.toGdxArray()

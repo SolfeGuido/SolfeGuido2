@@ -5,6 +5,7 @@ import com.badlogic.gdx.utils.JsonValue
 import io.github.solfeguido.core.progression.Level
 import io.github.solfeguido.enums.ClefEnum
 import io.github.solfeguido.settings.gamemode.IGameModeOptions
+import io.github.solfeguido.settings.gamemode.LevelOptions
 import io.github.solfeguido.settings.gamemode.NoteGuessOptions
 import ktx.json.readValue
 
@@ -22,7 +23,7 @@ class GameSettings(
 
         fun levelGame(level: Level) = GameSettings(
             time = TimeSettings.ClassicCountdownMode,
-            options = IGameModeOptions.levelGame(level)
+            options = LevelOptions(level)
         )
 
     }

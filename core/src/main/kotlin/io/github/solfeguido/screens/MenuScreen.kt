@@ -20,6 +20,7 @@ import io.github.solfeguido.factories.borderButton
 import io.github.solfeguido.factories.iconButton
 import io.github.solfeguido.factories.measure
 import io.github.solfeguido.factories.zoomDialog
+import io.github.solfeguido.settings.MeasureSettings
 import ktx.actors.div
 import ktx.actors.onClick
 import ktx.actors.plus
@@ -70,7 +71,7 @@ class MenuScreen(context: Context) : UIScreen(context) {
     private fun updateBackButton() {
         // backButton.clearActions()
         backButton += if (widgetStack.size > 1) {
-            if(backButton.isVisible) return
+            if (backButton.isVisible) return
             (Actions.moveTo(
                 -backButton.width,
                 20f
@@ -165,7 +166,7 @@ class MenuScreen(context: Context) : UIScreen(context) {
             }
             row()
             stack {
-                measure = measure(ClefEnum.GClef)
+                measure = measure(MeasureSettings(ClefEnum.GClef))
                 playMenu = table {
                     borderButton("Stats") {
                         icon(IconName.PointsChart, 0.9f).pad(5f)
@@ -290,7 +291,7 @@ class MenuScreen(context: Context) : UIScreen(context) {
                 if (shownMenu == VisibleMenu.Play) {
                     widgetStack.add(playOptions)
                     updateBackButton()
-                } else if(shownMenu == VisibleMenu.LevelKeySelection) {
+                } else if (shownMenu == VisibleMenu.LevelKeySelection) {
                     widgetStack.add(playOptions)
                     widgetStack.add(levelKeyOptions)
                     updateBackButton()
@@ -305,7 +306,7 @@ class MenuScreen(context: Context) : UIScreen(context) {
 
 
     override fun back(): Boolean {
-        if(widgetStack.size == 1) {
+        if (widgetStack.size == 1) {
             Gdx.app.exit()
             return true
         }

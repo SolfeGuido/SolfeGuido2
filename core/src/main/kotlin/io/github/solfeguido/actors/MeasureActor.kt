@@ -4,7 +4,6 @@ import com.badlogic.gdx.graphics.g2d.Batch
 import com.badlogic.gdx.math.Interpolation
 import com.badlogic.gdx.scenes.scene2d.ui.WidgetGroup
 import com.badlogic.gdx.scenes.scene2d.utils.Drawable
-import io.github.solfeguido.config.ClefConfig
 import io.github.solfeguido.config.Constants
 import io.github.solfeguido.config.KeySignatureConfig
 import io.github.solfeguido.enums.NoteOrderEnum
@@ -15,6 +14,7 @@ import ktx.collections.gdxArrayOf
 import kotlin.math.max
 
 class MeasureActor(settings: MeasureSettings) : WidgetGroup() {
+
 
     val clef = settings.clef
     val keySignature = settings.signature
@@ -38,7 +38,6 @@ class MeasureActor(settings: MeasureSettings) : WidgetGroup() {
         get() = this.notes.lastOrNull()
 
     private val clefActor: ClefActor = ClefActor(clef).also { addActor(it) }
-    private val clefPosition: ClefConfig = ClefConfig.ClefEquivalent[clef, ClefConfig.GClef]
     private val notes = gdxArrayOf<NoteActor>()
 
     private val signatureActor = KeySignatureActor(this).also { addActor(it) }
@@ -141,9 +140,9 @@ class MeasureActor(settings: MeasureSettings) : WidgetGroup() {
         topLine = bottomLine + (lineSpace * 5)
 
 
-        val scale = (lineSpace / clefActor.absoluteHeight) * clefPosition.height
+        val scale = (lineSpace / clefActor.absoluteHeight) * clef.height
         clefActor.setScale(scale)
-        clefActor.y = lineSpace * clefPosition.baseLine
+        clefActor.y = lineSpace * clef.iconBaseLine
         signatureActor.x = clefActor.width * scale
         signatureActor.y =
             (bottomLine - lineSpace * 1.5f) + KeySignatureConfig.CLEF_TRANSLATE[clef] * (lineSpace / 2)

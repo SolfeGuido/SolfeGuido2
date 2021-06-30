@@ -66,7 +66,7 @@ class ClassicSelectionScreen(context: Context) : UIScreen(context) {
             }
             row()
             stack {
-                measure(ClefEnum.GClef)
+                measure(MeasureSettings(ClefEnum.GClef))
 
                 table {
                     buttonGroup(1, 1) {

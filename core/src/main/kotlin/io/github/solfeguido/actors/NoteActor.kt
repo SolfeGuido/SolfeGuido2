@@ -9,7 +9,6 @@ import com.badlogic.gdx.scenes.scene2d.ui.WidgetGroup
 import com.badlogic.gdx.scenes.scene2d.utils.Drawable
 import com.badlogic.gdx.utils.Pool
 import com.badlogic.gdx.utils.Pools
-import io.github.solfeguido.config.ClefConfig
 import io.github.solfeguido.config.Constants
 import io.github.solfeguido.config.KeySignatureConfig
 import io.github.solfeguido.core.MidiNote
@@ -76,7 +75,7 @@ class NoteActor : WidgetGroup(), Pool.Poolable {
     }
 
     private fun getYIndex(): Float {
-        val minNote = ClefConfig.ClefMinNote[measure!!.clef]
+        val minNote = measure!!.clef.minNote
         relativeMeasurePosition = note!!.getMeasurePosition(minNote, measure!!.keySignature)
         return relativeMeasurePosition * (measure!!.lineSpace / 2)
     }

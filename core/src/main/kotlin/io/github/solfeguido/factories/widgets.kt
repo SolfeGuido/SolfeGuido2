@@ -46,10 +46,9 @@ inline fun <S> KWidget<S>.sTextButton(
 
 
 inline fun <S> KWidget<S>.measure(
-    clef: ClefEnum = ClefEnum.GClef,
-    keySignature: KeySignatureEnum = KeySignatureEnum.CMajor,
+    settings: MeasureSettings,
     init: (@Scene2dDsl MeasureActor).(S) -> Unit = {}
-) = actor(MeasureActor(MeasureSettings(clef, keySignature)), init)
+) = actor(MeasureActor(settings), init)
 
 inline fun <S> KWidget<S>.timer(
     context: Context,
