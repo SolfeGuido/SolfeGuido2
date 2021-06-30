@@ -7,6 +7,7 @@ import io.github.solfeguido.actors.*
 import io.github.solfeguido.enums.ClefEnum
 import io.github.solfeguido.enums.IconName
 import io.github.solfeguido.enums.KeySignatureEnum
+import io.github.solfeguido.settings.MeasureSettings
 import io.github.solfeguido.settings.TimeSettings
 import io.github.solfeguido.ui.*
 import ktx.inject.Context
@@ -48,7 +49,7 @@ inline fun <S> KWidget<S>.measure(
     clef: ClefEnum = ClefEnum.GClef,
     keySignature: KeySignatureEnum = KeySignatureEnum.CMajor,
     init: (@Scene2dDsl MeasureActor).(S) -> Unit = {}
-) = actor(MeasureActor(clef, keySignature), init)
+) = actor(MeasureActor(MeasureSettings(clef, keySignature)), init)
 
 inline fun <S> KWidget<S>.timer(
     context: Context,

@@ -1,4 +1,4 @@
-package io.github.solfeguido.core
+package io.github.solfeguido.core.progression
 
 import com.badlogic.gdx.Preferences
 import com.badlogic.gdx.utils.Json
@@ -16,22 +16,13 @@ class LevelManager(private val preferences: Preferences) {
         private val EMPTY_RESULT = LevelResult(-1, 0)
     }
 
-    data class LevelRequirements(
-        val minScore: Int,
-        val lowerNote: Int,
-        val higherNote: Int,
-        val hasAccidentals: Boolean = false
-    )
-
-    data class LevelResult(val correctGuesses: Int, val wrongGuesses: Int)
-
     private lateinit var levelScores: GdxMap<ClefEnum, GdxMap<Int, LevelResult>>
     lateinit var levelRequirements: Map<ClefEnum, List<LevelRequirements>>
 
 
     fun registerLevelScore(clef: ClefEnum, level: Int, score: Int): Boolean {
         val obj = LevelResult(score, 0)//TODO wrong guesses
-        if(!levelScores.containsKey(clef)) {
+        if (!levelScores.containsKey(clef)) {
             levelScores[clef] = gdxMapOf()
         }
 
@@ -50,7 +41,7 @@ class LevelManager(private val preferences: Preferences) {
         levels.map { (from, to) -> LevelRequirements(ld.minimumScore, from, to, ld.hasAccidentals) }
     }
 
-    fun requirementsFor(clef: ClefEnum, level: Int) = levelRequirements[clef]!![level]
+    fun generateLevel(clef: ClefEnum, level: Int) = Level(clef, level, levelRequirements[clef]!![level])
 
     fun levelResult(clef: ClefEnum, level: Int) = levelScores.get(clef, gdxMapOf()).get(level, EMPTY_RESULT)
 

@@ -2,11 +2,13 @@ package io.github.solfeguido.settings.gamemode
 
 import com.badlogic.gdx.utils.Json
 import com.badlogic.gdx.utils.JsonValue
-import io.github.solfeguido.core.LevelManager
+import io.github.solfeguido.core.progression.Level
+import io.github.solfeguido.core.progression.LevelManager
 import io.github.solfeguido.enums.ClefEnum
 import io.github.solfeguido.enums.KeySignatureEnum
 import io.github.solfeguido.enums.NoteOrderEnum
 import io.github.solfeguido.settings.MeasureSettings
+import io.github.solfeguido.settings.generator.RandomGenerator
 import io.github.solfeguido.ui.events.ResultEvent
 import ktx.collections.gdxArrayOf
 import ktx.inject.Context
@@ -33,15 +35,13 @@ sealed interface IGameModeOptions : Json.Serializable {
                 MeasureSettings(
                     signature = KeySignatureEnum.CMajor,
                     clef = clef,
-                    canHaveAccidentals = false,
-                    minNote = 60,
-                    maxNote = 90,
+                    generator = RandomGenerator(60, 90)
                 )
             ),
             isCustom = false
         )
 
-        fun levelGame(clef: ClefEnum, level: LevelManager.LevelRequirements) = LevelOptions(clef, level)
+        fun levelGame(level: Level) = LevelOptions(level)
 
     }
 

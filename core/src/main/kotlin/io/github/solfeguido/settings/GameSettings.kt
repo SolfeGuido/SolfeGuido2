@@ -2,7 +2,7 @@ package io.github.solfeguido.settings
 
 import com.badlogic.gdx.utils.Json
 import com.badlogic.gdx.utils.JsonValue
-import io.github.solfeguido.core.LevelManager
+import io.github.solfeguido.core.progression.Level
 import io.github.solfeguido.enums.ClefEnum
 import io.github.solfeguido.settings.gamemode.IGameModeOptions
 import io.github.solfeguido.settings.gamemode.NoteGuessOptions
@@ -20,9 +20,9 @@ class GameSettings(
             options = IGameModeOptions.classicGame(clef)
         )
 
-        fun levelGame(clef: ClefEnum, level: LevelManager.LevelRequirements) = GameSettings(
+        fun levelGame(level: Level) = GameSettings(
             time = TimeSettings.ClassicCountdownMode,
-            options = IGameModeOptions.levelGame(clef, level)
+            options = IGameModeOptions.levelGame(level)
         )
 
     }

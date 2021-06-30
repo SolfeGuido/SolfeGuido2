@@ -10,6 +10,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.Label
 import com.badlogic.gdx.scenes.scene2d.ui.ProgressBar
 import io.github.solfeguido.config.Constants
 import io.github.solfeguido.core.*
+import io.github.solfeguido.core.progression.LevelManager
 import io.github.solfeguido.enums.IconName
 import io.github.solfeguido.loaders.FontLoader
 import io.github.solfeguido.loaders.MidiLoader

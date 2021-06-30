@@ -4,23 +4,21 @@ import com.badlogic.gdx.graphics.g2d.Batch
 import com.badlogic.gdx.math.Interpolation
 import com.badlogic.gdx.scenes.scene2d.ui.WidgetGroup
 import com.badlogic.gdx.scenes.scene2d.utils.Drawable
-import com.badlogic.gdx.utils.Pools
 import io.github.solfeguido.config.ClefConfig
 import io.github.solfeguido.config.Constants
 import io.github.solfeguido.config.KeySignatureConfig
-import io.github.solfeguido.enums.ClefEnum
-import io.github.solfeguido.enums.KeySignatureEnum
 import io.github.solfeguido.enums.NoteOrderEnum
 import io.github.solfeguido.factories.*
+import io.github.solfeguido.settings.MeasureSettings
 import io.github.solfeguido.ui.events.ResultEvent
 import ktx.collections.gdxArrayOf
 import kotlin.math.max
-import kotlin.random.Random
 
-class MeasureActor(
-    val clef: ClefEnum = ClefEnum.GClef,
-    val keySignature: KeySignatureEnum = KeySignatureEnum.CMajor
-) : WidgetGroup() {
+class MeasureActor(settings: MeasureSettings) : WidgetGroup() {
+
+    val clef = settings.clef
+    val keySignature = settings.signature
+    private val generator = settings.generator
 
     private val line: Drawable = colorDrawable(gCol("font"))
     var terminated = false
@@ -45,7 +43,7 @@ class MeasureActor(
 
     private val signatureActor = KeySignatureActor(this).also { addActor(it) }
 
-    fun checkNote(note: NoteOrderEnum) : Boolean {
+    fun checkNote(note: NoteOrderEnum): Boolean {
         val expected = currentNote().note?.noteOrder ?: return false
         val isCorrect = withPooled<ResultEvent, Boolean> { result ->
             result.expected = expected
@@ -71,7 +69,7 @@ class MeasureActor(
         val clearNotes = mutableSetOf<NoteActor>()
         notes.forEach {
             it.x -= moveBy
-            if(it.x < -this.width) {
+            if (it.x < -this.width) {
                 clearNotes.add(it)
             }
             maxLeft = max(maxLeft, it.x)
@@ -115,7 +113,7 @@ class MeasureActor(
     override fun childrenChanged() {}
 
     private fun generateNote() =
-        NoteActorPool.generate(MidiNotePool.fromIndex(Random.nextInt(80, 90)), this).also {
+        NoteActorPool.generate(MidiNotePool.fromIndex(generator.next()), this).also {
             notes.add(it)
             addActor(it)
         }

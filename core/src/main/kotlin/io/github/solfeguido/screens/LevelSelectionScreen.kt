@@ -2,9 +2,9 @@ package io.github.solfeguido.screens
 
 import com.badlogic.gdx.scenes.scene2d.Actor
 import com.badlogic.gdx.utils.Align
-import io.github.solfeguido.core.LevelManager
 import io.github.solfeguido.core.StateMachine
 import io.github.solfeguido.core.StateParameter
+import io.github.solfeguido.core.progression.LevelManager
 import io.github.solfeguido.enums.ClefEnum
 import io.github.solfeguido.enums.IconName
 import io.github.solfeguido.factories.borderButton
@@ -76,9 +76,9 @@ class LevelSelectionScreen(context: Context) : UIScreen(context) {
 
                             if (!isDisabled) {
                                 onClick {
-                                    val requirements = levelManager.requirementsFor(clef, index)
+                                    val requirements = levelManager.generateLevel(clef, index)
                                     context.inject<StateMachine>().switch<PlayScreen>(
-                                        StateParameter.witType(GameSettings.levelGame(clef, requirements)),
+                                        StateParameter.witType(GameSettings.levelGame(requirements)),
                                         Align.right
                                     )
                                 }
