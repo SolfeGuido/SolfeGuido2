@@ -57,6 +57,7 @@ class LevelSelectionScreen(context: Context) : UIScreen(context) {
                 fadeScrollBars = false
                 setOrigin(Align.center)
                 table {
+                    pad(10f)
                     clefRequirements.forEachIndexed { index, t ->
                         val enabled = index == 0 || levelManager.levelResult(clef, index).correctGuesses >= t.minScore
                         for (star in 1..5) {
@@ -75,8 +76,9 @@ class LevelSelectionScreen(context: Context) : UIScreen(context) {
 
                             if (!isDisabled) {
                                 onClick {
+                                    val requirements = levelManager.requirementsFor(clef, index)
                                     context.inject<StateMachine>().switch<PlayScreen>(
-                                        StateParameter.witType(GameSettings.levelGame(clef, index)),
+                                        StateParameter.witType(GameSettings.levelGame(clef, requirements)),
                                         Align.right
                                     )
                                 }

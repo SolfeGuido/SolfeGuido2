@@ -2,6 +2,7 @@ package io.github.solfeguido.settings.gamemode
 
 import com.badlogic.gdx.utils.Json
 import com.badlogic.gdx.utils.JsonValue
+import io.github.solfeguido.core.LevelManager
 import io.github.solfeguido.enums.ClefEnum
 import io.github.solfeguido.enums.KeySignatureEnum
 import io.github.solfeguido.enums.NoteOrderEnum
@@ -40,7 +41,7 @@ sealed interface IGameModeOptions : Json.Serializable {
             isCustom = false
         )
 
-        fun levelGame(clef: ClefEnum, level: Int) = LevelOptions(clef, level)
+        fun levelGame(clef: ClefEnum, level: LevelManager.LevelRequirements) = LevelOptions(clef, level)
 
     }
 

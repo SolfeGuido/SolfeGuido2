@@ -9,16 +9,17 @@ import ktx.inject.Context
 
 class LevelOptions(
     val clef: ClefEnum,
-    val level: Int,
+    val level: LevelManager.LevelRequirements,
 ) : NoteGuessOptions(
     gdxArrayOf(
         MeasureSettings(clef)
+    //TODO change generator
     ), RandomGenerator(), true
 ) {
 
     override fun endGame(context: Context, score: Int) {
         actors.forEach { it.terminate() }
-        //TODO: add special effect is the level is unlocked
-        context.inject<LevelManager>().registerLevelScore(clef, level, score)
+        //TODO: add special effect is the level is unlocked (and use real score)
+        context.inject<LevelManager>().registerLevelScore(clef, 0, score)
     }
 }

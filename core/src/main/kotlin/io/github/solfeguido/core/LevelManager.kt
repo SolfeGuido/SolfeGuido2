@@ -12,6 +12,10 @@ import ktx.preferences.set
 
 class LevelManager(private val preferences: Preferences) {
 
+    companion object {
+        private val EMPTY_RESULT = LevelResult(-1, 0)
+    }
+
     data class LevelRequirements(
         val minScore: Int,
         val lowerNote: Int,
@@ -24,7 +28,6 @@ class LevelManager(private val preferences: Preferences) {
     private lateinit var levelScores: GdxMap<ClefEnum, GdxMap<Int, LevelResult>>
     lateinit var levelRequirements: Map<ClefEnum, List<LevelRequirements>>
 
-    private val EMPTY_RESULT = LevelResult(-1, 0)
 
     fun registerLevelScore(clef: ClefEnum, level: Int, score: Int): Boolean {
         val obj = LevelResult(score, 0)//TODO wrong guesses
@@ -46,6 +49,8 @@ class LevelManager(private val preferences: Preferences) {
     private inline fun generateLevel(vararg levels: Pair<Int, Int>) = LevelDifficulty.values().flatMap { ld ->
         levels.map { (from, to) -> LevelRequirements(ld.minimumScore, from, to, ld.hasAccidentals) }
     }
+
+    fun requirementsFor(clef: ClefEnum, level: Int) = levelRequirements[clef]!![level]
 
     fun levelResult(clef: ClefEnum, level: Int) = levelScores.get(clef, gdxMapOf()).get(level, EMPTY_RESULT)
 
