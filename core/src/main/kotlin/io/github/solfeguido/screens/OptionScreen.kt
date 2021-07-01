@@ -10,7 +10,7 @@ import io.github.solfeguido.config.Constants
 import io.github.solfeguido.core.StateMachine
 import io.github.solfeguido.core.StateParameter
 import io.github.solfeguido.enums.IconName
-import io.github.solfeguido.enums.PreferenceEnum
+import io.github.solfeguido.enums.SolfeGuidoPreferences
 import io.github.solfeguido.factories.borderButton
 import io.github.solfeguido.factories.iconButton
 import io.github.solfeguido.factories.iconCheckBox
@@ -24,16 +24,16 @@ class OptionScreen(context: Context) : UIScreen(context) {
 
     private val preferences: Preferences = context.inject()
 
-    private inline fun <S> KWidget<S>.preferenceCheckBox(
+    private inline fun <S, reified T : Any> KWidget<S>.preferenceCheckBox(
         icon: IconName,
         prefName: String,
-        prefValue: PreferenceEnum
+        prefValue: T
     ): IconCheckBox {
-        val actualValue: Int? = preferences[prefName]
+        val actualValue: T? = preferences[prefName]
         val res = IconCheckBox(icon)
-        res.isChecked = actualValue == prefValue.value
+        res.isChecked = actualValue == prefValue
         res.onClick {
-            preferences[prefName] = prefValue.value
+            preferences[prefName] = prefValue
             preferences.flush()
         }
         return actor(res)
@@ -42,9 +42,9 @@ class OptionScreen(context: Context) : UIScreen(context) {
     override fun setup(settings: StateParameter): Actor {
 
         val preferences: Preferences = context.inject()
-        val vibrations: Boolean = preferences["vibrations"] ?: true
-        val noteStyle: Int = preferences["noteStyle"] ?: 0
-        val buttons: Int = preferences["buttonStyle"] ?: 0
+        val vibrations: String = preferences["vibrations"] ?: "1"
+        val noteStyle = preferences["noteStyle"] ?: SolfeGuidoPreferences.NoteStyle.EnglishNotes.name
+        val buttons = preferences["buttonStyle"] ?: SolfeGuidoPreferences.ButtonStyle.NotesButton.name
 
         return scene2d.table {
             setFillParent(true)
@@ -75,8 +75,16 @@ class OptionScreen(context: Context) : UIScreen(context) {
                         setFontScale(0.7f)
                     }
                     buttonGroup(1, 1) {
-                        preferenceCheckBox(IconName.Mobile, Constants.Preferences.VIBRATIONS, PreferenceEnum.Enabled)
-                        preferenceCheckBox(IconName.MobileVibrate, Constants.Preferences.VIBRATIONS, PreferenceEnum.Disabled)
+                        preferenceCheckBox(
+                            IconName.Mobile,
+                            Constants.Preferences.VIBRATIONS,
+                            SolfeGuidoPreferences.Vibrations.Enabled.value
+                        )
+                        preferenceCheckBox(
+                            IconName.MobileVibrate,
+                            Constants.Preferences.VIBRATIONS,
+                            SolfeGuidoPreferences.Vibrations.Disabled.value
+                        )
                     }
                     row()
                 }
@@ -85,9 +93,21 @@ class OptionScreen(context: Context) : UIScreen(context) {
                     setFontScale(0.7f)
                 }
                 buttonGroup(1, 1) {
-                    preferenceCheckBox(IconName.RomanNotes, Constants.Preferences.NOTE_STYLE, PreferenceEnum.RomanNotes)
-                    preferenceCheckBox(IconName.LatinNotes, Constants.Preferences.NOTE_STYLE, PreferenceEnum.LatinNotes)
-                    preferenceCheckBox(IconName.EnglishNotes, Constants.Preferences.NOTE_STYLE, PreferenceEnum.EnglishNotes)
+                    preferenceCheckBox(
+                        IconName.RomanNotes,
+                        Constants.Preferences.NOTE_STYLE,
+                        SolfeGuidoPreferences.NoteStyle.RomanNotes
+                    )
+                    preferenceCheckBox(
+                        IconName.LatinNotes,
+                        Constants.Preferences.NOTE_STYLE,
+                        SolfeGuidoPreferences.NoteStyle.LatinNotes
+                    )
+                    preferenceCheckBox(
+                        IconName.EnglishNotes,
+                        Constants.Preferences.NOTE_STYLE,
+                        SolfeGuidoPreferences.NoteStyle.EnglishNotes
+                    )
                     it.right()
                 }
 
@@ -97,9 +117,21 @@ class OptionScreen(context: Context) : UIScreen(context) {
                     setFontScale(0.7f)
                 }
                 buttonGroup(1, 1) {
-                    preferenceCheckBox(IconName.NotesButton, Constants.Preferences.BUTTON_STYLE, PreferenceEnum.NotesButton)
-                    preferenceCheckBox(IconName.PianoKeys, Constants.Preferences.BUTTON_STYLE, PreferenceEnum.PianoKeys)
-                    preferenceCheckBox(IconName.PianoWithNotes, Constants.Preferences.BUTTON_STYLE, PreferenceEnum.PianoWithNotes)
+                    preferenceCheckBox(
+                        IconName.NotesButton,
+                        Constants.Preferences.BUTTON_STYLE,
+                        SolfeGuidoPreferences.ButtonStyle.NotesButton
+                    )
+                    preferenceCheckBox(
+                        IconName.PianoKeys,
+                        Constants.Preferences.BUTTON_STYLE,
+                        SolfeGuidoPreferences.ButtonStyle.PianoKeys
+                    )
+                    preferenceCheckBox(
+                        IconName.PianoWithNotes,
+                        Constants.Preferences.BUTTON_STYLE,
+                        SolfeGuidoPreferences.ButtonStyle.PianoWithNotes
+                    )
                     it.right()
                 }
 
@@ -109,8 +141,8 @@ class OptionScreen(context: Context) : UIScreen(context) {
                     setFontScale(0.7f)
                 }
                 buttonGroup(1, 1) {
-                    preferenceCheckBox(IconName.Sun, Constants.Preferences.THEME, PreferenceEnum.Light)
-                    preferenceCheckBox(IconName.Moon, Constants.Preferences.THEME, PreferenceEnum.Dark)
+                    preferenceCheckBox(IconName.Sun, Constants.Preferences.THEME, SolfeGuidoPreferences.Theme.Light)
+                    preferenceCheckBox(IconName.Moon, Constants.Preferences.THEME, SolfeGuidoPreferences.Theme.Dark)
                     it.right()
                 }
 

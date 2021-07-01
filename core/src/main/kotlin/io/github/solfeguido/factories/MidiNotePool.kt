@@ -4,29 +4,9 @@ import com.badlogic.gdx.utils.Pools
 import io.github.solfeguido.core.MidiNote
 import io.github.solfeguido.enums.NoteAccidentalEnum
 import io.github.solfeguido.enums.NoteNameEnum
-import ktx.collections.GdxArray
-import ktx.collections.gdxArrayOf
 
 object MidiNotePool {
 
-    val NOTES_ORDER: GdxArray<MidiNote>
-
-    init {
-        NOTES_ORDER = gdxArrayOf(
-            get(NoteNameEnum.C, 2, NoteAccidentalEnum.Natural),
-            get(NoteNameEnum.C, 2, NoteAccidentalEnum.Sharp),
-            get(NoteNameEnum.D, 2, NoteAccidentalEnum.Natural),
-            get(NoteNameEnum.D, 2, NoteAccidentalEnum.Sharp),
-            get(NoteNameEnum.E, 2, NoteAccidentalEnum.Natural),
-            get(NoteNameEnum.F, 2, NoteAccidentalEnum.Natural),
-            get(NoteNameEnum.F, 2, NoteAccidentalEnum.Sharp),
-            get(NoteNameEnum.G, 2, NoteAccidentalEnum.Natural),
-            get(NoteNameEnum.G, 2, NoteAccidentalEnum.Sharp),
-            get(NoteNameEnum.A, 2, NoteAccidentalEnum.Natural),
-            get(NoteNameEnum.A, 2, NoteAccidentalEnum.Sharp),
-            get(NoteNameEnum.B, 2, NoteAccidentalEnum.Natural)
-        )
-    }
 
     fun obtain(): MidiNote = Pools.obtain(MidiNote::class.java)
     fun free(note: MidiNote) = Pools.free(note)

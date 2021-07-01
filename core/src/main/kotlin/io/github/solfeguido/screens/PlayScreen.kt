@@ -10,7 +10,7 @@ import io.github.solfeguido.core.StateMachine
 import io.github.solfeguido.core.StateParameter
 import io.github.solfeguido.core.StatsManager
 import io.github.solfeguido.enums.IconName
-import io.github.solfeguido.enums.PreferenceEnum
+import io.github.solfeguido.enums.SolfeGuidoPreferences
 import io.github.solfeguido.factories.*
 import io.github.solfeguido.settings.GameSettings
 import io.github.solfeguido.settings.TimeSettings
@@ -36,7 +36,7 @@ class PlayScreen(context: Context) : UIScreen(context) {
         timer = options.time
         Gdx.input.inputProcessor = null
 
-        val answerType: Int? = preferences[Constants.Preferences.BUTTON_STYLE] ?: 0
+        val answerType = preferences[Constants.Preferences.BUTTON_STYLE] ?: SolfeGuidoPreferences.ButtonStyle.PianoKeys.name
         lateinit var scoreActor: ScoreActor
 
         return scene2d.table {
@@ -88,8 +88,8 @@ class PlayScreen(context: Context) : UIScreen(context) {
                 align(Align.top)
 
                 val answerer = when (answerType) {
-                    PreferenceEnum.PianoKeys.value -> pianoAnswer()
-                    PreferenceEnum.PianoWithNotes.value -> pianoAnswer(showNotes = true)
+                    SolfeGuidoPreferences.ButtonStyle.PianoKeys.name -> pianoAnswer()
+                    SolfeGuidoPreferences.ButtonStyle.PianoWithNotes.name -> pianoAnswer(showNotes = true)
                     else -> buttonAnswer()
                 }
 
