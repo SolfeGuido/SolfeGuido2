@@ -79,7 +79,6 @@ class ButtonAnswerActor : Table(), KTable {
                     NoteAccidentalEnum.Sharp -> order.next()
                     else -> order
                 }
-                println(note)
             }
         }
         this@ButtonAnswerActor.noteList.add(this)

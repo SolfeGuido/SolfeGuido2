@@ -6,7 +6,7 @@ import io.github.solfeguido.config.PossibleNote
 enum class KeySignatureEnum(val symbol: NoteAccidentalEnum, val numberOf: Int, val scale: ScaleEnum) {
 
     //Major scale
-    CMajor(NoteAccidentalEnum.Sharp, 0, ScaleEnum.Major),
+    CMajor(NoteAccidentalEnum.Natural, 0, ScaleEnum.Major),
     GMajor(NoteAccidentalEnum.Sharp, 1, ScaleEnum.Major),
     DMajor(NoteAccidentalEnum.Sharp, 2, ScaleEnum.Major),
     AMajor(NoteAccidentalEnum.Sharp, 3, ScaleEnum.Major),
@@ -24,7 +24,7 @@ enum class KeySignatureEnum(val symbol: NoteAccidentalEnum, val numberOf: Int, v
     FMajor(NoteAccidentalEnum.Flat, 1, ScaleEnum.Major),
 
     //Minor scale
-    AMinor(NoteAccidentalEnum.Sharp, 0, ScaleEnum.Minor),
+    AMinor(NoteAccidentalEnum.Natural, 0, ScaleEnum.Minor),
     EMinor(NoteAccidentalEnum.Sharp, 1, ScaleEnum.Minor),
     BMinor(NoteAccidentalEnum.Sharp, 2, ScaleEnum.Minor),
     FSharpMinor(NoteAccidentalEnum.Sharp, 3, ScaleEnum.Minor),

@@ -21,6 +21,7 @@ data class MidiNote(
 
     val noteOrder get() = NoteOrderEnum.fromIndex(midiIndex % MIDI_OCTAVE)
 
+
     companion object {
         private val NOTE_NAMES = gdxArrayOf(
             NaturalOrSharpNote(NoteNameEnum.C, NoteNameEnum.B),
@@ -38,8 +39,7 @@ data class MidiNote(
         )
 
 
-        private val MIDI_OCTAVE: Int
-            get() = NOTE_NAMES.size
+        private val MIDI_OCTAVE = NOTE_NAMES.size
 
         fun naturalIndexOf(name: NoteNameEnum) =
             NOTE_NAMES.indexOfFirst { it.naturalNote == name }
@@ -48,11 +48,11 @@ data class MidiNote(
     fun getMeasurePosition(base: Int, signature: KeySignatureEnum): Int {
         val relativeStart = base % MIDI_OCTAVE
         val diff = midiIndex - base
-        var position = 0
+        var position = 1
         var firstNote = signature.extractNoteName(NOTE_NAMES[relativeStart])
         for (i in 1..diff) {
             val nwNote = signature.extractNoteName(NOTE_NAMES[(relativeStart + i) % MIDI_OCTAVE])
-            if (firstNote != nwNote) {
+            if (firstNote != nwNote && nwNote != NoteNameEnum.None) {
                 firstNote = nwNote
                 position++
             }
@@ -70,7 +70,6 @@ data class MidiNote(
     )
 
     fun getName(keySignature: KeySignatureEnum): NoteNameEnum {
-        val noteName = this.noteName
         return when (keySignature.symbol) {
             NoteAccidentalEnum.Flat -> noteName.firstName(
                 NoteAccidentalEnum.Flat,
