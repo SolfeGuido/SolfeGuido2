@@ -174,4 +174,10 @@ class OptionScreen(context: Context) : UIScreen(context) {
         }
     }
 
+    override fun back(): Boolean {
+        //TODO: could save the last state of the menu screen to return to it instead of the root
+        context.inject<StateMachine>().switch<MenuScreen>()
+        return true
+    }
+
 }

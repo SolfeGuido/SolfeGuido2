@@ -53,6 +53,8 @@ sealed interface IGameModeOptions : Json.Serializable {
 
     fun validateNote(note: NoteOrderEnum): Boolean
 
+    fun hasAccidentals(): Boolean
+
     fun endGame(context: Context, score: Int)
 
 }

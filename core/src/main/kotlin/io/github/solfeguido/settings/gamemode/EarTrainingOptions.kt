@@ -39,5 +39,9 @@ class EarTrainingOptions : IGameModeOptions {
         // TODO
     }
 
+    override fun hasAccidentals(): Boolean {
+        TODO("Not yet implemented")
+    }
+
     override fun validateNote(note: NoteOrderEnum) = false
 }

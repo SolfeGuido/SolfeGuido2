@@ -7,7 +7,7 @@ import ktx.json.readValue
 class RandomGenerator(
     private var minNote: Int = 0,
     private var maxNote: Int = 1,
-    private var hasAccidentals: Boolean = false
+    private var generateAccidentals: Boolean = false
 ) : IGeneratorOptions {
 
     companion object {
@@ -20,7 +20,7 @@ class RandomGenerator(
         noteRange = genNoteRange()
     }
 
-    private fun genNoteRange() = if (hasAccidentals) {
+    private fun genNoteRange() = if (generateAccidentals) {
         (minNote..maxNote).toList()
     } else {
         (minNote..maxNote).filterNot { ACCIDENTALS_NOTES.contains(it % 12) }
@@ -29,7 +29,7 @@ class RandomGenerator(
     override fun read(json: Json, jsonData: JsonValue) {
         minNote = json.readValue(jsonData, "minNote")
         maxNote = json.readValue(jsonData, "maxNote")
-        hasAccidentals = json.readValue(jsonData, "hasAccidentals")
+        generateAccidentals = json.readValue(jsonData, "generateAccidentals")
         noteRange = genNoteRange()
     }
 
@@ -37,8 +37,10 @@ class RandomGenerator(
         super.write(json)
         json.writeValue("minNote", minNote)
         json.writeValue("maxNote", maxNote)
-        json.writeValue("hasAccidentals", hasAccidentals)
+        json.writeValue("generateAccidentals", generateAccidentals)
     }
+
+    override fun hasAccidentals() = generateAccidentals
 
     override fun next() = noteRange.random()
 

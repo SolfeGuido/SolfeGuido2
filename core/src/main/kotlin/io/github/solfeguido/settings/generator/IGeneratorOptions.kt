@@ -24,4 +24,6 @@ interface IGeneratorOptions : Json.Serializable {
     }
 
     fun next(): Int
+
+    fun hasAccidentals() : Boolean
 }

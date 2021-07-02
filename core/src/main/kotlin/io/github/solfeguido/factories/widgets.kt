@@ -4,9 +4,7 @@ import com.badlogic.gdx.scenes.scene2d.Actor
 import com.badlogic.gdx.scenes.scene2d.ui.Label
 import com.badlogic.gdx.scenes.scene2d.ui.Skin
 import io.github.solfeguido.actors.*
-import io.github.solfeguido.enums.ClefEnum
 import io.github.solfeguido.enums.IconName
-import io.github.solfeguido.enums.KeySignatureEnum
 import io.github.solfeguido.enums.SolfeGuidoPreferences
 import io.github.solfeguido.settings.MeasureSettings
 import io.github.solfeguido.settings.TimeSettings
@@ -64,8 +62,10 @@ inline fun <S> KWidget<S>.pianoAnswer(
 ) = actor(PianoAnswerActor(noteStyle, showNotes), init)
 
 inline fun <S> KWidget<S>.buttonAnswer(
+    noteStyle: SolfeGuidoPreferences.NoteStyle,
+    showAccidentals: Boolean,
     init: (@Scene2dDsl ButtonAnswerActor).(S) -> Unit = {}
-) = actor(ButtonAnswerActor(), init)
+) = actor(ButtonAnswerActor(noteStyle, showAccidentals), init)
 
 inline fun <S> KWidget<S>.borderButton(
     text: String,
@@ -76,8 +76,6 @@ inline fun <S> KWidget<S>.borderButton(
 
 inline fun <S> KWidget<S>.answerButton(
     text: String,
-    style: String = "answerButtonStyle",
-    skin: Skin = Scene2DSkin.defaultSkin,
     init: (@Scene2dDsl AnswerButton).(S) -> Unit
 ) = actor(AnswerButton(text), init)
 

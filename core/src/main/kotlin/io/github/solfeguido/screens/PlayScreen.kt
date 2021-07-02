@@ -94,7 +94,7 @@ class PlayScreen(context: Context) : UIScreen(context) {
                 val answerer = when (answerType) {
                     SolfeGuidoPreferences.ButtonStyle.PianoKeys.name -> pianoAnswer(noteStyle)
                     SolfeGuidoPreferences.ButtonStyle.PianoWithNotes.name -> pianoAnswer(noteStyle, showNotes = true)
-                    else -> buttonAnswer()
+                    else -> buttonAnswer(noteStyle, game.hasAccidentals())
                 }
 
                 answerer.onAnswer {

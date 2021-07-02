@@ -21,5 +21,6 @@ class MidiGenerator(var filename: String = "") : IGeneratorOptions {
         return Random.nextInt()
     }
 
+    override fun hasAccidentals() = true
 
 }
