@@ -36,7 +36,11 @@ class PlayScreen(context: Context) : UIScreen(context) {
         timer = options.time
         Gdx.input.inputProcessor = null
 
-        val answerType = preferences[Constants.Preferences.BUTTON_STYLE] ?: SolfeGuidoPreferences.ButtonStyle.PianoKeys.name
+        val answerType =
+            preferences[Constants.Preferences.BUTTON_STYLE] ?: SolfeGuidoPreferences.ButtonStyle.PianoKeys.name
+        val noteStyle = SolfeGuidoPreferences.NoteStyle.valueOf(
+            preferences[Constants.Preferences.NOTE_STYLE] ?: SolfeGuidoPreferences.NoteStyle.EnglishNotes.name
+        )
         lateinit var scoreActor: ScoreActor
 
         return scene2d.table {
@@ -88,8 +92,8 @@ class PlayScreen(context: Context) : UIScreen(context) {
                 align(Align.top)
 
                 val answerer = when (answerType) {
-                    SolfeGuidoPreferences.ButtonStyle.PianoKeys.name -> pianoAnswer()
-                    SolfeGuidoPreferences.ButtonStyle.PianoWithNotes.name -> pianoAnswer(showNotes = true)
+                    SolfeGuidoPreferences.ButtonStyle.PianoKeys.name -> pianoAnswer(noteStyle)
+                    SolfeGuidoPreferences.ButtonStyle.PianoWithNotes.name -> pianoAnswer(noteStyle, showNotes = true)
                     else -> buttonAnswer()
                 }
 

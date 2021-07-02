@@ -7,6 +7,7 @@ import io.github.solfeguido.actors.*
 import io.github.solfeguido.enums.ClefEnum
 import io.github.solfeguido.enums.IconName
 import io.github.solfeguido.enums.KeySignatureEnum
+import io.github.solfeguido.enums.SolfeGuidoPreferences
 import io.github.solfeguido.settings.MeasureSettings
 import io.github.solfeguido.settings.TimeSettings
 import io.github.solfeguido.ui.*
@@ -57,9 +58,10 @@ inline fun <S> KWidget<S>.timer(
 ) = actor(TimerActor(context, settings), init)
 
 inline fun <S> KWidget<S>.pianoAnswer(
+    noteStyle: SolfeGuidoPreferences.NoteStyle,
     showNotes: Boolean = false,
     init: (@Scene2dDsl PianoAnswerActor).(S) -> Unit = {}
-) = actor(PianoAnswerActor(showNotes), init)
+) = actor(PianoAnswerActor(noteStyle, showNotes), init)
 
 inline fun <S> KWidget<S>.buttonAnswer(
     init: (@Scene2dDsl ButtonAnswerActor).(S) -> Unit = {}
