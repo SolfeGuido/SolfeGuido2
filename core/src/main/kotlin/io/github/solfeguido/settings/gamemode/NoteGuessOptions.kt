@@ -3,6 +3,7 @@ package io.github.solfeguido.settings.gamemode
 import com.badlogic.gdx.utils.Json
 import com.badlogic.gdx.utils.JsonValue
 import io.github.solfeguido.actors.MeasureActor
+import io.github.solfeguido.config.SPreferences
 import io.github.solfeguido.core.StatsManager
 import io.github.solfeguido.enums.NoteAccidentalEnum
 import io.github.solfeguido.enums.NoteOrderEnum
@@ -36,10 +37,10 @@ open class NoteGuessOptions(
         json.writeValue("isCustom", isCustom)
     }
 
-    override fun populateScene(parent: KStack, resultCallback: (ResultEvent) -> Unit) {
+    override fun populateScene(context: Context, parent: KStack, resultCallback: (ResultEvent) -> Unit) {
         currentMeasure = 0
         actors = measures.map {
-            parent.measure(it) {
+            parent.measure(it, context.inject<SPreferences>().noteStyle) {
                 onResult { resultCallback(it) }
             }
         }.toGdxArray()

@@ -40,11 +40,9 @@ class NoteActor : WidgetGroup(), Pool.Poolable {
 
     private val accidentalIcon = Icon(IconName.Empty).also {
         addActor(it)
-        it.debug = true
     }
     private val noteIcon = Icon(IconName.QuarterNote).also {
         addActor(it)
-        it.debug = true
     }
 
     private val accidentalEffect = Icon(IconName.Empty)
@@ -52,7 +50,6 @@ class NoteActor : WidgetGroup(), Pool.Poolable {
     private val noteName = Label("", Scene2DSkin.defaultSkin, "noteNameStyle").also {
         addActor(it)
         it.isVisible = false
-        it.debug = true
     }
 
 
@@ -127,7 +124,7 @@ class NoteActor : WidgetGroup(), Pool.Poolable {
         noteEffect.setIcon(IconName.QuarterNote)
         noteEffect.pack()
         //TODO: Change name to be based on the user's preferences
-        noteName.setText(note.getName(measureActor.keySignature).value)
+        noteName.setText(measureActor.nameNote(note.getName(measureActor.keySignature)))
         noteName.x = noteIcon.width + accidentalIcon.width
         noteName.pack()
         noteName.y = if (relativeMeasurePosition % 2 == 1) 0f else -measureActor.lineSpace

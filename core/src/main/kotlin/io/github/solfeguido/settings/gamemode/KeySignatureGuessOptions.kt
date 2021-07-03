@@ -24,7 +24,7 @@ class KeySignatureGuessOptions : IGameModeOptions {
         signatures = json.readValue(jsonData, "signatures")
     }
 
-    override fun populateScene(parent: KStack, resultCallback: (ResultEvent) -> Unit) {
+    override fun populateScene(context: Context, parent: KStack, resultCallback: (ResultEvent) -> Unit) {
 
     }
 

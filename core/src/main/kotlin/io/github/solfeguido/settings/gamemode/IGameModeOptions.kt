@@ -49,7 +49,7 @@ sealed interface IGameModeOptions : Json.Serializable {
         json.writeValue("className", this.javaClass.simpleName)
     }
 
-    fun populateScene(parent: KStack, resultCallback: (ResultEvent) -> Unit)
+    fun populateScene(context: Context, parent: KStack, resultCallback: (ResultEvent) -> Unit)
 
     fun validateNote(note: NoteOrderEnum): Boolean
 

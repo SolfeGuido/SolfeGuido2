@@ -9,7 +9,7 @@ import io.github.solfeguido.settings.generator.IGeneratorOptions
 import io.github.solfeguido.settings.generator.RandomGenerator
 import io.github.solfeguido.ui.events.ResultEvent
 import ktx.inject.Context
-import ktx.json.*
+import ktx.json.readValue
 import ktx.scene2d.KStack
 
 class EarTrainingOptions : IGameModeOptions {
@@ -31,8 +31,8 @@ class EarTrainingOptions : IGameModeOptions {
         json.writeValue("keySignature", keySignature)
     }
 
-    override fun populateScene(parent: KStack, resultCallback: (ResultEvent) -> Unit) {
-    // TODO
+    override fun populateScene(context: Context, parent: KStack, resultCallback: (ResultEvent) -> Unit) {
+        // TODO
     }
 
     override fun endGame(context: Context, score: Int) {

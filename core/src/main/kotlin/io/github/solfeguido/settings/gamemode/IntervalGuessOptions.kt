@@ -28,7 +28,7 @@ class IntervalGuessOptions : IGameModeOptions {
         json.writeValue("keySignature", keySignature)
     }
 
-    override fun populateScene(parent: KStack, resultCallback: (ResultEvent) -> Unit) {
+    override fun populateScene(context: Context, parent: KStack, resultCallback: (ResultEvent) -> Unit) {
 
     }
 

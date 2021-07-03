@@ -1,22 +1,19 @@
 package io.github.solfeguido.screens
 
 import com.badlogic.gdx.Gdx
-import com.badlogic.gdx.Preferences
 import com.badlogic.gdx.scenes.scene2d.Actor
 import com.badlogic.gdx.utils.Align
 import io.github.solfeguido.actors.ScoreActor
-import io.github.solfeguido.config.Constants
+import io.github.solfeguido.config.SPreferences
 import io.github.solfeguido.core.StateMachine
 import io.github.solfeguido.core.StateParameter
 import io.github.solfeguido.core.StatsManager
 import io.github.solfeguido.enums.IconName
-import io.github.solfeguido.enums.SolfeGuidoPreferences
 import io.github.solfeguido.factories.*
 import io.github.solfeguido.settings.GameSettings
 import io.github.solfeguido.settings.TimeSettings
 import io.github.solfeguido.settings.gamemode.IGameModeOptions
 import ktx.inject.Context
-import ktx.preferences.get
 import ktx.scene2d.container
 import ktx.scene2d.scene2d
 import ktx.scene2d.stack
@@ -27,7 +24,7 @@ class PlayScreen(context: Context) : UIScreen(context) {
     private lateinit var game: IGameModeOptions
     private lateinit var timer: TimeSettings
 
-    private val preferences: Preferences = context.inject()
+    private val preferences: SPreferences = context.inject()
     private val stats: StatsManager = context.inject()
 
     override fun setup(settings: StateParameter): Actor {
@@ -36,11 +33,8 @@ class PlayScreen(context: Context) : UIScreen(context) {
         timer = options.time
         Gdx.input.inputProcessor = null
 
-        val answerType =
-            preferences[Constants.Preferences.BUTTON_STYLE] ?: SolfeGuidoPreferences.ButtonStyle.PianoKeys.name
-        val noteStyle = SolfeGuidoPreferences.NoteStyle.valueOf(
-            preferences[Constants.Preferences.NOTE_STYLE] ?: SolfeGuidoPreferences.NoteStyle.EnglishNotes.name
-        )
+        val answerType = preferences.buttonStyle
+        val noteStyle = preferences.noteStyle
         lateinit var scoreActor: ScoreActor
 
         return scene2d.table {
@@ -75,7 +69,7 @@ class PlayScreen(context: Context) : UIScreen(context) {
                     pad(2f, 10f, 0f, 10f)
                     setPosition(0f, 0f)
                 }
-                game.populateScene(this) { result ->
+                game.populateScene(context, this) { result ->
                     stats.registerResult(result)
                     if (!result.isCorrect) {
                         scoreActor.negativeAnimation()
@@ -92,8 +86,8 @@ class PlayScreen(context: Context) : UIScreen(context) {
                 align(Align.top)
 
                 val answerer = when (answerType) {
-                    SolfeGuidoPreferences.ButtonStyle.PianoKeys.name -> pianoAnswer(noteStyle)
-                    SolfeGuidoPreferences.ButtonStyle.PianoWithNotes.name -> pianoAnswer(noteStyle, showNotes = true)
+                    SPreferences.ButtonStyle.PianoKeys -> pianoAnswer(noteStyle)
+                    SPreferences.ButtonStyle.PianoWithNotes -> pianoAnswer(noteStyle, showNotes = true)
                     else -> buttonAnswer(noteStyle, game.hasAccidentals())
                 }
 

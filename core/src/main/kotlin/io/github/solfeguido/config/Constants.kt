@@ -37,10 +37,6 @@ object Constants {
     const val CLASSIC_TIME = 120f
 
     object Preferences {
-        const val NOTE_STYLE = "noteStyle"
-        const val BUTTON_STYLE = "buttonStyle"
-        const val VIBRATIONS = "vibrations"
-        const val THEME = "theme"
         const val LEVELS = "level"
     }
 }

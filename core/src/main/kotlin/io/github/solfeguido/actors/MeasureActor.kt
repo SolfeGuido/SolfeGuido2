@@ -6,14 +6,16 @@ import com.badlogic.gdx.scenes.scene2d.ui.WidgetGroup
 import com.badlogic.gdx.scenes.scene2d.utils.Drawable
 import io.github.solfeguido.config.Constants
 import io.github.solfeguido.config.KeySignatureConfig
+import io.github.solfeguido.enums.NoteNameEnum
 import io.github.solfeguido.enums.NoteOrderEnum
+import io.github.solfeguido.config.SPreferences
 import io.github.solfeguido.factories.*
 import io.github.solfeguido.settings.MeasureSettings
 import io.github.solfeguido.ui.events.ResultEvent
 import ktx.collections.gdxArrayOf
 import kotlin.math.max
 
-class MeasureActor(settings: MeasureSettings) : WidgetGroup() {
+class MeasureActor(settings: MeasureSettings, private val noteStyle: SPreferences.NoteStyle) : WidgetGroup() {
 
 
     val clef = settings.clef
@@ -41,6 +43,8 @@ class MeasureActor(settings: MeasureSettings) : WidgetGroup() {
     private val notes = gdxArrayOf<NoteActor>()
 
     private val signatureActor = KeySignatureActor(this).also { addActor(it) }
+
+    fun nameNote(note: NoteNameEnum) = NoteNameEnum[note.name, noteStyle]
 
     fun checkNote(note: NoteOrderEnum): Boolean {
         val expected = currentNote().note?.noteOrder ?: return false

@@ -1,6 +1,7 @@
 package io.github.solfeguido.factories
 
 
+import com.badlogic.gdx.Preferences
 import com.badlogic.gdx.scenes.scene2d.Actor
 import com.badlogic.gdx.scenes.scene2d.Event
 import com.badlogic.gdx.utils.Pools
@@ -59,3 +60,6 @@ inline fun <reified T : Event> Actor.firePooled(crossinline applier: T.() -> Uni
         this.fire(it)
     }
 }
+
+inline fun <reified T : Enum<T>> Preferences.enum() =
+    this.getString(T::class.java.simpleName)?.let { if (it.isNotBlank()) enumValueOf(it) else null } ?: enumValues<T>()[0]

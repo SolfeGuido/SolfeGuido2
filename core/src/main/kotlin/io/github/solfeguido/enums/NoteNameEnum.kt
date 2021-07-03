@@ -1,5 +1,6 @@
 package io.github.solfeguido.enums
 
+import io.github.solfeguido.config.SPreferences
 import ktx.collections.gdxMapOf
 
 enum class NoteNameEnum(val value: String, val orderEnum: NoteOrderEnum) {
@@ -15,7 +16,7 @@ enum class NoteNameEnum(val value: String, val orderEnum: NoteOrderEnum) {
 
     companion object {
         private val NOTE_NAMES = gdxMapOf(
-            SolfeGuidoPreferences.NoteStyle.LatinNotes to gdxMapOf(
+            SPreferences.NoteStyle.LatinNotes to gdxMapOf(
                 "C" to "Do",
                 "D" to "Re",
                 "E" to "Mi",
@@ -24,7 +25,7 @@ enum class NoteNameEnum(val value: String, val orderEnum: NoteOrderEnum) {
                 "A" to "La",
                 "B" to "Si"
             ),
-            SolfeGuidoPreferences.NoteStyle.RomanNotes to gdxMapOf(
+            SPreferences.NoteStyle.RomanNotes to gdxMapOf(
                 "C" to "Do",
                 "D" to "Ré",
                 "E" to "Mi",
@@ -35,7 +36,7 @@ enum class NoteNameEnum(val value: String, val orderEnum: NoteOrderEnum) {
             ),
         )
 
-        operator fun get(name: String, noteStyle: SolfeGuidoPreferences.NoteStyle): String {
+        operator fun get(name: String, noteStyle: SPreferences.NoteStyle): String {
             return NOTE_NAMES[noteStyle]?.get(name) ?: name
         }
     }

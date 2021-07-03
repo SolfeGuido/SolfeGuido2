@@ -5,7 +5,7 @@ import io.github.solfeguido.config.Constants
 import io.github.solfeguido.enums.IconName
 import io.github.solfeguido.enums.NoteAccidentalEnum
 import io.github.solfeguido.enums.NoteNameEnum
-import io.github.solfeguido.enums.SolfeGuidoPreferences
+import io.github.solfeguido.config.SPreferences
 import io.github.solfeguido.factories.answerButton
 import io.github.solfeguido.factories.borderButton
 import io.github.solfeguido.factories.firePooled
@@ -19,7 +19,7 @@ import ktx.scene2d.KTable
 import ktx.scene2d.table
 
 class ButtonAnswerActor(
-    private val noteStyle: SolfeGuidoPreferences.NoteStyle,
+    private val noteStyle: SPreferences.NoteStyle,
     showAccidentals: Boolean = false
 ) : Table(), KTable {
 
