@@ -1,11 +1,13 @@
 package io.github.solfeguido.core
 
 import com.badlogic.gdx.Preferences
+import com.badlogic.gdx.utils.Json
 import io.github.solfeguido.enums.ClefEnum
 import io.github.solfeguido.enums.NoteOrderEnum
 import io.github.solfeguido.ui.events.ResultEvent
 import ktx.collections.gdxMapOf
 import ktx.collections.set
+import ktx.json.fromJson
 import ktx.preferences.set
 
 class StatsManager(private val preference: Preferences) {
@@ -27,24 +29,20 @@ class StatsManager(private val preference: Preferences) {
     }
 
     fun save() {
-        for(entry in wrongNotes) {
-            preference["WRONGS_${entry.key.name}"] = entry.value
-        }
-        for(score in bestScores) {
-            preference["BEST_SCORE_${score.key.name}"] = score.value
-        }
+        val json = Json()
+        val wrongNotesSerialized = json.toJson(wrongNotes)
+        preference["WRONG_NOTES"] = wrongNotesSerialized
+
+        val scoresSerialized = json.toJson(bestScores)
+        preference["BEST_SCORES"] = scoresSerialized
+
         preference.flush()
     }
 
     fun loadSave() {
-        for (n in NoteOrderEnum.values()) {
-            val name = "WRONGS_${n.name}"
-            preference.getInteger(name)?.let { wrongNotes[n] = it }
-        }
+        val json = Json()
+        wrongNotes = json.fromJson(preference.getString("WRONG_NOTES"))
+        bestScores = json.fromJson(preference.getString("BEST_SCORES"))
 
-        for (clef in ClefEnum.values()) {
-            val name = "BEST_SCORE_${clef.name}"
-            preference.getInteger(name)?.let { bestScores[clef] = it }
-        }
     }
 }

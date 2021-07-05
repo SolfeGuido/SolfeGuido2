@@ -44,7 +44,10 @@ class PlayScreen(context: Context) : UIScreen(context) {
             align(Align.center)
             val timer = timer(context, timer) {
                 onTimerEnd {
+                    //TODO: save the game with stats manager (time, correct guesses, wrong guesses, increase total games played)
                     game.endGame(context, scoreActor.score)
+                    stats.save()
+
 
                     scene2d.zoomDialog {
                         title("Finished !")
