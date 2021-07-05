@@ -2,21 +2,31 @@ package io.github.solfeguido.config
 
 import com.badlogic.gdx.Preferences
 import io.github.solfeguido.factories.enum
+import ktx.preferences.set
 
 
 class SPreferences(private val preferences: Preferences) {
 
-    var theme: Theme private set
-    var vibrations: Vibrations private set
-    var noteStyle: NoteStyle private set
-    var buttonStyle: ButtonStyle private set
-
-    init {
-        theme = preferences.enum()
-        vibrations = preferences.enum()
-        noteStyle = preferences.enum()
-        buttonStyle = preferences.enum()
-    }
+    var theme: Theme = preferences.enum()
+        private set(value) {
+            this.preferences[Theme::class.java.simpleName] = value
+            field = value
+        }
+    var vibrations: Vibrations = preferences.enum()
+        private set(value) {
+            this.preferences[Vibrations::class.java.simpleName] = value
+            field = value
+        }
+    var noteStyle: NoteStyle = preferences.enum()
+        private set(value) {
+            this.preferences[NoteStyle::class.java.simpleName] = value
+            field = value
+        }
+    var buttonStyle: ButtonStyle = preferences.enum()
+        private set(value) {
+            this.preferences[ButtonStyle::class.java.simpleName] = value
+            field = value
+        }
 
     fun save() {
         preferences.flush()
@@ -32,9 +42,9 @@ class SPreferences(private val preferences: Preferences) {
 
     internal inline fun <T : Enum<T>> set(value: T) = when (value) {
         is Theme -> this.theme = value
-        is Vibrations -> this.vibrations
-        is NoteStyle -> this.noteStyle
-        is ButtonStyle -> this.buttonStyle
+        is Vibrations -> this.vibrations = value
+        is NoteStyle -> this.noteStyle = value
+        is ButtonStyle -> this.buttonStyle = value
         else -> throw Error("Cannot set preference ${value::class.java.name} with value $value")
     }
 
