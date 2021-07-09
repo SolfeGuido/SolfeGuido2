@@ -38,5 +38,6 @@ object Constants {
 
     object Preferences {
         const val LEVELS = "level"
+        const val STATS = "stats"
     }
 }
