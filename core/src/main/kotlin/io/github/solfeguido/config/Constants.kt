@@ -34,10 +34,11 @@ object Constants {
     const val FADEOUT_DURATION = 3f
 
     // Others
-    const val CLASSIC_TIME = 120f
+    const val CLASSIC_TIME = 10f
 
     object Preferences {
         const val LEVELS = "level"
-        const val STATS = "stats"
+        const val BEST_SCORES = "stats"
+        const val WRONGE_NOTES = "errors"
     }
 }

@@ -20,4 +20,5 @@ dependencies {
     api("io.github.libktx:ktx-json:${project.property("ktxVersion")}")
     api("io.github.libktx:ktx-graphics:${project.property("ktxVersion")}")
     api("io.github.libktx:ktx-preferences:${project.property("ktxVersion")}")
+    implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:1.2.2")
 }
