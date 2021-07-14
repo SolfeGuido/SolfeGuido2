@@ -8,14 +8,15 @@ import io.github.solfeguido.config.Constants
 import io.github.solfeguido.config.KeySignatureConfig
 import io.github.solfeguido.enums.NoteNameEnum
 import io.github.solfeguido.enums.NoteOrderEnum
-import io.github.solfeguido.config.SPreferences
+import io.github.solfeguido.core.PreferencesManager
+import io.github.solfeguido.enums.NoteStyle
 import io.github.solfeguido.factories.*
 import io.github.solfeguido.settings.MeasureSettings
 import io.github.solfeguido.ui.events.ResultEvent
 import ktx.collections.gdxArrayOf
 import kotlin.math.max
 
-class MeasureActor(settings: MeasureSettings, private val noteStyle: SPreferences.NoteStyle) : WidgetGroup() {
+class MeasureActor(settings: MeasureSettings, private val noteStyle: NoteStyle) : WidgetGroup() {
 
 
     val clef = settings.clef

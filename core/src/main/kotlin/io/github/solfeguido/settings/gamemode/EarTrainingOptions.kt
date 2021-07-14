@@ -1,35 +1,21 @@
 package io.github.solfeguido.settings.gamemode
 
-import com.badlogic.gdx.utils.Json
-import com.badlogic.gdx.utils.JsonValue
 import io.github.solfeguido.enums.KeySignatureEnum
 import io.github.solfeguido.enums.NoteOrderEnum
 import io.github.solfeguido.settings.MeasureSettings
 import io.github.solfeguido.settings.generator.IGeneratorOptions
 import io.github.solfeguido.settings.generator.RandomGenerator
 import io.github.solfeguido.ui.events.ResultEvent
+import kotlinx.serialization.Serializable
 import ktx.inject.Context
-import ktx.json.readValue
 import ktx.scene2d.KStack
 
-class EarTrainingOptions : IGameModeOptions {
-
-    var keySignature = KeySignatureEnum.CMajor
-    var measure: MeasureSettings = MeasureSettings()
+@Serializable
+class EarTrainingOptions(
+    var keySignature : KeySignatureEnum = KeySignatureEnum.CMajor,
+    var measure: MeasureSettings = MeasureSettings(),
     var generator: IGeneratorOptions = RandomGenerator()
-
-    override fun read(json: Json, jsonData: JsonValue) {
-        keySignature = json.readValue(jsonData, "keySignature")
-        measure = json.readValue(jsonData, "measure")
-        generator = IGeneratorOptions.toInstance(json, jsonData)
-    }
-
-    override fun write(json: Json) {
-        super.write(json)
-        json.writeValue("generator", generator)
-        json.writeValue("measure", measure)
-        json.writeValue("keySignature", keySignature)
-    }
+) : IGameModeOptions {
 
     override fun populateScene(context: Context, parent: KStack, resultCallback: (ResultEvent) -> Unit) {
         // TODO

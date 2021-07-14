@@ -60,6 +60,3 @@ inline fun <reified T : Event> Actor.firePooled(crossinline applier: T.() -> Uni
         this.fire(it)
     }
 }
-
-inline fun <reified T : Enum<T>> Preferences.enum() =
-    this.getString(T::class.java.simpleName)?.let { if (it.isNotBlank()) enumValueOf(it) else null } ?: enumValues<T>()[0]

@@ -1,10 +1,9 @@
 package io.github.solfeguido.settings
 
-import com.badlogic.gdx.utils.Json
-import com.badlogic.gdx.utils.JsonValue
 import io.github.solfeguido.config.Constants
-import ktx.json.*
+import kotlinx.serialization.Serializable
 
+@Serializable
 class TimeSettings(
     var start : Float = 0.0f,
     var max: Float = Constants.CLASSIC_TIME,
@@ -12,7 +11,7 @@ class TimeSettings(
     var timePenalty: Float = 1f,
     var multiplicator: Float = 1f,
     var showParticles: Boolean = true
-) : Json.Serializable {
+)  {
 
     companion object {
 
@@ -36,22 +35,5 @@ class TimeSettings(
 
     }
 
-    override fun read(json: Json, jsonData: JsonValue) {
-        start = json.readValue(jsonData, "start")
-        max = json.readValue(jsonData, "max")
-        timeBonus = json.readValue(jsonData, "timeBonus")
-        timePenalty = json.readValue(jsonData, "timePenalty")
-        multiplicator = json.readValue(jsonData, "multiplicator")
-        showParticles = json.readValue(jsonData, "showParticles")
-    }
-
-    override fun write(json: Json) {
-        json.writeValue("start", start)
-        json.writeValue("max", max)
-        json.writeValue("timeBonus", timeBonus)
-        json.writeValue("timePenalty", timePenalty)
-        json.writeValue("multiplicator", multiplicator)
-        json.writeValue("showParticles", showParticles)
-    }
 
 }

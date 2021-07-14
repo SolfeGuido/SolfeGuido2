@@ -1,9 +1,14 @@
+plugins {
+    kotlin("jvm")
+    kotlin("plugin.serialization") version Versions.KOTLIN
+}
+
 dependencies {
-    val kotlin = project.property("kotlinVersion")
-    val coroutines = project.property("coroutines")
-    val gdx = project.property("gdxVersion")
-    val ktx = project.property("ktxVersion")
-    val jsonSerialization = project.property("jsonSerialization")
+    val kotlin = Versions.KOTLIN
+    val coroutines = Versions.KOTLIN_COROUTINES
+    val gdx = Versions.GDX
+    val ktx = Versions.KTX
+    val jsonSerialization = Versions.KOTLIN_SERIALIZATION
     api("org.jetbrains.kotlinx:kotlinx-coroutines-core:$coroutines")
     api("com.badlogicgames.gdx:gdx:$gdx")
     api("org.jetbrains.kotlin:kotlin-stdlib:$kotlin")
@@ -24,5 +29,5 @@ dependencies {
     api("io.github.libktx:ktx-style:$ktx")
     api("io.github.libktx:ktx-graphics:$ktx")
     api("io.github.libktx:ktx-preferences:$ktx")
-    implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:$jsonSerialization")
+    api("org.jetbrains.kotlinx:kotlinx-serialization-json:$jsonSerialization")
 }

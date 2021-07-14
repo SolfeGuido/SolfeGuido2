@@ -1,9 +1,10 @@
 package io.github.solfeguido.settings.generator
 
-import com.badlogic.gdx.utils.Json
-import com.badlogic.gdx.utils.JsonValue
-import ktx.json.readValue
+import kotlinx.serialization.Serializable
+import kotlinx.serialization.Transient
 
+
+@Serializable
 class RandomGenerator(
     private var minNote: Int = 0,
     private var maxNote: Int = 1,
@@ -14,11 +15,9 @@ class RandomGenerator(
         val ACCIDENTALS_NOTES = setOf(1, 3, 6, 8, 10)
     }
 
-    private var noteRange: List<Int>
+    @Transient
+    private var noteRange: List<Int> = genNoteRange()
 
-    init {
-        noteRange = genNoteRange()
-    }
 
     private fun genNoteRange() = if (generateAccidentals) {
         (minNote..maxNote).toList()
@@ -26,19 +25,6 @@ class RandomGenerator(
         (minNote..maxNote).filterNot { ACCIDENTALS_NOTES.contains(it % 12) }
     }
 
-    override fun read(json: Json, jsonData: JsonValue) {
-        minNote = json.readValue(jsonData, "minNote")
-        maxNote = json.readValue(jsonData, "maxNote")
-        generateAccidentals = json.readValue(jsonData, "generateAccidentals")
-        noteRange = genNoteRange()
-    }
-
-    override fun write(json: Json) {
-        super.write(json)
-        json.writeValue("minNote", minNote)
-        json.writeValue("maxNote", maxNote)
-        json.writeValue("generateAccidentals", generateAccidentals)
-    }
 
     override fun hasAccidentals() = generateAccidentals
 

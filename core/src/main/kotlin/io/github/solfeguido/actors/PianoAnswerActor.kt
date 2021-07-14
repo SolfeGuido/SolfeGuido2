@@ -7,14 +7,15 @@ import io.github.solfeguido.config.Constants
 import io.github.solfeguido.enums.NoteNameEnum
 import io.github.solfeguido.enums.NoteOrderEnum
 import io.github.solfeguido.enums.PianoKeyTypeEnum
-import io.github.solfeguido.config.SPreferences
+import io.github.solfeguido.core.PreferencesManager
+import io.github.solfeguido.enums.NoteStyle
 import io.github.solfeguido.factories.firePooled
 import io.github.solfeguido.ui.PianoKey
 import io.github.solfeguido.ui.events.AnswerGivenEvent
 import ktx.actors.onClick
 
 
-class PianoAnswerActor(private val noteStyle: SPreferences.NoteStyle, private val showNotes: Boolean = false) :
+class PianoAnswerActor(private val noteStyle: NoteStyle, private val showNotes: Boolean = false) :
     Stack() {
 
     init {

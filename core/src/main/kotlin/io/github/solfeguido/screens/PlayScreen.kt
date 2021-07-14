@@ -4,10 +4,11 @@ import com.badlogic.gdx.Gdx
 import com.badlogic.gdx.scenes.scene2d.Actor
 import com.badlogic.gdx.utils.Align
 import io.github.solfeguido.actors.ScoreActor
-import io.github.solfeguido.config.SPreferences
+import io.github.solfeguido.core.PreferencesManager
 import io.github.solfeguido.core.StateMachine
 import io.github.solfeguido.core.StateParameter
 import io.github.solfeguido.core.StatsManager
+import io.github.solfeguido.enums.ButtonStyle
 import io.github.solfeguido.enums.IconName
 import io.github.solfeguido.factories.*
 import io.github.solfeguido.settings.GameSettings
@@ -24,7 +25,7 @@ class PlayScreen(context: Context) : UIScreen(context) {
     private lateinit var game: IGameModeOptions
     private lateinit var timer: TimeSettings
 
-    private val preferences: SPreferences = context.inject()
+    private val preferencesManager: PreferencesManager = context.inject()
     private val stats: StatsManager = context.inject()
 
     override fun setup(settings: StateParameter): Actor {
@@ -33,8 +34,8 @@ class PlayScreen(context: Context) : UIScreen(context) {
         timer = options.time
         Gdx.input.inputProcessor = null
 
-        val answerType = preferences.buttonStyle
-        val noteStyle = preferences.noteStyle
+        val answerType = preferencesManager.buttonStyle
+        val noteStyle = preferencesManager.noteStyle
         lateinit var scoreActor: ScoreActor
 
         return scene2d.table {
@@ -89,8 +90,8 @@ class PlayScreen(context: Context) : UIScreen(context) {
                 align(Align.top)
 
                 val answerer = when (answerType) {
-                    SPreferences.ButtonStyle.PianoKeys -> pianoAnswer(noteStyle)
-                    SPreferences.ButtonStyle.PianoWithNotes -> pianoAnswer(noteStyle, showNotes = true)
+                    ButtonStyle.PianoKeys -> pianoAnswer(noteStyle)
+                    ButtonStyle.PianoWithNotes -> pianoAnswer(noteStyle, showNotes = true)
                     else -> buttonAnswer(noteStyle, game.hasAccidentals())
                 }
 

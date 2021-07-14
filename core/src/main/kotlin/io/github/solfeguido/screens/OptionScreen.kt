@@ -6,33 +6,31 @@ import com.badlogic.gdx.Preferences
 import com.badlogic.gdx.scenes.scene2d.Actor
 import com.badlogic.gdx.utils.Align
 import io.github.solfeguido.actors.IconCheckBox
-import io.github.solfeguido.config.Constants
 import io.github.solfeguido.core.StateMachine
 import io.github.solfeguido.core.StateParameter
-import io.github.solfeguido.enums.IconName
-import io.github.solfeguido.config.SPreferences
+import io.github.solfeguido.core.PreferencesManager
+import io.github.solfeguido.enums.*
 import io.github.solfeguido.factories.borderButton
 import io.github.solfeguido.factories.iconButton
 import io.github.solfeguido.factories.iconCheckBox
 import ktx.actors.onClick
 import ktx.inject.Context
 import ktx.preferences.get
-import ktx.preferences.set
 import ktx.scene2d.*
 
 class OptionScreen(context: Context) : UIScreen(context) {
 
-    private val preferences: SPreferences = context.inject()
+    private val preferencesManager: PreferencesManager = context.inject()
 
-    private inline fun <S, reified T : Enum<T>> KWidget<S>.preferenceCheckBox(
+    private inline fun <S> KWidget<S>.preferenceCheckBox(
         icon: IconName,
-        prefValue: T
+        prefValue: SettingsEnum
     ): IconCheckBox {
-        val actualValue = preferences.get<T>()
+        val actualValue = preferencesManager.get(prefValue)
         val res = IconCheckBox(icon)
         res.isChecked = actualValue == prefValue
         res.onClick {
-            preferences.set(prefValue)
+            preferencesManager.set(prefValue)
         }
         return actor(res)
     }
@@ -40,9 +38,6 @@ class OptionScreen(context: Context) : UIScreen(context) {
     override fun setup(settings: StateParameter): Actor {
 
         val preferences: Preferences = context.inject()
-        val vibrations: String = preferences["vibrations"] ?: "1"
-        val noteStyle = preferences["noteStyle"] ?: SPreferences.NoteStyle.EnglishNotes.name
-        val buttons = preferences["buttonStyle"] ?: SPreferences.ButtonStyle.NotesButton.name
 
         return scene2d.table {
             setFillParent(true)
@@ -75,11 +70,11 @@ class OptionScreen(context: Context) : UIScreen(context) {
                     buttonGroup(1, 1) {
                         preferenceCheckBox(
                             IconName.Mobile,
-                            SPreferences.Vibrations.Enabled
+                            Vibrations.Disabled
                         )
                         preferenceCheckBox(
                             IconName.MobileVibrate,
-                            SPreferences.Vibrations.Disabled
+                            Vibrations.Enabled
                         )
                     }
                     row()
@@ -91,15 +86,15 @@ class OptionScreen(context: Context) : UIScreen(context) {
                 buttonGroup(1, 1) {
                     preferenceCheckBox(
                         IconName.RomanNotes,
-                        SPreferences.NoteStyle.RomanNotes
+                        NoteStyle.RomanNotes
                     )
                     preferenceCheckBox(
                         IconName.LatinNotes,
-                        SPreferences.NoteStyle.LatinNotes
+                        NoteStyle.LatinNotes
                     )
                     preferenceCheckBox(
                         IconName.EnglishNotes,
-                        SPreferences.NoteStyle.EnglishNotes
+                        NoteStyle.EnglishNotes
                     )
                     it.right()
                 }
@@ -112,15 +107,15 @@ class OptionScreen(context: Context) : UIScreen(context) {
                 buttonGroup(1, 1) {
                     preferenceCheckBox(
                         IconName.NotesButton,
-                        SPreferences.ButtonStyle.NotesButton
+                        ButtonStyle.NotesButton
                     )
                     preferenceCheckBox(
                         IconName.PianoKeys,
-                        SPreferences.ButtonStyle.PianoKeys
+                        ButtonStyle.PianoKeys
                     )
                     preferenceCheckBox(
                         IconName.PianoWithNotes,
-                        SPreferences.ButtonStyle.PianoWithNotes
+                        ButtonStyle.PianoWithNotes
                     )
                     it.right()
                 }
@@ -131,8 +126,8 @@ class OptionScreen(context: Context) : UIScreen(context) {
                     setFontScale(0.7f)
                 }
                 buttonGroup(1, 1) {
-                    preferenceCheckBox(IconName.Sun, SPreferences.Theme.Light)
-                    preferenceCheckBox(IconName.Moon, SPreferences.Theme.Dark)
+                    preferenceCheckBox(IconName.Sun, Theme.Light)
+                    preferenceCheckBox(IconName.Moon, Theme.Dark)
                     it.right()
                 }
 
@@ -141,6 +136,7 @@ class OptionScreen(context: Context) : UIScreen(context) {
                     setFontScale(0.7f)
                 }
                 buttonGroup(1, 1) {
+                    // Todo : maybe change with a proper slider
                     iconCheckBox(IconName.VolumeOn)
                     iconCheckBox(IconName.VolumeOff)
                     it.right()
@@ -165,7 +161,7 @@ class OptionScreen(context: Context) : UIScreen(context) {
     }
 
     override fun dispose() {
-        preferences.save()
+        preferencesManager.save()
         super.dispose()
     }
 

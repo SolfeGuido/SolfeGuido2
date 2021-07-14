@@ -4,11 +4,14 @@ import io.github.solfeguido.core.progression.Level
 import io.github.solfeguido.core.progression.LevelManager
 import io.github.solfeguido.settings.MeasureSettings
 import io.github.solfeguido.settings.generator.RandomGenerator
-import ktx.collections.gdxArrayOf
+import kotlinx.serialization.Serializable
 import ktx.inject.Context
 
-class LevelOptions(val level: Level) : NoteGuessOptions(
-    gdxArrayOf(
+@Serializable
+class LevelOptions(
+    val level: Level
+    ) : NoteGuessOptions(
+    listOf(
         MeasureSettings(
             level.clef,
             generator = RandomGenerator(level.requirements.lowerNote, level.requirements.higherNote)

@@ -1,28 +1,16 @@
 package io.github.solfeguido.settings.gamemode
 
-import com.badlogic.gdx.utils.Array
-import com.badlogic.gdx.utils.Json
-import com.badlogic.gdx.utils.JsonValue
 import io.github.solfeguido.enums.KeySignatureEnum
 import io.github.solfeguido.enums.NoteOrderEnum
 import io.github.solfeguido.ui.events.ResultEvent
-import ktx.collections.gdxArrayOf
+import kotlinx.serialization.Serializable
 import ktx.inject.Context
-import ktx.json.readValue
 import ktx.scene2d.KStack
 
-class KeySignatureGuessOptions : IGameModeOptions {
-
-    var signatures: Array<KeySignatureEnum> = gdxArrayOf()
-
-    override fun write(json: Json) {
-        super.write(json)
-        json.writeValue("signatures", signatures)
-    }
-
-    override fun read(json: Json, jsonData: JsonValue) {
-        signatures = json.readValue(jsonData, "signatures")
-    }
+@Serializable
+class KeySignatureGuessOptions(
+    var signatures: Array<KeySignatureEnum> = arrayOf()
+) : IGameModeOptions {
 
     override fun populateScene(context: Context, parent: KStack, resultCallback: (ResultEvent) -> Unit) {
 

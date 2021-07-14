@@ -6,7 +6,7 @@ application {
     mainClass.set("io.github.solfeguido.lwjgl3.DesktopLauncherKt")
 
     version = "2.0.0-SNAPSHOT"
-    applicationName = "SolfeGuido"
+    applicationName = Versions.SOLFEGUIDO
 }
 
 sourceSets {
@@ -16,7 +16,7 @@ sourceSets {
 }
 
 dependencies {
-    val gdx = project.property("gdxVersion")
+    val gdx = Versions.GDX
     implementation(project(":core"))
     implementation("com.badlogicgames.gdx:gdx-backend-lwjgl3:$gdx")
     implementation("com.badlogicgames.gdx:gdx-platform:$gdx:natives-desktop")

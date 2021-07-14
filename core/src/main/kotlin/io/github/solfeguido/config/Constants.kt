@@ -40,5 +40,6 @@ object Constants {
         const val LEVELS = "level"
         const val BEST_SCORES = "stats"
         const val WRONGE_NOTES = "errors"
+        const val SETTINGS = "settings"
     }
 }

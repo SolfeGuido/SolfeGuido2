@@ -5,7 +5,8 @@ import com.badlogic.gdx.scenes.scene2d.ui.Label
 import com.badlogic.gdx.scenes.scene2d.ui.Skin
 import io.github.solfeguido.actors.*
 import io.github.solfeguido.enums.IconName
-import io.github.solfeguido.config.SPreferences
+import io.github.solfeguido.core.PreferencesManager
+import io.github.solfeguido.enums.NoteStyle
 import io.github.solfeguido.settings.MeasureSettings
 import io.github.solfeguido.settings.TimeSettings
 import io.github.solfeguido.ui.*
@@ -46,7 +47,7 @@ inline fun <S> KWidget<S>.sTextButton(
 
 inline fun <S> KWidget<S>.measure(
     settings: MeasureSettings,
-    noteStyle: SPreferences.NoteStyle,
+    noteStyle: NoteStyle,
     init: (@Scene2dDsl MeasureActor).(S) -> Unit = {}
 ) = actor(MeasureActor(settings, noteStyle), init)
 
@@ -57,13 +58,13 @@ inline fun <S> KWidget<S>.timer(
 ) = actor(TimerActor(context, settings), init)
 
 inline fun <S> KWidget<S>.pianoAnswer(
-    noteStyle: SPreferences.NoteStyle,
+    noteStyle: NoteStyle,
     showNotes: Boolean = false,
     init: (@Scene2dDsl PianoAnswerActor).(S) -> Unit = {}
 ) = actor(PianoAnswerActor(noteStyle, showNotes), init)
 
 inline fun <S> KWidget<S>.buttonAnswer(
-    noteStyle: SPreferences.NoteStyle,
+    noteStyle: NoteStyle,
     showAccidentals: Boolean,
     init: (@Scene2dDsl ButtonAnswerActor).(S) -> Unit = {}
 ) = actor(ButtonAnswerActor(noteStyle, showAccidentals), init)

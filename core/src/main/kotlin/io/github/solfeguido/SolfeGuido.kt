@@ -6,7 +6,7 @@ import com.badlogic.gdx.Input
 import com.badlogic.gdx.graphics.Color
 import com.badlogic.gdx.graphics.GL20
 import io.github.solfeguido.config.Constants
-import io.github.solfeguido.config.SPreferences
+import io.github.solfeguido.core.PreferencesManager
 import io.github.solfeguido.core.*
 import io.github.solfeguido.core.progression.LevelManager
 import io.github.solfeguido.factories.ParticlePool
@@ -44,7 +44,7 @@ class SolfeGuido : ApplicationListener {
 
         context.register {
             bindSingleton(gamePreferences)
-            bindSingleton(SPreferences(gamePreferences))
+            bindSingleton(PreferencesManager(gamePreferences))
             bindSingleton(ParticlePool(context))
             bindSingleton(Jingles(context))
             bindSingleton(AssetStorage(asyncContext = newAsyncContext(2)))

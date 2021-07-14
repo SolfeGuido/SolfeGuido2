@@ -2,7 +2,7 @@ package io.github.solfeguido.screens
 
 import com.badlogic.gdx.scenes.scene2d.Actor
 import com.badlogic.gdx.utils.Align
-import io.github.solfeguido.config.SPreferences
+import io.github.solfeguido.core.PreferencesManager
 import io.github.solfeguido.core.StateMachine
 import io.github.solfeguido.core.StateParameter
 import io.github.solfeguido.enums.ClefEnum
@@ -29,7 +29,7 @@ class ClassicSelectionScreen(context: Context) : UIScreen(context) {
 
     override fun setup(settings: StateParameter): Actor {
 
-        val sPrefs = context.inject<SPreferences>()
+        val sPrefs = context.inject<PreferencesManager>()
 
         val clefClick: (Actor, ClefEnum) -> Unit = { test, clef ->
             test.onClick {
@@ -105,7 +105,7 @@ class ClassicSelectionScreen(context: Context) : UIScreen(context) {
                                 StateParameter.witType(
                                     GameSettings(
                                         options = NoteGuessOptions(
-                                            gdxArrayOf(
+                                            listOf(
                                                 MeasureSettings(this@ClassicSelectionScreen.selectedClef)
                                             )
                                         ),

@@ -12,7 +12,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.Table
 import com.badlogic.gdx.utils.Align
 import io.github.solfeguido.actors.MeasureActor
 import io.github.solfeguido.config.Constants
-import io.github.solfeguido.config.SPreferences
+import io.github.solfeguido.core.PreferencesManager
 import io.github.solfeguido.core.StateMachine
 import io.github.solfeguido.core.StateParameter
 import io.github.solfeguido.enums.ClefEnum
@@ -167,7 +167,7 @@ class MenuScreen(context: Context) : UIScreen(context) {
             }
             row()
             stack {
-                measure = measure(MeasureSettings(ClefEnum.GClef), context.inject<SPreferences>().noteStyle)
+                measure = measure(MeasureSettings(ClefEnum.GClef), context.inject<PreferencesManager>().noteStyle)
                 playMenu = table {
                     borderButton("Stats") {
                         icon(IconName.PointsChart, 0.9f).pad(5f)
