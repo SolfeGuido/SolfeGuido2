@@ -16,11 +16,12 @@ sourceSets {
 }
 
 dependencies {
+    val gdx = project.property("gdxVersion")
     implementation(project(":core"))
-    implementation("com.badlogicgames.gdx:gdx-backend-lwjgl3:${project.property("gdxVersion")}")
-    implementation("com.badlogicgames.gdx:gdx-platform:${project.property("gdxVersion")}:natives-desktop")
-    implementation("com.badlogicgames.gdx:gdx-platform:${project.property("gdxVersion")}:natives-desktop")
-    implementation("com.badlogicgames.gdx:gdx-freetype-platform:${project.property("gdxVersion")}:natives-desktop")
+    implementation("com.badlogicgames.gdx:gdx-backend-lwjgl3:$gdx")
+    implementation("com.badlogicgames.gdx:gdx-platform:$gdx:natives-desktop")
+    implementation("com.badlogicgames.gdx:gdx-platform:$gdx:natives-desktop")
+    implementation("com.badlogicgames.gdx:gdx-freetype-platform:$gdx:natives-desktop")
 }
 
 tasks {
