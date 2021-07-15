@@ -5,8 +5,8 @@ plugins {
 application {
     mainClass.set("io.github.solfeguido.lwjgl3.DesktopLauncherKt")
 
-    version = "2.0.0-SNAPSHOT"
-    applicationName = Versions.SOLFEGUIDO
+    version = Versions.SOLFEGUIDO
+    applicationName = Versions.SOLFEGUIDO_VERION
 }
 
 sourceSets {
