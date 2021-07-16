@@ -35,6 +35,7 @@ object Constants {
 
     // Others
     const val CLASSIC_TIME = 10f
+    const val MAX_NOTE_SPAN = 40
 
     object Preferences {
         const val LEVELS = "level"

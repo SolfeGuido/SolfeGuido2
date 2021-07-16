@@ -69,6 +69,7 @@ com_crashlytics_export_strings.xml
 /html/build/
 /ios/build/
 /ios-moe/build/
+**/build/
 
 /nbbuild/
 /android/nbbuild/
@@ -77,6 +78,7 @@ com_crashlytics_export_strings.xml
 /html/nbbuild/
 /ios/nbbuild/
 /ios-moe/nbbuild/
+/buildSrc/nbbuild/
 
 /dist/
 /android/dist/
@@ -85,6 +87,7 @@ com_crashlytics_export_strings.xml
 /html/dist/
 /ios/dist/
 /ios-moe/dist/
+/buildSrc/dist/
 
 /nbdist/
 /android/nbdist/
@@ -93,6 +96,7 @@ com_crashlytics_export_strings.xml
 /html/nbdist/
 /ios/nbdist/
 /ios-moe/nbdist/
+/buildSrc/nbdist/
 
 nbactions.xml
 nb-configuration.xml
@@ -102,13 +106,6 @@ nb-configuration.xml
 /local.properties
 .gradle/
 gradle-app.setting
-/build/
-/android/build/
-/core/build/
-/lwjgl3/build/
-/html/build/
-/ios/build/
-/ios-moe/build/
 
 ## OS Specific
 .DS_Store

@@ -2,6 +2,7 @@ package io.github.solfeguido.screens
 
 import com.badlogic.gdx.scenes.scene2d.Actor
 import com.badlogic.gdx.utils.Align
+import io.github.solfeguido.config.Constants
 import io.github.solfeguido.core.PreferencesManager
 import io.github.solfeguido.core.StateMachine
 import io.github.solfeguido.core.StateParameter
@@ -15,6 +16,7 @@ import io.github.solfeguido.settings.GameSettings
 import io.github.solfeguido.settings.MeasureSettings
 import io.github.solfeguido.settings.TimeSettings
 import io.github.solfeguido.settings.gamemode.NoteGuessOptions
+import io.github.solfeguido.settings.generator.RandomGenerator
 import ktx.actors.onClick
 import ktx.collections.gdxArrayOf
 import ktx.inject.Context
@@ -22,24 +24,30 @@ import ktx.scene2d.*
 
 class ClassicSelectionScreen(context: Context) : UIScreen(context) {
 
-    private var selectedClef = ClefEnum.GClef
-    private var timeSettings = TimeSettings.ClassicCountdownMode
-
     private val stateMachine: StateMachine = context.inject()
 
     override fun setup(settings: StateParameter): Actor {
 
         val sPrefs = context.inject<PreferencesManager>()
+        var selectedClef = ClefEnum.GClef
+        var accidentalsEnabled = false
+        var timeSettings = TimeSettings.ClassicCountdownMode
 
         val clefClick: (Actor, ClefEnum) -> Unit = { test, clef ->
             test.onClick {
-                this@ClassicSelectionScreen.selectedClef = clef
+                selectedClef = clef
             }
         }
 
         val timeClick: (Actor, TimeSettings) -> Unit = { btn, time ->
             btn.onClick {
-                this@ClassicSelectionScreen.timeSettings = time
+                timeSettings = time
+            }
+        }
+
+        val accidentalClick : (Actor, Boolean) -> Unit = { btn, enable ->
+            btn.onClick {
+                accidentalsEnabled = enable
             }
         }
 
@@ -74,18 +82,10 @@ class ClassicSelectionScreen(context: Context) : UIScreen(context) {
 
                 table {
                     buttonGroup(1, 1) {
-
-                        iconCheckBox(IconName.GClef) {
-                            clefClick(this, ClefEnum.GClef)
-                        }
-                        iconCheckBox(IconName.FClef) {
-                            clefClick(this, ClefEnum.FClef)
-                        }
-                        iconCheckBox(IconName.CClef3) {
-                            clefClick(this, ClefEnum.CClef3)
-                        }
-                        iconCheckBox(IconName.CClef4) {
-                            clefClick(this, ClefEnum.CClef4)
+                        ClefEnum.values().forEach {  clef ->
+                            iconCheckBox(clef.icon) {
+                                clefClick(this, clef)
+                            }
                         }
                     }
 
@@ -95,6 +95,20 @@ class ClassicSelectionScreen(context: Context) : UIScreen(context) {
                         iconCheckBox(IconName.Infinity) { timeClick(this, TimeSettings.InfiniteMode) }
                     }
                     row()
+
+                    buttonGroup(1, 1) {
+                        iconCheckBox(IconName.Natural) { accidentalClick(this, false) }
+                        iconCheckBox(IconName.SharpAccidental) { accidentalClick(this, true) }
+                    }
+
+                    row()
+
+                    buttonGroup(1, 1) {
+                        iconCheckBox(IconName.Natural) { accidentalClick(this, false) }
+                    }
+
+                    row()
+
 
                     borderButton("Play") {
                         icon(IconName.Play, 0.9f).pad(5f)
@@ -106,7 +120,15 @@ class ClassicSelectionScreen(context: Context) : UIScreen(context) {
                                     GameSettings(
                                         options = NoteGuessOptions(
                                             listOf(
-                                                MeasureSettings(this@ClassicSelectionScreen.selectedClef)
+                                                MeasureSettings(
+                                                    selectedClef,
+                                                    //TODO: maybe let the user configure the high & low values ?
+                                                    generator = RandomGenerator(
+                                                        selectedClef.minNote,
+                                                        selectedClef.minNote + Constants.MAX_NOTE_SPAN,
+                                                        accidentalsEnabled
+                                                    )
+                                                )
                                             )
                                         ),
                                         time = timeSettings
