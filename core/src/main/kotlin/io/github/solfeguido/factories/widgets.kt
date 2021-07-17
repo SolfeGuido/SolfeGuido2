@@ -107,6 +107,14 @@ inline fun <S> KWidget<S>.iconCheckBox(
     return actor(IconCheckBox(icon), init)
 }
 
+inline fun <S> KWidget<S>.textCheckBox(
+    text: String,
+    init: TextCheckBox.(S) -> Unit = {}
+) : TextCheckBox {
+    contract { callsInPlace(init, InvocationKind.EXACTLY_ONCE) }
+    return actor(TextCheckBox(text), init)
+}
+
 inline fun <S> KWidget<S>.score(
     initialValue: Int,
     init: ScoreActor.(S) -> Unit = {}

@@ -8,17 +8,14 @@ import io.github.solfeguido.core.StateMachine
 import io.github.solfeguido.core.StateParameter
 import io.github.solfeguido.enums.ClefEnum
 import io.github.solfeguido.enums.IconName
-import io.github.solfeguido.factories.borderButton
-import io.github.solfeguido.factories.iconButton
-import io.github.solfeguido.factories.iconCheckBox
-import io.github.solfeguido.factories.measure
+import io.github.solfeguido.enums.KeySignatureEnum
+import io.github.solfeguido.factories.*
 import io.github.solfeguido.settings.GameSettings
 import io.github.solfeguido.settings.MeasureSettings
 import io.github.solfeguido.settings.TimeSettings
 import io.github.solfeguido.settings.gamemode.NoteGuessOptions
 import io.github.solfeguido.settings.generator.RandomGenerator
 import ktx.actors.onClick
-import ktx.collections.gdxArrayOf
 import ktx.inject.Context
 import ktx.scene2d.*
 
@@ -30,6 +27,7 @@ class ClassicSelectionScreen(context: Context) : UIScreen(context) {
 
         val sPrefs = context.inject<PreferencesManager>()
         var selectedClef = ClefEnum.GClef
+        var selectedKeySignature = KeySignatureEnum.CMajor
         var accidentalsEnabled = false
         var timeSettings = TimeSettings.ClassicCountdownMode
 
@@ -45,7 +43,7 @@ class ClassicSelectionScreen(context: Context) : UIScreen(context) {
             }
         }
 
-        val accidentalClick : (Actor, Boolean) -> Unit = { btn, enable ->
+        val accidentalClick: (Actor, Boolean) -> Unit = { btn, enable ->
             btn.onClick {
                 accidentalsEnabled = enable
             }
@@ -82,7 +80,7 @@ class ClassicSelectionScreen(context: Context) : UIScreen(context) {
 
                 table {
                     buttonGroup(1, 1) {
-                        ClefEnum.values().forEach {  clef ->
+                        ClefEnum.values().forEach { clef ->
                             iconCheckBox(clef.icon) {
                                 clefClick(this, clef)
                             }
@@ -103,8 +101,19 @@ class ClassicSelectionScreen(context: Context) : UIScreen(context) {
 
                     row()
 
-                    buttonGroup(1, 1) {
-                        iconCheckBox(IconName.Natural) { accidentalClick(this, false) }
+                    container {
+                        pad(0f, 150f, 0f, 150f)
+                        scrollPane {
+                            buttonGroup(1, 1) {
+                                KeySignatureEnum.values().forEach { signature ->
+                                    textCheckBox(signature.name) {
+                                        onClick {
+                                            selectedKeySignature = signature
+                                        }
+                                    }
+                                }
+                            }
+                        }
                     }
 
                     row()
@@ -122,6 +131,7 @@ class ClassicSelectionScreen(context: Context) : UIScreen(context) {
                                             listOf(
                                                 MeasureSettings(
                                                     selectedClef,
+                                                    signature = selectedKeySignature,
                                                     //TODO: maybe let the user configure the high & low values ?
                                                     generator = RandomGenerator(
                                                         selectedClef.minNote,

@@ -20,6 +20,8 @@ fun getDefaultSkin(assetManager: AssetStorage): Skin{
     val bigIconFont: BitmapFont = assetManager["bigIcon.woff"]
 
     return skin {
+        val smallPrimary = copyFont(primaryFont)
+        //smallPrimary.data.setScale(0.7f)
         val self = this
         color("background", 245 / 255f,245 / 255f,245 / 255f)
         color("font", 68f/255f, 68f/255f, 68f/255f,  1f)
@@ -32,8 +34,7 @@ fun getDefaultSkin(assetManager: AssetStorage): Skin{
         }
 
         label(name = "contentLabelStyle") {
-            font = copyFont(primaryFont)
-            font.data.setScale(0.7f)
+            font = smallPrimary
             fontColor = gCol("font")
         }
 
@@ -117,16 +118,16 @@ fun getDefaultSkin(assetManager: AssetStorage): Skin{
         }
 
         checkBox {
-            font = primaryFont
+            font = smallPrimary
+            up = colorDrawable(gCol("background"))
             fontColor = gCol("font")
-            checkboxOff = borderColorDrawable(100, 100, 10, gCol("font"), Color.WHITE)
-            checkboxOn = borderColorDrawable(100, 100, 1, gCol("font"), gCol("font"))
-            this.checkedFontColor = Color.BLUE
+            checkedFontColor = Color.BLUE
         }
 
         checkBox("icon") {
             font = iconFont
             fontColor = gCol("font")
+            checkedFontColor = Color.BLUE
         }
 
     }
