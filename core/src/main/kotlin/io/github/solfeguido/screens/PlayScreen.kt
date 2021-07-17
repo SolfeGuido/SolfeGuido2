@@ -14,6 +14,7 @@ import io.github.solfeguido.factories.*
 import io.github.solfeguido.settings.GameSettings
 import io.github.solfeguido.settings.TimeSettings
 import io.github.solfeguido.settings.gamemode.IGameModeOptions
+import io.github.solfeguido.ui.ZoomDialog
 import ktx.inject.Context
 import ktx.scene2d.container
 import ktx.scene2d.scene2d
@@ -51,6 +52,7 @@ class PlayScreen(context: Context) : UIScreen(context) {
 
 
                     scene2d.zoomDialog {
+                        closeOptions = setOf(ZoomDialog.ClosingOptions.ESCAPE, ZoomDialog.ClosingOptions.CROSS)
                         title("Finished !")
                         line("your score is ... ${scoreActor.score}")
                         borderButton("Ok").actor.icon(IconName.Check, 0.5f)
