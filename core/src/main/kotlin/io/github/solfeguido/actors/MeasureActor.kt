@@ -4,11 +4,10 @@ import com.badlogic.gdx.graphics.g2d.Batch
 import com.badlogic.gdx.math.Interpolation
 import com.badlogic.gdx.scenes.scene2d.ui.WidgetGroup
 import com.badlogic.gdx.scenes.scene2d.utils.Drawable
-import io.github.solfeguido.config.Constants
-import io.github.solfeguido.config.KeySignatureConfig
+import io.github.solfeguido.structures.Constants
+import io.github.solfeguido.structures.KeySignatureConfig
 import io.github.solfeguido.enums.NoteNameEnum
 import io.github.solfeguido.enums.NoteOrderEnum
-import io.github.solfeguido.core.PreferencesManager
 import io.github.solfeguido.enums.NoteStyle
 import io.github.solfeguido.factories.*
 import io.github.solfeguido.settings.MeasureSettings

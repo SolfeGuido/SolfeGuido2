@@ -1,8 +1,8 @@
 package io.github.solfeguido.core
 
 import com.badlogic.gdx.Preferences
-import io.github.solfeguido.config.Constants
-import io.github.solfeguido.config.UserSettings
+import io.github.solfeguido.structures.Constants
+import io.github.solfeguido.structures.UserSettings
 import io.github.solfeguido.enums.*
 import kotlinx.serialization.decodeFromString
 import kotlinx.serialization.encodeToString

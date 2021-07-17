@@ -3,7 +3,7 @@ package io.github.solfeguido.core
 import com.badlogic.gdx.Gdx
 import com.badlogic.gdx.files.FileHandle
 import com.badlogic.gdx.utils.ObjectMap
-import io.github.solfeguido.config.Constants
+import io.github.solfeguido.structures.Constants
 import io.github.solfeguido.factories.schedule
 import io.github.solfeguido.midi.MidiFile
 import io.github.solfeguido.midi.event.NoteOn

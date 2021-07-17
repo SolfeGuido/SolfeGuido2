@@ -3,7 +3,7 @@ package io.github.solfeguido.factories
 import com.badlogic.gdx.Gdx
 import com.badlogic.gdx.Preferences
 import com.badlogic.gdx.graphics.g2d.ParticleEffect
-import io.github.solfeguido.config.Constants
+import io.github.solfeguido.structures.Constants
 import ktx.inject.Context
 
 class ParticlePool(context: Context) {

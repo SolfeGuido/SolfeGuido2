@@ -9,9 +9,9 @@ import com.badlogic.gdx.scenes.scene2d.ui.WidgetGroup
 import com.badlogic.gdx.scenes.scene2d.utils.Drawable
 import com.badlogic.gdx.utils.Pool
 import com.badlogic.gdx.utils.Pools
-import io.github.solfeguido.config.Constants
-import io.github.solfeguido.config.KeySignatureConfig
-import io.github.solfeguido.core.MidiNote
+import io.github.solfeguido.structures.Constants
+import io.github.solfeguido.structures.KeySignatureConfig
+import io.github.solfeguido.structures.MidiNote
 import io.github.solfeguido.enums.IconName
 import io.github.solfeguido.enums.NoteAccidentalEnum
 import io.github.solfeguido.factories.Shaders

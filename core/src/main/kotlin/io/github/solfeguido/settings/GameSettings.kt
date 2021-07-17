@@ -1,6 +1,6 @@
 package io.github.solfeguido.settings
 
-import io.github.solfeguido.core.progression.Level
+import io.github.solfeguido.structures.progression.Level
 import io.github.solfeguido.enums.ClefEnum
 import io.github.solfeguido.settings.gamemode.IGameModeOptions
 import io.github.solfeguido.settings.gamemode.LevelOptions

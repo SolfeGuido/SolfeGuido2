@@ -14,7 +14,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.Skin
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener
 import com.badlogic.gdx.scenes.scene2d.utils.Drawable
 import com.badlogic.gdx.utils.Align
-import io.github.solfeguido.config.Constants
+import io.github.solfeguido.structures.Constants
 import io.github.solfeguido.enums.IconName
 import io.github.solfeguido.factories.colorDrawable
 import io.github.solfeguido.factories.gCol

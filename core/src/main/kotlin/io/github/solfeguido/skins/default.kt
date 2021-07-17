@@ -3,9 +3,8 @@ package io.github.solfeguido.skins
 import com.badlogic.gdx.graphics.Color
 import com.badlogic.gdx.graphics.g2d.BitmapFont
 import com.badlogic.gdx.scenes.scene2d.ui.Skin
-import io.github.solfeguido.config.Constants
+import io.github.solfeguido.structures.Constants
 import io.github.solfeguido.factories.TRANSPARENT
-import io.github.solfeguido.factories.borderColorDrawable
 import io.github.solfeguido.factories.colorDrawable
 import io.github.solfeguido.factories.gCol
 import ktx.assets.async.AssetStorage

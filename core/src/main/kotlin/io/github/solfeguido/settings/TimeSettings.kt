@@ -1,6 +1,6 @@
 package io.github.solfeguido.settings
 
-import io.github.solfeguido.config.Constants
+import io.github.solfeguido.structures.Constants
 import kotlinx.serialization.Serializable
 
 @Serializable

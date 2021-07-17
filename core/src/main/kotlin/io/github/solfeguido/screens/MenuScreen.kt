@@ -11,7 +11,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.ScrollPane
 import com.badlogic.gdx.scenes.scene2d.ui.Table
 import com.badlogic.gdx.utils.Align
 import io.github.solfeguido.actors.MeasureActor
-import io.github.solfeguido.config.Constants
+import io.github.solfeguido.structures.Constants
 import io.github.solfeguido.core.PreferencesManager
 import io.github.solfeguido.core.StateMachine
 import io.github.solfeguido.core.StateParameter

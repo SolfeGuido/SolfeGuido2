@@ -1,10 +1,6 @@
-package io.github.solfeguido.core
+package io.github.solfeguido.structures
 
 import com.badlogic.gdx.utils.Pool
-import io.github.solfeguido.config.ConstantNote
-import io.github.solfeguido.config.FlatOrSharpNote
-import io.github.solfeguido.config.NaturalOrFlatNote
-import io.github.solfeguido.config.NaturalOrSharpNote
 import io.github.solfeguido.enums.KeySignatureEnum
 import io.github.solfeguido.enums.NoteNameEnum
 import io.github.solfeguido.enums.NoteAccidentalEnum

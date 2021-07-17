@@ -1,6 +1,5 @@
-package io.github.solfeguido.config
+package io.github.solfeguido.structures
 
-import io.github.solfeguido.core.MidiNote
 import io.github.solfeguido.enums.*
 import ktx.collections.gdxArrayOf
 import ktx.collections.gdxMapOf

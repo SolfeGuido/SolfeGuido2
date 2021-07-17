@@ -1,7 +1,7 @@
 package io.github.solfeguido.core
 
 import com.badlogic.gdx.Preferences
-import io.github.solfeguido.config.Constants
+import io.github.solfeguido.structures.Constants
 import io.github.solfeguido.enums.ClefEnum
 import io.github.solfeguido.enums.NoteOrderEnum
 import io.github.solfeguido.ui.events.ResultEvent

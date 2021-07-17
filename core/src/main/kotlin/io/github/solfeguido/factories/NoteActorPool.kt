@@ -3,7 +3,7 @@ package io.github.solfeguido.factories
 import com.badlogic.gdx.utils.Pools
 import io.github.solfeguido.actors.MeasureActor
 import io.github.solfeguido.actors.NoteActor
-import io.github.solfeguido.core.MidiNote
+import io.github.solfeguido.structures.MidiNote
 
 object NoteActorPool {
 

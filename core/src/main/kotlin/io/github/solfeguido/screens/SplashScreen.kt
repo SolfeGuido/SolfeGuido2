@@ -8,9 +8,9 @@ import com.badlogic.gdx.graphics.g2d.freetype.FreeTypeFontGenerator
 import com.badlogic.gdx.scenes.scene2d.Actor
 import com.badlogic.gdx.scenes.scene2d.ui.Label
 import com.badlogic.gdx.scenes.scene2d.ui.ProgressBar
-import io.github.solfeguido.config.Constants
+import io.github.solfeguido.structures.Constants
 import io.github.solfeguido.core.*
-import io.github.solfeguido.core.progression.LevelManager
+import io.github.solfeguido.core.LevelManager
 import io.github.solfeguido.enums.IconName
 import io.github.solfeguido.loaders.FontLoader
 import io.github.solfeguido.loaders.MidiLoader

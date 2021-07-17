@@ -1,7 +1,7 @@
 package io.github.solfeguido.enums
 
-import io.github.solfeguido.config.KeySignatureConfig
-import io.github.solfeguido.config.PossibleNote
+import io.github.solfeguido.structures.KeySignatureConfig
+import io.github.solfeguido.structures.PossibleNote
 
 enum class KeySignatureEnum(val symbol: NoteAccidentalEnum, val numberOf: Int, val scale: ScaleEnum) {
 

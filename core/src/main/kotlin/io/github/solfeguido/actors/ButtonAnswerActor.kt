@@ -1,11 +1,10 @@
 package io.github.solfeguido.actors
 
 import com.badlogic.gdx.scenes.scene2d.ui.Table
-import io.github.solfeguido.config.Constants
+import io.github.solfeguido.structures.Constants
 import io.github.solfeguido.enums.IconName
 import io.github.solfeguido.enums.NoteAccidentalEnum
 import io.github.solfeguido.enums.NoteNameEnum
-import io.github.solfeguido.core.PreferencesManager
 import io.github.solfeguido.enums.NoteStyle
 import io.github.solfeguido.factories.answerButton
 import io.github.solfeguido.factories.borderButton

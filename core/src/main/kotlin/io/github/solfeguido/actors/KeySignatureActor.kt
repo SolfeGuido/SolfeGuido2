@@ -3,7 +3,7 @@ package io.github.solfeguido.actors
 import com.badlogic.gdx.scenes.scene2d.Group
 import com.badlogic.gdx.scenes.scene2d.ui.Label
 import com.badlogic.gdx.scenes.scene2d.ui.WidgetGroup
-import io.github.solfeguido.config.KeySignatureConfig
+import io.github.solfeguido.structures.KeySignatureConfig
 import io.github.solfeguido.enums.NoteAccidentalEnum
 import io.github.solfeguido.enums.ClefEnum
 import io.github.solfeguido.factories.gCol

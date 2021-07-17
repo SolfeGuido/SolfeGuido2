@@ -1,7 +1,7 @@
 package io.github.solfeguido.factories
 
 import com.badlogic.gdx.utils.Pools
-import io.github.solfeguido.core.MidiNote
+import io.github.solfeguido.structures.MidiNote
 import io.github.solfeguido.enums.NoteAccidentalEnum
 import io.github.solfeguido.enums.NoteNameEnum
 

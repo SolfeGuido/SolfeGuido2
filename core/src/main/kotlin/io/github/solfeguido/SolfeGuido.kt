@@ -5,10 +5,10 @@ import com.badlogic.gdx.Gdx
 import com.badlogic.gdx.Input
 import com.badlogic.gdx.graphics.Color
 import com.badlogic.gdx.graphics.GL20
-import io.github.solfeguido.config.Constants
+import io.github.solfeguido.structures.Constants
 import io.github.solfeguido.core.PreferencesManager
 import io.github.solfeguido.core.*
-import io.github.solfeguido.core.progression.LevelManager
+import io.github.solfeguido.core.LevelManager
 import io.github.solfeguido.factories.ParticlePool
 import io.github.solfeguido.factories.gCol
 import io.github.solfeguido.screens.*

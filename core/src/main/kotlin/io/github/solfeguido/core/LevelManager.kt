@@ -1,7 +1,10 @@
-package io.github.solfeguido.core.progression
+package io.github.solfeguido.core
 
 import com.badlogic.gdx.Preferences
-import io.github.solfeguido.config.Constants
+import io.github.solfeguido.structures.progression.Level
+import io.github.solfeguido.structures.progression.LevelRequirements
+import io.github.solfeguido.structures.progression.LevelResult
+import io.github.solfeguido.structures.Constants
 import io.github.solfeguido.enums.ClefEnum
 import io.github.solfeguido.enums.LevelDifficulty
 import kotlinx.serialization.decodeFromString

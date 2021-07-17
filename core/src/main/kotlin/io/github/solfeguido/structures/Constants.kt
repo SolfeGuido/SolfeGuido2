@@ -1,4 +1,4 @@
-package io.github.solfeguido.config
+package io.github.solfeguido.structures
 
 import com.badlogic.gdx.Gdx
 

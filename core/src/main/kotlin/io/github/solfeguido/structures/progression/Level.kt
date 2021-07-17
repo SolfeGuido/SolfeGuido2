@@ -1,4 +1,4 @@
-package io.github.solfeguido.core.progression
+package io.github.solfeguido.structures.progression
 
 import io.github.solfeguido.enums.ClefEnum
 import kotlinx.serialization.Serializable

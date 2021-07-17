@@ -2,7 +2,7 @@ package io.github.solfeguido.screens
 
 import com.badlogic.gdx.scenes.scene2d.Actor
 import com.badlogic.gdx.utils.Align
-import io.github.solfeguido.config.Constants
+import io.github.solfeguido.structures.Constants
 import io.github.solfeguido.core.PreferencesManager
 import io.github.solfeguido.core.StateMachine
 import io.github.solfeguido.core.StateParameter

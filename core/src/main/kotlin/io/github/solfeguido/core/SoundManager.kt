@@ -1,8 +1,9 @@
 package io.github.solfeguido.core
 
 import com.badlogic.gdx.audio.Sound
-import io.github.solfeguido.config.Constants
+import io.github.solfeguido.structures.Constants
 import io.github.solfeguido.factories.MidiNotePool
+import io.github.solfeguido.structures.MidiNote
 import ktx.assets.async.AssetStorage
 import ktx.collections.*
 import ktx.inject.Context

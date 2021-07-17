@@ -46,6 +46,18 @@ class PlayScreen(context: Context) : UIScreen(context) {
             align(Align.center)
             val timer = timer(context, timer) {
                 onTimerEnd {
+                    /*
+                    End game parameters:
+                        - the context (for example, for the level manager to be updated) - could be given when creating the objet
+                        - a "gameStats" object :
+                            - wrongNotes
+                            - correctNotes
+                            - timePlayed
+                            - timeWon
+                            - timeLost
+
+                     */
+
                     //TODO: save the game with stats manager (time, correct guesses, wrong guesses, increase total games played)
                     game.endGame(context, scoreActor.score)
                     stats.save()

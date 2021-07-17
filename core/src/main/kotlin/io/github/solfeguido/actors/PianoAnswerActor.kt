@@ -3,11 +3,10 @@ package io.github.solfeguido.actors
 import com.badlogic.gdx.scenes.scene2d.ui.Stack
 import com.badlogic.gdx.scenes.scene2d.ui.Table
 import com.badlogic.gdx.utils.Align
-import io.github.solfeguido.config.Constants
+import io.github.solfeguido.structures.Constants
 import io.github.solfeguido.enums.NoteNameEnum
 import io.github.solfeguido.enums.NoteOrderEnum
 import io.github.solfeguido.enums.PianoKeyTypeEnum
-import io.github.solfeguido.core.PreferencesManager
 import io.github.solfeguido.enums.NoteStyle
 import io.github.solfeguido.factories.firePooled
 import io.github.solfeguido.ui.PianoKey
