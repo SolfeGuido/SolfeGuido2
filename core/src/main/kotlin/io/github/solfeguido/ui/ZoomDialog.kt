@@ -17,12 +17,10 @@ import io.github.solfeguido.enums.IconName
 import io.github.solfeguido.factories.colorDrawable
 import io.github.solfeguido.factories.firePooled
 import io.github.solfeguido.factories.inside
-import io.github.solfeguido.ui.events.DialogHideEvent
+import io.github.solfeguido.events.DialogHideEvent
 import ktx.actors.div
 import ktx.actors.onClick
 import ktx.actors.plus
-import ktx.collections.gdxArrayOf
-import ktx.collections.gdxSetOf
 import ktx.scene2d.Scene2DSkin
 import ktx.scene2d.defaultStyle
 import ktx.style.get

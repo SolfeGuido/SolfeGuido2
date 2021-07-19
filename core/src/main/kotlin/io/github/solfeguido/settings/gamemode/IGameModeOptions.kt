@@ -5,7 +5,7 @@ import io.github.solfeguido.enums.KeySignatureEnum
 import io.github.solfeguido.enums.NoteOrderEnum
 import io.github.solfeguido.settings.MeasureSettings
 import io.github.solfeguido.settings.generator.RandomGenerator
-import io.github.solfeguido.ui.events.ResultEvent
+import io.github.solfeguido.events.ResultEvent
 import ktx.inject.Context
 import ktx.scene2d.KStack
 

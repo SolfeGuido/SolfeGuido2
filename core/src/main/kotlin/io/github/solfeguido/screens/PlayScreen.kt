@@ -75,8 +75,10 @@ class PlayScreen(context: Context) : UIScreen(context) {
                                 align = Align.top,
                                 param = StateParameter.witType(MenuScreen.VisibleMenu.Play)
                             )
+                            true
                         }
                     }.show(this.stage)
+                    true
                 }
             }
             row()

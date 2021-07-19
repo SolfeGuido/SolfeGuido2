@@ -11,7 +11,7 @@ import io.github.solfeguido.enums.NoteOrderEnum
 import io.github.solfeguido.enums.NoteStyle
 import io.github.solfeguido.factories.*
 import io.github.solfeguido.settings.MeasureSettings
-import io.github.solfeguido.ui.events.ResultEvent
+import io.github.solfeguido.events.ResultEvent
 import ktx.collections.gdxArrayOf
 import kotlin.math.max
 

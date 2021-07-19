@@ -8,9 +8,9 @@ import com.badlogic.gdx.scenes.scene2d.ui.Cell
 import com.badlogic.gdx.scenes.scene2d.ui.Skin
 import com.badlogic.gdx.scenes.scene2d.ui.Table
 import com.badlogic.gdx.utils.Align
+import io.github.solfeguido.events.LayoutEvent
 import io.github.solfeguido.factories.firePooled
-import io.github.solfeguido.ui.events.LayoutEvent
-import io.github.solfeguido.ui.events.LayoutListener
+import io.github.solfeguido.factories.onLayoutChange
 import ktx.actors.div
 import ktx.actors.plus
 import ktx.actors.plusAssign
@@ -66,10 +66,10 @@ class SlidingTable(private val al: Int, skin: Skin) : Table(skin), KTable {
     }
 
     override fun <T : Actor> add(actor: T): Cell<T> {
-        actor.addListener(LayoutListener {
-            actor += this.getEnterAnimation(actor)
+        actor.onLayoutChange {
+            actor += this@SlidingTable.getEnterAnimation(actor)
             true
-        })
+        }
         return super.add(actor)
     }
 }

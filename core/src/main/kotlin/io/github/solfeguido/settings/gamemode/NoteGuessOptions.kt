@@ -5,10 +5,10 @@ import io.github.solfeguido.core.PreferencesManager
 import io.github.solfeguido.core.StatsManager
 import io.github.solfeguido.enums.NoteAccidentalEnum
 import io.github.solfeguido.enums.NoteOrderEnum
+import io.github.solfeguido.events.ResultEvent
 import io.github.solfeguido.factories.measure
 import io.github.solfeguido.factories.onResult
 import io.github.solfeguido.settings.MeasureSettings
-import io.github.solfeguido.ui.events.ResultEvent
 import kotlinx.serialization.Serializable
 import kotlinx.serialization.Transient
 import ktx.collections.GdxArray
@@ -34,7 +34,10 @@ open class NoteGuessOptions(
         currentMeasure = 0
         actors = measures.map {
             parent.measure(it, context.inject<PreferencesManager>().noteStyle) {
-                onResult { resultCallback(it) }
+                onResult { result ->
+                    resultCallback(result)
+                    true
+                }
             }
         }.toGdxArray()
     }

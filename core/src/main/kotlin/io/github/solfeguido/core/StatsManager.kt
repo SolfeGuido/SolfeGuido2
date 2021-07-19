@@ -4,7 +4,7 @@ import com.badlogic.gdx.Preferences
 import io.github.solfeguido.structures.Constants
 import io.github.solfeguido.enums.ClefEnum
 import io.github.solfeguido.enums.NoteOrderEnum
-import io.github.solfeguido.ui.events.ResultEvent
+import io.github.solfeguido.events.ResultEvent
 import kotlinx.serialization.decodeFromString
 import kotlinx.serialization.encodeToString
 import kotlinx.serialization.json.Json

@@ -1,7 +1,6 @@
-package io.github.solfeguido.ui.events
+package io.github.solfeguido.events
 
 import com.badlogic.gdx.scenes.scene2d.Event
-import com.badlogic.gdx.scenes.scene2d.EventListener
 import io.github.solfeguido.enums.NoteOrderEnum
 
 class ResultEvent(
@@ -16,8 +15,4 @@ class ResultEvent(
         expected = NoteOrderEnum.C
         actual = NoteOrderEnum.C
     }
-}
-
-class ResultListener(private val handler: (event: ResultEvent) -> Boolean) : EventListener {
-    override fun handle(event: Event?) = if (event is ResultEvent) handler(event) else false
 }

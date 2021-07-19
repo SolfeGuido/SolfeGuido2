@@ -5,7 +5,7 @@ import io.github.solfeguido.enums.NoteOrderEnum
 import io.github.solfeguido.settings.MeasureSettings
 import io.github.solfeguido.settings.generator.IGeneratorOptions
 import io.github.solfeguido.settings.generator.RandomGenerator
-import io.github.solfeguido.ui.events.ResultEvent
+import io.github.solfeguido.events.ResultEvent
 import kotlinx.serialization.Serializable
 import ktx.inject.Context
 import ktx.scene2d.KStack

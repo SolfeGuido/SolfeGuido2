@@ -10,7 +10,7 @@ import io.github.solfeguido.enums.PianoKeyTypeEnum
 import io.github.solfeguido.enums.NoteStyle
 import io.github.solfeguido.factories.firePooled
 import io.github.solfeguido.ui.PianoKey
-import io.github.solfeguido.ui.events.AnswerGivenEvent
+import io.github.solfeguido.events.AnswerGivenEvent
 import ktx.actors.onClick
 
 

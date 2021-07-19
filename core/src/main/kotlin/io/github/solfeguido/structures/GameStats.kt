@@ -1,14 +1,14 @@
 package io.github.solfeguido.structures
 
 class GameStats(
-    val correctNotes: Int,
-    val wrongNotes: Int,
+    var correctNotes: Int = 0,
+    var wrongNotes: Int = 0,
     // In seconds
-    val timePlayed: Int,
-    val timeLost: Int,
-    val timeWon: Int
+    var timePlayed: Int = 0,
+    var timeLost: Int = 0,
+    var timeWon: Int = 0
 ) {
 
     val totalNotes
-            get() = correctNotes + wrongNotes
+        get() = correctNotes + wrongNotes
 }

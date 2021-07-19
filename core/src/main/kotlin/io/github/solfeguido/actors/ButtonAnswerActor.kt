@@ -11,7 +11,7 @@ import io.github.solfeguido.factories.borderButton
 import io.github.solfeguido.factories.firePooled
 import io.github.solfeguido.factories.gCol
 import io.github.solfeguido.ui.AnswerButton
-import io.github.solfeguido.ui.events.AnswerGivenEvent
+import io.github.solfeguido.events.AnswerGivenEvent
 import ktx.actors.onClick
 import ktx.collections.GdxArray
 import ktx.collections.gdxArrayOf
