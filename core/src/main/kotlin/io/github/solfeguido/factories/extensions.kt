@@ -29,7 +29,7 @@ inline fun <T : Actor> T.onAnswer(crossinline listener: T.(event: AnswerGivenEve
 
 inline fun <T : Actor> T.onResult(crossinline listener: T.(event: ResultEvent) -> Boolean) = registerListener(listener)
 
-inline fun <T : Actor> T.onTimerEnd(crossinline listener: T.(event: TimerEvent) -> Boolean) = registerListener(listener)
+inline fun <T : Actor> T.onTimerEnd(crossinline listener: T.(event: TimerFinishedEvent) -> Boolean) = registerListener(listener)
 
 inline fun <T : Actor> T.onDialogHide(crossinline listener: T.(event: DialogHideEvent) -> Boolean) =
     registerListener(listener)

@@ -53,7 +53,6 @@ class SolfeGuido : ApplicationListener {
             bindSingleton(stateMachine)
             bindSingleton(StatsManager(gamePreferences))
             bindSingleton(LevelManager(gamePreferences))
-            bindSingleton(Actor())
         }
 
         Gdx.input.setCatchKey(Input.Keys.BACK, true)

@@ -5,6 +5,7 @@ import io.github.solfeguido.structures.Constants
 import io.github.solfeguido.enums.ClefEnum
 import io.github.solfeguido.enums.NoteOrderEnum
 import io.github.solfeguido.events.ResultEvent
+import io.github.solfeguido.structures.GameStats
 import kotlinx.serialization.decodeFromString
 import kotlinx.serialization.encodeToString
 import kotlinx.serialization.json.Json
@@ -14,7 +15,7 @@ import ktx.preferences.set
 class StatsManager(private val preference: Preferences) {
 
     private var wrongNotes = hashMapOf<NoteOrderEnum, Int>()
-    private var bestScores = hashMapOf<ClefEnum, Int>()
+    private var bestScores = hashMapOf<ClefEnum, GameStats>()
 
     fun registerResult(event: ResultEvent) {
         if (!event.isCorrect) {
@@ -22,8 +23,8 @@ class StatsManager(private val preference: Preferences) {
         }
     }
 
-    fun saveGameScore(clef: ClefEnum, score: Int) {
-        val best = bestScores[clef] ?: 0
+    fun saveGameScore(clef: ClefEnum, score: GameStats) {
+        val best = bestScores[clef] ?: GameStats()
         if (best < score) {
             bestScores[clef] = score
         }

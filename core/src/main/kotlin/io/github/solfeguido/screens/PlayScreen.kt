@@ -4,16 +4,12 @@ import com.badlogic.gdx.Gdx
 import com.badlogic.gdx.scenes.scene2d.Actor
 import com.badlogic.gdx.utils.Align
 import io.github.solfeguido.actors.ScoreActor
+import io.github.solfeguido.core.GameManager
 import io.github.solfeguido.core.PreferencesManager
-import io.github.solfeguido.core.StateMachine
 import io.github.solfeguido.core.StateParameter
-import io.github.solfeguido.core.StatsManager
 import io.github.solfeguido.enums.ButtonStyle
 import io.github.solfeguido.enums.IconName
 import io.github.solfeguido.factories.*
-import io.github.solfeguido.settings.GameSettings
-import io.github.solfeguido.settings.TimeSettings
-import io.github.solfeguido.settings.gamemode.IGameModeOptions
 import io.github.solfeguido.ui.ZoomDialog
 import ktx.inject.Context
 import ktx.scene2d.container
@@ -23,22 +19,17 @@ import ktx.scene2d.table
 
 class PlayScreen(context: Context) : UIScreen(context) {
 
-    private lateinit var game: IGameModeOptions
-    private lateinit var timer: TimeSettings
-
     private val preferencesManager: PreferencesManager = context.inject()
-    private val stats: StatsManager = context.inject()
 
     override fun setup(settings: StateParameter): Actor {
-        val options: GameSettings = settings.get()
-        game = options.options
-        timer = options.time
+        val manager: GameManager = settings.get()
+        val timer = manager.settings.time
         Gdx.input.inputProcessor = null
 
         val answerType = preferencesManager.buttonStyle
         val noteStyle = preferencesManager.noteStyle
         lateinit var scoreActor: ScoreActor
-
+        manager.start()
         return scene2d.table {
             debug = true
             setFillParent(true)
@@ -57,12 +48,7 @@ class PlayScreen(context: Context) : UIScreen(context) {
                             - timeLost
 
                      */
-
-                    //TODO: save the game with stats manager (time, correct guesses, wrong guesses, increase total games played)
-                    game.endGame(context, scoreActor.score)
-                    stats.save()
-
-
+                    manager.end()
                     scene2d.zoomDialog {
                         closeOptions = setOf(ZoomDialog.ClosingOptions.ESCAPE, ZoomDialog.ClosingOptions.CROSS)
                         title("Finished !")
@@ -71,10 +57,7 @@ class PlayScreen(context: Context) : UIScreen(context) {
                         setOrigin(Align.center)
 
                         onDialogHide {
-                            context.inject<StateMachine>().switch<MenuScreen>(
-                                align = Align.top,
-                                param = StateParameter.witType(MenuScreen.VisibleMenu.Play)
-                            )
+                            manager.exit()
                             true
                         }
                     }.show(this.stage)
@@ -89,8 +72,8 @@ class PlayScreen(context: Context) : UIScreen(context) {
                     pad(2f, 10f, 0f, 10f)
                     setPosition(0f, 0f)
                 }
-                game.populateScene(context, this) { result ->
-                    stats.registerResult(result)
+
+                manager.populateScene(this) { result ->
                     if (!result.isCorrect) {
                         scoreActor.negativeAnimation()
                         timer.wrong()
@@ -108,11 +91,13 @@ class PlayScreen(context: Context) : UIScreen(context) {
                 val answerer = when (answerType) {
                     ButtonStyle.PianoKeys -> pianoAnswer(noteStyle)
                     ButtonStyle.PianoWithNotes -> pianoAnswer(noteStyle, showNotes = true)
-                    else -> buttonAnswer(noteStyle, game.hasAccidentals())
+                    else -> buttonAnswer(noteStyle, manager.hasAccidentals)
                 }
 
-                answerer.onAnswer {
-                    game.validateNote(it.note)
+
+                answerer.onAnswer { answer ->
+                    manager.validateAnswer(answer)
+                    true
                 }
             }
         }

@@ -2,6 +2,7 @@ package io.github.solfeguido.screens
 
 import com.badlogic.gdx.scenes.scene2d.Actor
 import com.badlogic.gdx.utils.Align
+import io.github.solfeguido.core.GameManager
 import io.github.solfeguido.core.StateMachine
 import io.github.solfeguido.core.StateParameter
 import io.github.solfeguido.core.LevelManager
@@ -59,7 +60,7 @@ class LevelSelectionScreen(context: Context) : UIScreen(context) {
                 table {
                     pad(10f)
                     clefRequirements.forEachIndexed { index, t ->
-                        val enabled = index == 0 || levelManager.levelResult(clef, index).correctGuesses >= t.minScore
+                        val enabled = index == 0 || levelManager.levelResult(clef, index).score >= t.minScore
                         for (star in 1..5) {
                             icon(IconName.FullStar) {
                                 color = gCol("font")
@@ -77,8 +78,12 @@ class LevelSelectionScreen(context: Context) : UIScreen(context) {
                             if (!isDisabled) {
                                 onClick {
                                     val requirements = levelManager.generateLevel(clef, index)
-                                    context.inject<StateMachine>().switch<PlayScreen>(
-                                        StateParameter.witType(GameSettings.levelGame(requirements)),
+                                    val gameSettings = GameSettings.levelGame(requirements)
+                                    val manager = GameManager(context, gameSettings) {
+                                        stateMachine.switch<LevelSelectionScreen>(StateParameter.witType(clef))
+                                    }
+                                    stateMachine.switch<PlayScreen>(
+                                        StateParameter.witType(manager),
                                         Align.right
                                     )
                                 }

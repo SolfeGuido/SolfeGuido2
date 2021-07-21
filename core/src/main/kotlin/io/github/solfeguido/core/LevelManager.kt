@@ -3,10 +3,10 @@ package io.github.solfeguido.core
 import com.badlogic.gdx.Preferences
 import io.github.solfeguido.structures.progression.Level
 import io.github.solfeguido.structures.progression.LevelRequirements
-import io.github.solfeguido.structures.progression.LevelResult
 import io.github.solfeguido.structures.Constants
 import io.github.solfeguido.enums.ClefEnum
 import io.github.solfeguido.enums.LevelDifficulty
+import io.github.solfeguido.structures.GameStats
 import kotlinx.serialization.decodeFromString
 import kotlinx.serialization.encodeToString
 import kotlinx.serialization.json.Json
@@ -16,22 +16,23 @@ import ktx.preferences.set
 class LevelManager(private val preferences: Preferences) {
 
     companion object {
-        private val EMPTY_RESULT = LevelResult(-1, 0)
+        private val EMPTY_RESULT = GameStats()
     }
 
-    private lateinit var levelScores: HashMap<ClefEnum, HashMap<Int, LevelResult>>
+    private lateinit var levelScores: HashMap<ClefEnum, HashMap<Int, GameStats>>
     lateinit var levelRequirements: HashMap<ClefEnum, List<LevelRequirements>>
 
 
-    fun registerLevelScore(clef: ClefEnum, level: Int, score: Int): Boolean {
-        val obj = LevelResult(score, 0)//TODO wrong guesses
+    fun registerLevelScore(level: Level, gameStats: GameStats): Boolean {
+        val clef = level.clef
+        val difficulty = level.stage
         if (!levelScores.containsKey(clef)) {
             levelScores[clef] = hashMapOf()
         }
 
-        val exist = levelScores[clef]!!.getOrDefault(level, obj)
-        if (exist.correctGuesses < score) {
-            levelScores[clef]!![level] = obj
+        val exist = levelScores[clef]!!.getOrDefault(difficulty, gameStats)
+        if (exist < gameStats) {
+            levelScores[clef]!![difficulty] = gameStats
             save()
             return true
         }
@@ -39,13 +40,13 @@ class LevelManager(private val preferences: Preferences) {
     }
 
 
-    private inline fun generateLevel(vararg levels: Pair<Int, Int>) = LevelDifficulty.values().flatMap { ld ->
+    private fun generateLevel(vararg levels: Pair<Int, Int>) = LevelDifficulty.values().flatMap { ld ->
         levels.map { (from, to) -> LevelRequirements(ld.minimumScore, from, to, ld.hasAccidentals) }
     }
 
     fun generateLevel(clef: ClefEnum, level: Int) = Level(clef, level, levelRequirements[clef]!![level])
 
-    fun levelResult(clef: ClefEnum, level: Int): LevelResult = levelScores.get(clef)?.get(level) ?: EMPTY_RESULT
+    fun levelResult(clef: ClefEnum, level: Int): GameStats = levelScores[clef]?.get(level) ?: EMPTY_RESULT
 
     fun save() {
         preferences[Constants.Preferences.LEVELS] = Json.encodeToString(levelScores)

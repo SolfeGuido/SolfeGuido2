@@ -2,7 +2,7 @@ package io.github.solfeguido.screens
 
 import com.badlogic.gdx.scenes.scene2d.Actor
 import com.badlogic.gdx.utils.Align
-import io.github.solfeguido.structures.Constants
+import io.github.solfeguido.core.GameManager
 import io.github.solfeguido.core.PreferencesManager
 import io.github.solfeguido.core.StateMachine
 import io.github.solfeguido.core.StateParameter
@@ -15,6 +15,7 @@ import io.github.solfeguido.settings.MeasureSettings
 import io.github.solfeguido.settings.TimeSettings
 import io.github.solfeguido.settings.gamemode.NoteGuessOptions
 import io.github.solfeguido.settings.generator.RandomGenerator
+import io.github.solfeguido.structures.Constants
 import ktx.actors.onClick
 import ktx.inject.Context
 import ktx.scene2d.*
@@ -124,26 +125,30 @@ class ClassicSelectionScreen(context: Context) : UIScreen(context) {
                         pad(5f)
 
                         onClick {
-                            stateMachine.switch<PlayScreen>(
-                                StateParameter.witType(
-                                    GameSettings(
-                                        options = NoteGuessOptions(
-                                            listOf(
-                                                MeasureSettings(
-                                                    selectedClef,
-                                                    signature = selectedKeySignature,
-                                                    //TODO: maybe let the user configure the high & low values ?
-                                                    generator = RandomGenerator(
-                                                        selectedClef.minNote,
-                                                        selectedClef.minNote + Constants.MAX_NOTE_SPAN,
-                                                        accidentalsEnabled
-                                                    )
+                            val manager = GameManager(
+                                context, GameSettings(
+                                    timeSettings,
+                                    NoteGuessOptions(
+                                        listOf(
+                                            MeasureSettings(
+                                                selectedClef,
+                                                signature = selectedKeySignature,
+                                                //TODO: maybe let the user configure the high & low values ?
+                                                generator = RandomGenerator(
+                                                    selectedClef.minNote,
+                                                    selectedClef.minNote + Constants.MAX_NOTE_SPAN,
+                                                    accidentalsEnabled
                                                 )
                                             )
-                                        ),
-                                        time = timeSettings
-                                    )
-                                ),
+                                        )
+                                    ),
+                                )
+                            ) {
+                                stateMachine.switch<ClassicSelectionScreen>()
+                            }
+
+                            stateMachine.switch<PlayScreen>(
+                                StateParameter.witType(manager),
                                 Align.right
                             )
                         }

@@ -1,11 +1,15 @@
 package io.github.solfeguido.settings.gamemode
 
+import com.badlogic.gdx.scenes.scene2d.Actor
+import io.github.solfeguido.actors.MeasureActor
 import io.github.solfeguido.enums.ClefEnum
 import io.github.solfeguido.enums.KeySignatureEnum
 import io.github.solfeguido.enums.NoteOrderEnum
+import io.github.solfeguido.enums.NoteStyle
 import io.github.solfeguido.settings.MeasureSettings
 import io.github.solfeguido.settings.generator.RandomGenerator
 import io.github.solfeguido.events.ResultEvent
+import ktx.collections.GdxArray
 import ktx.inject.Context
 import ktx.scene2d.KStack
 
@@ -27,12 +31,8 @@ sealed interface IGameModeOptions {
 
     }
 
-    fun populateScene(context: Context, parent: KStack, resultCallback: (ResultEvent) -> Unit)
-
-    fun validateNote(note: NoteOrderEnum): Boolean
+    fun generateMeasures(noteStyle: NoteStyle): GdxArray<MeasureActor>
 
     fun hasAccidentals(): Boolean
-
-    fun endGame(context: Context, score: Int)
 
 }

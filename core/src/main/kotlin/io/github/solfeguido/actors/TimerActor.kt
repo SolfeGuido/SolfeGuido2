@@ -6,7 +6,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.WidgetGroup
 import io.github.solfeguido.structures.Constants
 import io.github.solfeguido.factories.*
 import io.github.solfeguido.settings.TimeSettings
-import io.github.solfeguido.events.TimerEvent
+import io.github.solfeguido.events.TimerFinishedEvent
 import ktx.inject.Context
 
 class TimerActor(context: Context, settings: TimeSettings) : WidgetGroup() {
@@ -77,7 +77,7 @@ class TimerActor(context: Context, settings: TimeSettings) : WidgetGroup() {
 
         current += delta * direction
         if (current !in 0f..max) {
-            firePooled<TimerEvent>()
+            firePooled<TimerFinishedEvent>()
             running = false
         }
     }
