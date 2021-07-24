@@ -1,12 +1,12 @@
 package io.github.solfeguido.core
 
 import com.badlogic.gdx.Preferences
-import io.github.solfeguido.structures.progression.Level
-import io.github.solfeguido.structures.progression.LevelRequirements
-import io.github.solfeguido.structures.Constants
 import io.github.solfeguido.enums.ClefEnum
 import io.github.solfeguido.enums.LevelDifficulty
+import io.github.solfeguido.structures.Constants
 import io.github.solfeguido.structures.GameStats
+import io.github.solfeguido.structures.progression.Level
+import io.github.solfeguido.structures.progression.LevelRequirements
 import kotlinx.serialization.decodeFromString
 import kotlinx.serialization.encodeToString
 import kotlinx.serialization.json.Json
@@ -46,6 +46,9 @@ class LevelManager(private val preferences: Preferences) {
     }
 
     fun generateLevel(clef: ClefEnum, level: Int) = Level(clef, level, levelRequirements[clef]!![level])
+
+    fun hasAccessTo(clef: ClefEnum, level: Int) =
+        level == 0 || levelRequirements[clef]!![level - 1].minScore <= levelResult(clef, level - 1).score
 
     fun levelResult(clef: ClefEnum, level: Int): GameStats = levelScores[clef]?.get(level) ?: EMPTY_RESULT
 

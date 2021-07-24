@@ -3,9 +3,9 @@ package io.github.solfeguido.screens
 import com.badlogic.gdx.scenes.scene2d.Actor
 import com.badlogic.gdx.utils.Align
 import io.github.solfeguido.core.GameManager
+import io.github.solfeguido.core.LevelManager
 import io.github.solfeguido.core.StateMachine
 import io.github.solfeguido.core.StateParameter
-import io.github.solfeguido.core.LevelManager
 import io.github.solfeguido.enums.ClefEnum
 import io.github.solfeguido.enums.IconName
 import io.github.solfeguido.factories.borderButton
@@ -59,8 +59,8 @@ class LevelSelectionScreen(context: Context) : UIScreen(context) {
                 setOrigin(Align.center)
                 table {
                     pad(10f)
-                    clefRequirements.forEachIndexed { index, t ->
-                        val enabled = index == 0 || levelManager.levelResult(clef, index).score >= t.minScore
+                    clefRequirements.forEachIndexed { index, _ ->
+                        val enabled = levelManager.hasAccessTo(clef, index)
                         for (star in 1..5) {
                             icon(IconName.FullStar) {
                                 color = gCol("font")
