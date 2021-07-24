@@ -15,6 +15,7 @@ import kotlin.math.max
 class GameManager(private val context: Context, val settings: GameSettings, private val returnCallback: () -> Unit) {
 
     private val statsManager = context.inject<StatsManager>()
+    private val levelManager = context.inject<LevelManager>()
     private val stats = GameStats()
     private val measures = GdxArray<MeasureActor>()
     private var currentMeasure = -1
@@ -57,7 +58,7 @@ class GameManager(private val context: Context, val settings: GameSettings, priv
         pauseTime += (System.currentTimeMillis() - pauseStart)
     }
 
-    fun handleResult(result: ResultEvent) {
+    private fun handleResult(result: ResultEvent) {
         statsManager.registerResult(result)
         if (result.isCorrect) {
             stats.correctGuesses++
@@ -68,12 +69,14 @@ class GameManager(private val context: Context, val settings: GameSettings, priv
 
     fun end() {
         stats.timePlayed = max(((System.currentTimeMillis() - startTime - pauseTime) / 1000f).toInt(), 0)
+        statsManager.save()
 
         val options = settings.options
         if (options is LevelOptions) {
-            context.inject<LevelManager>().registerLevelScore(options.level, stats)
+            val unlockedLevel = levelManager.registerLevelScore(options.level, stats)
+            print(unlockedLevel)
+            levelManager.save()
         }
-        statsManager.save()
     }
 
     fun exit() {

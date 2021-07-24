@@ -30,7 +30,8 @@ class LevelManager(private val preferences: Preferences) {
             levelScores[clef] = hashMapOf()
         }
 
-        val exist = levelScores[clef]!!.getOrDefault(difficulty, gameStats)
+        val exist = levelScores[clef]!!.getOrDefault(difficulty, EMPTY_RESULT)
+        println("Scored ${gameStats.score}, vs : ${exist.score}")
         if (exist < gameStats) {
             levelScores[clef]!![difficulty] = gameStats
             save()

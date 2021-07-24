@@ -34,7 +34,7 @@ object Constants {
     const val FADEOUT_DURATION = 3f
 
     // Others
-    const val CLASSIC_TIME = 10f
+    const val CLASSIC_TIME = 60f
     const val MAX_NOTE_SPAN = 40
 
     object Preferences {
