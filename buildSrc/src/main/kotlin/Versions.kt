@@ -1,6 +1,6 @@
 object Versions {
     // App name
-    const val SOLFEGUIDO = "Solfeguido"
+    const val SOLFEGUIDO = "Solfeguido2"
     // App version
     const val SOLFEGUIDO_VERION = "2.0.0-SNAPSHOT"
     // Main language used for the app

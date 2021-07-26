@@ -10,7 +10,7 @@ object Constants {
         get() = Gdx.graphics.height
 
     const val TITLE_SIZE = 50
-    const val PREFERENCES_NAME = "solfeguido"
+
     const val JINGLES_PATH = "midi/jingles"
     const val SOUNDS_PATH = "sounds"
     const val FONTS_PATH = "fonts"
@@ -37,6 +37,8 @@ object Constants {
     const val CLASSIC_TIME = 60f
     const val MAX_NOTE_SPAN = 40
 
+    // Preferences
+    const val PREFERENCES_NAME = "solfeguido2"
     object Preferences {
         const val LEVELS = "level"
         const val BEST_SCORES = "stats"
