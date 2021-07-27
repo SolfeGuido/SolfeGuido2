@@ -260,6 +260,7 @@ class MenuScreen(context: Context) : UIScreen(context) {
                     }
                 }
 
+
                 levelKeyOptions = scrollPane {
                     this.setScrollbarsVisible(false)
                     fadeScrollBars = false
@@ -298,6 +299,17 @@ class MenuScreen(context: Context) : UIScreen(context) {
                     updateBackButton()
                 }
                 it.grow()
+            }
+            row()
+            slidingTable(Align.bottom) {
+                iconButton(IconName.Off) {
+                    onClick {
+                        Gdx.app.exit()
+                    }
+                    pad(5f)
+                    it.expandX().bottom().left()
+                }
+                it.expandX().fillX()
             }
         }
     }
