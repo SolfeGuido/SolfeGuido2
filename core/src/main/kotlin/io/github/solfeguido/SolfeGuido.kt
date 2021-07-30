@@ -3,17 +3,13 @@ package io.github.solfeguido
 import com.badlogic.gdx.ApplicationListener
 import com.badlogic.gdx.Gdx
 import com.badlogic.gdx.Input
-import com.badlogic.gdx.graphics.Color
 import com.badlogic.gdx.graphics.GL20
-import com.badlogic.gdx.scenes.scene2d.Actor
-import io.github.solfeguido.structures.Constants
-import io.github.solfeguido.core.PreferencesManager
 import io.github.solfeguido.core.*
-import io.github.solfeguido.core.LevelManager
 import io.github.solfeguido.factories.ParticlePool
 import io.github.solfeguido.factories.gCol
 import io.github.solfeguido.screens.*
 import io.github.solfeguido.skins.getPreloadSkin
+import io.github.solfeguido.structures.Constants
 import ktx.assets.async.AssetStorage
 import ktx.async.KtxAsync
 import ktx.async.newAsyncContext
@@ -25,12 +21,15 @@ class SolfeGuido : ApplicationListener {
 
     private lateinit var context: Context;
     private lateinit var stateMachine: StateMachine
-    private val bgColor: Color by lazy { gCol("background") }
+    private val bgColor
+        get() = gCol("background")
 
     override fun create() {
         KtxAsync.initiate()
         context = Context()
-        Scene2DSkin.defaultSkin = getPreloadSkin()
+        val gamePreferences = Gdx.app.getPreferences(Constants.PREFERENCES_NAME)
+        val prefManager = PreferencesManager(gamePreferences)
+        Scene2DSkin.defaultSkin = getPreloadSkin(prefManager.theme)
 
         stateMachine = StateMachine(context)
             .addCurrentScreen<SplashScreen>()
@@ -41,14 +40,13 @@ class SolfeGuido : ApplicationListener {
             .addScreen<ClassicSelectionScreen>()
             .addScreen<OptionScreen>()
 
-        val gamePreferences = Gdx.app.getPreferences(Constants.PREFERENCES_NAME)
 
         context.register {
             bindSingleton(gamePreferences)
-            bindSingleton(PreferencesManager(gamePreferences))
+            bindSingleton(prefManager)
             bindSingleton(ParticlePool(context))
             bindSingleton(Jingles(context))
-            bindSingleton(AssetStorage(asyncContext = newAsyncContext(2)))
+            bindSingleton(AssetStorage(asyncContext = newAsyncContext(Constants.ASYNC_THREADS)))
             bindSingleton(SoundHelper(context))
             bindSingleton(stateMachine)
             bindSingleton(StatsManager(gamePreferences))
@@ -61,7 +59,7 @@ class SolfeGuido : ApplicationListener {
 
     override fun render() {
         val bg = bgColor
-        Gdx.gl.glClearColor(bg.r, bg.b, bg.b, bg.a)
+        Gdx.gl.glClearColor(bg.r, bg.g, bg.b, bg.a)
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT)
         val delta = Gdx.graphics.deltaTime
         stateMachine.render(delta)

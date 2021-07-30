@@ -116,7 +116,7 @@ class SplashScreen(context: Context) : UIScreen(context) {
             } ?: kotlin.run {
                 val end = System.currentTimeMillis()
                 info("START") { "Assets loaded in ${end - start}ms" }
-                Scene2DSkin.defaultSkin = getDefaultSkin(assetManager)
+                Scene2DSkin.defaultSkin = getDefaultSkin(assetManager, context.inject<PreferencesManager>().theme)
                 jingles.registerJingles(assetManager)
                 jingles.playJingle("Startup")
                 if (System.getenv("START_STATE") == "PlayScreen") {

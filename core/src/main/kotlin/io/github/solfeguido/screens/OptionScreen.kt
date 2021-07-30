@@ -13,6 +13,7 @@ import io.github.solfeguido.enums.*
 import io.github.solfeguido.factories.borderButton
 import io.github.solfeguido.factories.iconButton
 import io.github.solfeguido.factories.iconCheckBox
+import io.github.solfeguido.skins.getDefaultSkin
 import ktx.actors.onClick
 import ktx.inject.Context
 import ktx.preferences.get
@@ -24,21 +25,21 @@ class OptionScreen(context: Context) : UIScreen(context) {
 
     private inline fun <S> KWidget<S>.preferenceCheckBox(
         icon: IconName,
-        prefValue: SettingsEnum
+        prefValue: SettingsEnum,
+        crossinline callback: () -> Unit = {}
     ): IconCheckBox {
         val actualValue = preferencesManager.get(prefValue)
         val res = IconCheckBox(icon)
         res.isChecked = actualValue == prefValue
         res.onClick {
             preferencesManager.set(prefValue)
+            callback.invoke()
         }
         return actor(res)
     }
 
     override fun setup(settings: StateParameter): Actor {
-
-        val preferences: Preferences = context.inject()
-
+        val stateMachine : StateMachine = context.inject()
         return scene2d.table {
             setFillParent(true)
             setPosition(0f, 0f)
@@ -126,13 +127,13 @@ class OptionScreen(context: Context) : UIScreen(context) {
                     setFontScale(0.7f)
                 }
                 buttonGroup(1, 1) {
+                    // Could actually reload the scene maybe here ?
                     preferenceCheckBox(IconName.Sun, Theme.Light)
                     preferenceCheckBox(IconName.Moon, Theme.Dark)
-                    it.right()
                 }
 
                 row()
-                label("Sound : ", "contentLabelStyle") {
+                label("Sound : ",   "contentLabelStyle") {
                     setFontScale(0.7f)
                 }
                 buttonGroup(1, 1) {

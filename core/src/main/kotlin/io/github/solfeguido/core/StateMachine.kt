@@ -52,8 +52,6 @@ class StateMachine(val context: Context) : Screen {
         return this
     }
 
-    internal inline fun <reified Type : UIScreen> push(param: StateParameter) = push(Type::class.java, param)
-
     internal fun pop(showAgain: Boolean = false): StateMachine {
         changes.add {
             stack.last().hide()
@@ -87,7 +85,7 @@ class StateMachine(val context: Context) : Screen {
                     TransitionScreen::class.java, StateParameter.witType(
                         TransitionScreen.TransitionData(
                             align,
-                            Type::class.java,
+                            typeClass,
                             param,
                             actor
                         )
