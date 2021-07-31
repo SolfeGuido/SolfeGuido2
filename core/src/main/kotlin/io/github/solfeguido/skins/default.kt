@@ -7,7 +7,6 @@ import io.github.solfeguido.enums.Theme
 import io.github.solfeguido.structures.Constants
 import io.github.solfeguido.factories.TRANSPARENT
 import io.github.solfeguido.factories.colorDrawable
-import io.github.solfeguido.factories.gCol
 import ktx.assets.async.AssetStorage
 import ktx.style.*
 
@@ -38,12 +37,12 @@ fun getDefaultSkin(assetManager: AssetStorage, theme: Theme): Skin {
 
         label {
             font = titleFont
-            fontColor = gCol("font")
+            fontColor = self.getColor("font")
         }
 
         label(name = "contentLabelStyle") {
             font = smallPrimary
-            fontColor = gCol("font")
+            fontColor = self.getColor("font")
         }
 
         label(name = "noteNameStyle") {
@@ -68,19 +67,19 @@ fun getDefaultSkin(assetManager: AssetStorage, theme: Theme): Skin {
         borderButton(name = "iconButtonStyle") {
             labelStyle = "iconStyle"
             borderThickness = 0f
-            borderColor = gCol("background")
+            borderColor = self.getColor("background")
         }
 
         borderButton(name = "iconBorderButtonStyle") {
             labelStyle = "iconStyle"
             borderThickness = 1.3f
-            borderColor = gCol("font")
+            borderColor = self.getColor("font")
         }
 
         borderButton {
             labelStyle = "contentLabelStyle"
             borderThickness = 1.3f
-            borderColor = gCol("font")
+            borderColor = self.getColor("font")
             //disabledColor = gCol("fontHover")
         }
 
@@ -97,7 +96,7 @@ fun getDefaultSkin(assetManager: AssetStorage, theme: Theme): Skin {
             labelStyle = "contentLabelStyle"
             fontColor = self.getColor("font")
             borderThickness = 1.3f
-            borderColor = gCol("font")
+            borderColor = self.getColor("font")
         }
 
         //TODO : for border style:  border thickness, and border color
@@ -108,14 +107,14 @@ fun getDefaultSkin(assetManager: AssetStorage, theme: Theme): Skin {
 
         window {
             this.titleFont = primaryFont
-            titleFontColor = gCol("font")
-            background = colorDrawable(gCol("background"))
+            titleFontColor = self.getColor("font")
+            background = colorDrawable(self.getColor("background"))
 
             //stageBackground = colorDrawable(Color(0f , 0f, 0f , 0.7f))
         }
 
         textButton {
-            fontColor = gCol("font")
+            fontColor = self.getColor("font")
             font = primaryFont
         }
 
@@ -127,14 +126,14 @@ fun getDefaultSkin(assetManager: AssetStorage, theme: Theme): Skin {
 
         checkBox {
             font = smallPrimary
-            up = colorDrawable(gCol("background"))
-            fontColor = gCol("font")
+            up = colorDrawable(self.getColor("background"))
+            fontColor = self.getColor("font")
             checkedFontColor = Color.BLUE
         }
 
         checkBox("icon") {
             font = iconFont
-            fontColor = gCol("font")
+            fontColor = self.getColor("font")
             checkedFontColor = Color.BLUE
         }
 

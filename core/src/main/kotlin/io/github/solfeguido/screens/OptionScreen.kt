@@ -39,7 +39,7 @@ class OptionScreen(context: Context) : UIScreen(context) {
     }
 
     override fun setup(settings: StateParameter): Actor {
-        val stateMachine : StateMachine = context.inject()
+        val stateMachine: StateMachine = context.inject()
         return scene2d.table {
             setFillParent(true)
             setPosition(0f, 0f)
@@ -128,12 +128,20 @@ class OptionScreen(context: Context) : UIScreen(context) {
                 }
                 buttonGroup(1, 1) {
                     // Could actually reload the scene maybe here ?
-                    preferenceCheckBox(IconName.Sun, Theme.Light)
-                    preferenceCheckBox(IconName.Moon, Theme.Dark)
+                    preferenceCheckBox(IconName.Sun, Theme.Light) {
+                        stateMachine.switch<OptionScreen>(settings) {
+                            Scene2DSkin.defaultSkin = getDefaultSkin(context.inject(), Theme.Light)
+                        }
+                    }
+                    preferenceCheckBox(IconName.Moon, Theme.Dark) {
+                        stateMachine.switch<OptionScreen>(settings) {
+                            Scene2DSkin.defaultSkin = getDefaultSkin(context.inject(), Theme.Dark)
+                        }
+                    }
                 }
 
                 row()
-                label("Sound : ",   "contentLabelStyle") {
+                label("Sound : ", "contentLabelStyle") {
                     setFontScale(0.7f)
                 }
                 buttonGroup(1, 1) {

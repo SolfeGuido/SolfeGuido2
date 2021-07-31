@@ -68,6 +68,7 @@ class StateMachine(val context: Context) : Screen {
         param: StateParameter = StateParameter.empty(),
         align: Int = Align.left,
         actor: Actor? = null,
+        noinline middleCallback: () -> Unit = {}
     ): StateMachine {
         val typeClass = Type::class.java
         if (!constructors.containsKey(typeClass)) {
@@ -87,7 +88,8 @@ class StateMachine(val context: Context) : Screen {
                             align,
                             typeClass,
                             param,
-                            actor
+                            actor,
+                            middleCallback
                         )
                     )
                 )

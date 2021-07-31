@@ -22,7 +22,8 @@ class TransitionScreen(context: Context) : UIScreen(context) {
         val origin: Int,
         val clazz: Class<T>,
         val parameter: StateParameter = StateParameter.empty(),
-        val actor: Actor? = null
+        val actor: Actor? = null,
+        val middleCallback: () -> Unit = {}
     )
 
     private fun originToCoordinates(origin: Int) = when {
@@ -55,6 +56,7 @@ class TransitionScreen(context: Context) : UIScreen(context) {
             0.3f,
             Interpolation.exp10Out
         ) + Actions.run {
+            transition.middleCallback.invoke()
             stateMachine.replaceBeforeLast(transition.clazz, transition.parameter)
         } + Actions.delay(0.1f) + Actions.moveTo(-origin.x, -origin.y, 0.4f, Interpolation.exp10Out) + Actions.run {
             stateMachine.pop()
