@@ -24,3 +24,11 @@ enum class ButtonStyle : SettingsEnum {
     PianoKeys,
     PianoWithNotes;
 }
+
+enum class Language : SettingsEnum {
+    English,
+    French,
+    Spanish,
+    Italian,
+    Swedish
+}

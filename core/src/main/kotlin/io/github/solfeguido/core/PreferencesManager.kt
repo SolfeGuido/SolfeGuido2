@@ -36,11 +36,18 @@ class PreferencesManager(private val preferences: Preferences) {
             settings.buttonStyle = value
         }
 
+    var language: Language
+        get() = settings.language
+        private set(value) {
+            settings.language = value
+        }
+
     fun get(default: SettingsEnum) = when (default) {
         is Theme -> theme
         is Vibrations -> vibrations
         is NoteStyle -> noteStyle
         is ButtonStyle -> buttonStyle
+        is Language -> language
     }
 
     fun set(value: SettingsEnum) {
@@ -49,11 +56,12 @@ class PreferencesManager(private val preferences: Preferences) {
             is Vibrations -> vibrations = value
             is NoteStyle -> noteStyle = value
             is ButtonStyle -> buttonStyle = value
+            is Language -> language = value
         }
     }
 
     fun save() {
-        preferences[Constants.Preferences.SETTINGS] = Json.encodeToString( settings)
+        preferences[Constants.Preferences.SETTINGS] = Json.encodeToString(settings)
         preferences.flush()
     }
 
@@ -62,7 +70,12 @@ class PreferencesManager(private val preferences: Preferences) {
         settings = if (prefValue.isNullOrBlank()) {
             UserSettings()
         } else {
-            Json.decodeFromString(prefValue)
+            try {
+                Json.decodeFromString(prefValue)
+            } catch (ex: Exception) {
+                error(ex)
+                UserSettings()
+            }
         }
 
     }

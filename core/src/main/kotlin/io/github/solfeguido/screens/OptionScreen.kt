@@ -4,8 +4,10 @@ import com.badlogic.gdx.Application
 import com.badlogic.gdx.Gdx
 import com.badlogic.gdx.Preferences
 import com.badlogic.gdx.scenes.scene2d.Actor
+import com.badlogic.gdx.scenes.scene2d.ui.CheckBox
 import com.badlogic.gdx.utils.Align
 import io.github.solfeguido.actors.IconCheckBox
+import io.github.solfeguido.actors.TextureCheckBox
 import io.github.solfeguido.core.StateMachine
 import io.github.solfeguido.core.StateParameter
 import io.github.solfeguido.core.PreferencesManager
@@ -23,19 +25,26 @@ class OptionScreen(context: Context) : UIScreen(context) {
 
     private val preferencesManager: PreferencesManager = context.inject()
 
-    private inline fun <S> KWidget<S>.preferenceCheckBox(
+    private inline fun <S> KWidget<S>.iconPreference(
         icon: IconName,
         prefValue: SettingsEnum,
         crossinline callback: () -> Unit = {}
     ): IconCheckBox {
+        return preferenceCheckBox(IconCheckBox(icon), prefValue, callback)
+    }
+
+    private inline fun <A : CheckBox, S> KWidget<S>.preferenceCheckBox(
+        widget: A,
+        prefValue: SettingsEnum,
+        crossinline callback: () -> Unit = {}
+    ): A {
         val actualValue = preferencesManager.get(prefValue)
-        val res = IconCheckBox(icon)
-        res.isChecked = actualValue == prefValue
-        res.onClick {
+        widget.isChecked = actualValue == prefValue
+        widget.onClick {
             preferencesManager.set(prefValue)
             callback.invoke()
         }
-        return actor(res)
+        return actor(widget)
     }
 
     override fun setup(settings: StateParameter): Actor {
@@ -69,11 +78,11 @@ class OptionScreen(context: Context) : UIScreen(context) {
                         setFontScale(0.7f)
                     }
                     buttonGroup(1, 1) {
-                        preferenceCheckBox(
+                        iconPreference(
                             IconName.Mobile,
                             Vibrations.Disabled
                         )
-                        preferenceCheckBox(
+                        iconPreference(
                             IconName.MobileVibrate,
                             Vibrations.Enabled
                         )
@@ -85,18 +94,9 @@ class OptionScreen(context: Context) : UIScreen(context) {
                     setFontScale(0.7f)
                 }
                 buttonGroup(1, 1) {
-                    preferenceCheckBox(
-                        IconName.RomanNotes,
-                        NoteStyle.RomanNotes
-                    )
-                    preferenceCheckBox(
-                        IconName.LatinNotes,
-                        NoteStyle.LatinNotes
-                    )
-                    preferenceCheckBox(
-                        IconName.EnglishNotes,
-                        NoteStyle.EnglishNotes
-                    )
+                    iconPreference(IconName.RomanNotes, NoteStyle.RomanNotes)
+                    iconPreference(IconName.LatinNotes, NoteStyle.LatinNotes)
+                    iconPreference(IconName.EnglishNotes, NoteStyle.EnglishNotes)
                     it.right()
                 }
 
@@ -106,18 +106,9 @@ class OptionScreen(context: Context) : UIScreen(context) {
                     setFontScale(0.7f)
                 }
                 buttonGroup(1, 1) {
-                    preferenceCheckBox(
-                        IconName.NotesButton,
-                        ButtonStyle.NotesButton
-                    )
-                    preferenceCheckBox(
-                        IconName.PianoKeys,
-                        ButtonStyle.PianoKeys
-                    )
-                    preferenceCheckBox(
-                        IconName.PianoWithNotes,
-                        ButtonStyle.PianoWithNotes
-                    )
+                    iconPreference(IconName.NotesButton, ButtonStyle.NotesButton)
+                    iconPreference(IconName.PianoKeys, ButtonStyle.PianoKeys)
+                    iconPreference(IconName.PianoWithNotes, ButtonStyle.PianoWithNotes)
                     it.right()
                 }
 
@@ -128,12 +119,12 @@ class OptionScreen(context: Context) : UIScreen(context) {
                 }
                 buttonGroup(1, 1) {
                     // Could actually reload the scene maybe here ?
-                    preferenceCheckBox(IconName.Sun, Theme.Light) {
+                    iconPreference(IconName.Sun, Theme.Light) {
                         stateMachine.switch<OptionScreen>(settings) {
                             Scene2DSkin.defaultSkin = getDefaultSkin(context.inject(), Theme.Light)
                         }
                     }
-                    preferenceCheckBox(IconName.Moon, Theme.Dark) {
+                    iconPreference(IconName.Moon, Theme.Dark) {
                         stateMachine.switch<OptionScreen>(settings) {
                             Scene2DSkin.defaultSkin = getDefaultSkin(context.inject(), Theme.Dark)
                         }
@@ -149,6 +140,20 @@ class OptionScreen(context: Context) : UIScreen(context) {
                     iconCheckBox(IconName.VolumeOn)
                     iconCheckBox(IconName.VolumeOff)
                     it.right()
+                }
+
+                row()
+
+                label("Language : ", "contentLabelStyle") {
+                    setFontScale(0.7f)
+                }
+
+                buttonGroup(1, 1) {
+                    preferenceCheckBox(TextureCheckBox("En"), Language.English)
+                    preferenceCheckBox(TextureCheckBox("Fr"), Language.French)
+                    preferenceCheckBox(TextureCheckBox("Es"), Language.Spanish)
+                    preferenceCheckBox(TextureCheckBox("It"), Language.Italian)
+                    preferenceCheckBox(TextureCheckBox("Sv"), Language.Swedish)
                 }
 
                 row()
