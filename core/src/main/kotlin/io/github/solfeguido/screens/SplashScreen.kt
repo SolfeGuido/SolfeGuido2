@@ -8,10 +8,12 @@ import com.badlogic.gdx.graphics.g2d.freetype.FreeTypeFontGenerator
 import com.badlogic.gdx.scenes.scene2d.Actor
 import com.badlogic.gdx.scenes.scene2d.ui.Label
 import com.badlogic.gdx.scenes.scene2d.ui.ProgressBar
+import com.badlogic.gdx.utils.I18NBundle
 import io.github.solfeguido.structures.Constants
 import io.github.solfeguido.core.*
 import io.github.solfeguido.core.LevelManager
 import io.github.solfeguido.enums.IconName
+import io.github.solfeguido.enums.Nls
 import io.github.solfeguido.loaders.FontLoader
 import io.github.solfeguido.loaders.MidiLoader
 import io.github.solfeguido.midi.MidiFile
@@ -34,7 +36,7 @@ class SplashScreen(context: Context) : UIScreen(context) {
     private var toLoad = 0
 
     override fun setup(settings: StateParameter): Actor {
-        toLoad = 10
+        toLoad = 11
         val jingles: Jingles = context.inject()
         val start = System.currentTimeMillis()
 
@@ -63,6 +65,9 @@ class SplashScreen(context: Context) : UIScreen(context) {
                 load<Texture>("images/flags/en.png")
                 load<Texture>("images/flags/fr.png")
                 load<Texture>("images/flags/sv.png")
+
+                // Load translations
+                load<I18NBundle>("i18n/nls")
 
 
                 jingles.allJingles.map { loadAsync<MidiFile>(it.path()) }.toTypedArray()
@@ -116,6 +121,8 @@ class SplashScreen(context: Context) : UIScreen(context) {
             } ?: kotlin.run {
                 val end = System.currentTimeMillis()
                 info("START") { "Assets loaded in ${end - start}ms" }
+                //val bundle = assetManager.get<I18NBundle>("i18n/nls")
+
                 Scene2DSkin.defaultSkin = getDefaultSkin(assetManager, context.inject<PreferencesManager>().theme)
                 jingles.registerJingles(assetManager)
                 jingles.playJingle("Startup")
