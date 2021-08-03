@@ -1,6 +1,7 @@
 package io.github.solfeguido.screens
 
 import com.badlogic.gdx.Gdx
+import com.badlogic.gdx.assets.loaders.I18NBundleLoader
 import com.badlogic.gdx.audio.Sound
 import com.badlogic.gdx.graphics.Texture
 import com.badlogic.gdx.graphics.g2d.BitmapFont
@@ -21,10 +22,12 @@ import io.github.solfeguido.settings.GameSettings
 import io.github.solfeguido.skins.getDefaultSkin
 import kotlinx.coroutines.launch
 import ktx.assets.async.AssetStorage
+import ktx.assets.async.toIdentifier
 import ktx.async.KtxAsync
 import ktx.inject.Context
 import ktx.log.info
 import ktx.scene2d.*
+import java.util.*
 
 
 class SplashScreen(context: Context) : UIScreen(context) {
@@ -42,8 +45,8 @@ class SplashScreen(context: Context) : UIScreen(context) {
 
         KtxAsync.launch {
             val soundHelper: SoundHelper = context.inject()
-            val stats : StatsManager = context.inject()
-            val levels : LevelManager = context.inject()
+            val stats: StatsManager = context.inject()
+            val levels: LevelManager = context.inject()
 
             stats.loadSave()
             levels.load()
@@ -121,9 +124,17 @@ class SplashScreen(context: Context) : UIScreen(context) {
             } ?: kotlin.run {
                 val end = System.currentTimeMillis()
                 info("START") { "Assets loaded in ${end - start}ms" }
-                //val bundle = assetManager.get<I18NBundle>("i18n/nls")
+                val preferences: PreferencesManager = context.inject()
+                val bundleDescriptor = assetManager.getAssetDescriptor<I18NBundle>(
+                    "i18n/nls",
+                    I18NBundleLoader.I18NBundleParameter(Locale(preferences.language.code))
+                )
+                Nls.i18nBundle = assetManager[bundleDescriptor.toIdentifier()]
 
-                Scene2DSkin.defaultSkin = getDefaultSkin(assetManager, context.inject<PreferencesManager>().theme)
+                Scene2DSkin.defaultSkin = getDefaultSkin(
+                    assetManager,
+                    context.inject<PreferencesManager>().theme
+                )
                 jingles.registerJingles(assetManager)
                 jingles.playJingle("Startup")
                 if (System.getenv("START_STATE") == "PlayScreen") {

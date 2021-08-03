@@ -1,4 +1,5 @@
 package io.github.solfeguido.enums
+import com.badlogic.gdx.utils.I18NBundle
 import ktx.i18n.BundleLine
 /** Generated from assets/i18n/nls.properties file. */
 enum class Nls(private val key: String) : BundleLine {
@@ -49,5 +50,12 @@ enum class Nls(private val key: String) : BundleLine {
     ;
 
     override fun toString() = key
+
+    override val bundle: I18NBundle
+        get() = i18nBundle
+
+    companion object {
+        lateinit var i18nBundle: I18NBundle
+    }
 }
 

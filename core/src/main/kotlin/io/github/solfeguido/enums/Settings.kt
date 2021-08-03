@@ -25,10 +25,10 @@ enum class ButtonStyle : SettingsEnum {
     PianoWithNotes;
 }
 
-enum class Language : SettingsEnum {
-    English,
-    French,
-    Spanish,
-    Italian,
-    Swedish
+enum class Language(val code: String) : SettingsEnum {
+    English("en"),
+    French("fr"),
+    Spanish("es"),
+    Italian("it"),
+    Swedish("sv")
 }

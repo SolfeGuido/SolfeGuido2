@@ -17,6 +17,7 @@ import io.github.solfeguido.core.StateMachine
 import io.github.solfeguido.core.StateParameter
 import io.github.solfeguido.enums.ClefEnum
 import io.github.solfeguido.enums.IconName
+import io.github.solfeguido.enums.Nls
 import io.github.solfeguido.factories.borderButton
 import io.github.solfeguido.factories.iconButton
 import io.github.solfeguido.factories.measure
@@ -174,13 +175,13 @@ class MenuScreen(context: Context) : UIScreen(context) {
                         pad(5f)
                         it.pad(10f)
                     }
-                    borderButton("Play") {
+                    borderButton(Nls.Menu.nls) {
                         icon(IconName.Play, 0.9f).pad(5f)
                         onClick { pushActor(playOptions) }
                         pad(25f)
                         it.pad(10f)
                     }
-                    borderButton("Leaderboard") {
+                    borderButton(Nls.Credits.nls) {
                         icon(IconName.List, 0.9f).pad(5f)
                         pad(5f)
                         it.pad(10f)
