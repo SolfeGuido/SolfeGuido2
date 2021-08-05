@@ -12,5 +12,5 @@ object Versions {
     // Main lib to handle graphics, input, sound etc
     const val GDX = "1.10.0"
     // Wrapper around libGdx to make it easier to use with kotlin
-    const val KTX = "1.10.0-b1"
+    const val KTX = "1.10.0-b2"
 }
