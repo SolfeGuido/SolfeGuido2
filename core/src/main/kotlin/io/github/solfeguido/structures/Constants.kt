@@ -17,9 +17,10 @@ object Constants {
     const val PARTICLES_PATH = "particles"
     const val SHADERS_PATH = "shaders"
     const val IMAGES_PATH = "images"
+    const val TRANSLATIONS_PATH = "i18n/nls"
 
     // Actual values
-    const val MUSICALNOTES_PATH = "$SOUNDS_PATH/notes"
+    const val MUSICAL_NOTES_PATH = "$SOUNDS_PATH/notes"
     const val CLICK_SOUND = "$SOUNDS_PATH/click.mp3"
 
     //Fonts
@@ -27,6 +28,11 @@ object Constants {
     const val TITLE_FONT = "$FONTS_PATH/MarckScript.woff"
     const val PRIMARY_FONT = "$FONTS_PATH/Oswald.woff"
     const val LINE_THICKNESS = 2f
+
+    //Textures
+    const val PARTICLE_IMAGE = "$IMAGES_PATH/particle.png"
+    const val APP_ICON = "$IMAGES_PATH/appIcon.png"
+    const val FLAGS_ATLAS = "$IMAGES_PATH/flags.txt"
 
     // Animations
     const val PRESSED_SCALING = 0.8f

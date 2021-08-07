@@ -1,0 +1,40 @@
+flags.png
+size: 142, 477
+format: RGBA8888
+filter: Linear,Linear
+repeat: none
+en
+  rotate: false
+  xy: 0, 0
+  size: 141, 95
+  orig: 141, 95
+  offset: 0, 0
+  index: -1
+es
+  rotate: false
+  xy: 0, 95
+  size: 142, 96
+  orig: 142, 96
+  offset: 0, 0
+  index: -1
+fr
+  rotate: false
+  xy: 0, 191
+  size: 141, 95
+  orig: 141, 95
+  offset: 0, 0
+  index: -1
+it
+  rotate: false
+  xy: 0, 286
+  size: 142, 96
+  orig: 142, 96
+  offset: 0, 0
+  index: -1
+sv
+  rotate: false
+  xy: 0, 382
+  size: 141, 95
+  orig: 141, 95
+  offset: 0, 0
+  index: -1

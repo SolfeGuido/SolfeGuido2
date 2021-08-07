@@ -5,6 +5,7 @@ import com.badlogic.gdx.assets.loaders.I18NBundleLoader
 import com.badlogic.gdx.audio.Sound
 import com.badlogic.gdx.graphics.Texture
 import com.badlogic.gdx.graphics.g2d.BitmapFont
+import com.badlogic.gdx.graphics.g2d.TextureAtlas
 import com.badlogic.gdx.graphics.g2d.freetype.FreeTypeFontGenerator
 import com.badlogic.gdx.scenes.scene2d.Actor
 import com.badlogic.gdx.scenes.scene2d.ui.Label
@@ -39,7 +40,7 @@ class SplashScreen(context: Context) : UIScreen(context) {
     private var toLoad = 0
 
     override fun setup(settings: StateParameter): Actor {
-        toLoad = 11
+        toLoad = 10
         val jingles: Jingles = context.inject()
         val start = System.currentTimeMillis()
 
@@ -62,22 +63,19 @@ class SplashScreen(context: Context) : UIScreen(context) {
 
             //Load
             assetManager.apply {
-                load<Texture>("images/particle.png")
-                load<Texture>("images/appIcon.png")
-                //TODO: could use a texture atlat to load a single file instead
-                load<Texture>("images/flags/en.png")
-                load<Texture>("images/flags/fr.png")
-                load<Texture>("images/flags/sv.png")
+                load<Texture>(Constants.PARTICLE_IMAGE)
+                load<Texture>(Constants.APP_ICON)
+                load<TextureAtlas>(Constants.FLAGS_ATLAS)
 
                 // Load translations
-                load<I18NBundle>("i18n/nls")
+                load<I18NBundle>(Constants.TRANSLATIONS_PATH)
 
 
                 jingles.allJingles.map { loadAsync<MidiFile>(it.path()) }.toTypedArray()
 
 
                 soundHelper.existingSounds.map {
-                    load<Sound>("sounds/notes/${it.key}.mp3")
+                    load<Sound>("${Constants.MUSICAL_NOTES_PATH}/${it.key}.mp3")
                 }.toTypedArray()
 
                 load<Sound>(Constants.CLICK_SOUND)
@@ -126,7 +124,7 @@ class SplashScreen(context: Context) : UIScreen(context) {
                 info("START") { "Assets loaded in ${end - start}ms" }
                 val preferences: PreferencesManager = context.inject()
                 val bundleDescriptor = assetManager.getAssetDescriptor<I18NBundle>(
-                    "i18n/nls",
+                    Constants.TRANSLATIONS_PATH,
                     I18NBundleLoader.I18NBundleParameter(Locale(preferences.language.code))
                 )
                 Nls.i18nBundle = assetManager[bundleDescriptor.toIdentifier()]

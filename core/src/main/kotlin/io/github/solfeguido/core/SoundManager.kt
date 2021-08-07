@@ -25,7 +25,7 @@ class SoundHelper(private val context: Context) {
     }
 
     private fun toAssetName(note: MidiNote) = toAssetName(note.midiIndex)
-    private fun toAssetName(midiIndex: Int) = "${Constants.MUSICALNOTES_PATH}/$midiIndex.mp3"
+    private fun toAssetName(midiIndex: Int) = "${Constants.MUSICAL_NOTES_PATH}/$midiIndex.mp3"
 
     private fun isLoadedSound(note: MidiNote) = loadedSounds.contains(note)
 
