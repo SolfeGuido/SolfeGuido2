@@ -3,9 +3,12 @@ package io.github.solfeguido.screens
 import com.badlogic.gdx.Application
 import com.badlogic.gdx.Gdx
 import com.badlogic.gdx.Preferences
+import com.badlogic.gdx.assets.AssetManager
+import com.badlogic.gdx.assets.loaders.I18NBundleLoader
 import com.badlogic.gdx.scenes.scene2d.Actor
 import com.badlogic.gdx.scenes.scene2d.ui.CheckBox
 import com.badlogic.gdx.utils.Align
+import com.badlogic.gdx.utils.I18NBundle
 import io.github.solfeguido.actors.IconCheckBox
 import io.github.solfeguido.actors.TextureCheckBox
 import io.github.solfeguido.core.StateMachine
@@ -17,9 +20,13 @@ import io.github.solfeguido.factories.iconButton
 import io.github.solfeguido.factories.iconCheckBox
 import io.github.solfeguido.skins.getDefaultSkin
 import ktx.actors.onClick
+import ktx.assets.async.AssetStorage
+import ktx.assets.async.toIdentifier
 import ktx.inject.Context
 import ktx.preferences.get
 import ktx.scene2d.*
+import org.w3c.dom.Text
+import java.util.*
 
 class OptionScreen(context: Context) : UIScreen(context) {
 
@@ -49,6 +56,8 @@ class OptionScreen(context: Context) : UIScreen(context) {
 
     override fun setup(settings: StateParameter): Actor {
         val stateMachine: StateMachine = context.inject()
+        val assetManager: AssetStorage = context.inject()
+        val preferences : PreferencesManager = context.inject()
         return scene2d.table {
             setFillParent(true)
             setPosition(0f, 0f)
@@ -149,11 +158,18 @@ class OptionScreen(context: Context) : UIScreen(context) {
                 }
 
                 buttonGroup(1, 1) {
-                    preferenceCheckBox(TextureCheckBox("En"), Language.English)
-                    preferenceCheckBox(TextureCheckBox("Fr"), Language.French)
-                    preferenceCheckBox(TextureCheckBox("Es"), Language.Spanish)
-                    preferenceCheckBox(TextureCheckBox("It"), Language.Italian)
-                    preferenceCheckBox(TextureCheckBox("Sv"), Language.Swedish)
+
+                    Language.values().forEach { lang ->
+                        preferenceCheckBox(TextureCheckBox(lang.name), lang) {
+                            stateMachine.switch<OptionScreen>(settings) {
+                                val bundleDescriptor = assetManager.getAssetDescriptor<I18NBundle>(
+                                    "i18n/nls",
+                                    I18NBundleLoader.I18NBundleParameter(Locale(lang.code))
+                                )
+                                Nls.i18nBundle = assetManager[bundleDescriptor.toIdentifier()]
+                            }
+                        }
+                    }
                 }
 
                 row()

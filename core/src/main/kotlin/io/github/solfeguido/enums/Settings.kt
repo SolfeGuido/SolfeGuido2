@@ -1,5 +1,7 @@
 package io.github.solfeguido.enums
 
+import java.util.*
+
 sealed interface SettingsEnum
 
 
@@ -30,5 +32,15 @@ enum class Language(val code: String) : SettingsEnum {
     French("fr"),
     Spanish("es"),
     Italian("it"),
-    Swedish("sv")
+    Swedish("sv");
+
+    companion object {
+        fun fromLocale(locale: Locale) : Language {
+            val code = locale.language
+            for(lang in values()) {
+                if(lang.code == code) return lang
+            }
+            return English
+        }
+    }
 }
