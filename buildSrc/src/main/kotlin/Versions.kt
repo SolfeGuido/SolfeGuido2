@@ -4,7 +4,7 @@ object Versions {
     // App version
     const val SOLFEGUIDO_VERION = "2.0.0-SNAPSHOT"
     // Main language used for the app
-    const val KOTLIN = "1.5.20"
+    const val KOTLIN = "1.5.21"
     // Used to serialized internal object into json, allowing easy saves
     const val KOTLIN_SERIALIZATION = "1.2.2"
     // Used when loading the assets, to load them faster
