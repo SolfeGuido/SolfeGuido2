@@ -32,7 +32,7 @@ object Constants {
     //Textures
     const val PARTICLE_IMAGE = "$IMAGES_PATH/particle.png"
     const val APP_ICON = "$IMAGES_PATH/appIcon.png"
-    const val FLAGS_ATLAS = "$IMAGES_PATH/flags.txt"
+    const val FLAGS_ATLAS = "$IMAGES_PATH/flags.atlas"
 
     // Animations
     const val PRESSED_SCALING = 0.8f

@@ -5,6 +5,7 @@ import com.badlogic.gdx.Gdx
 import com.badlogic.gdx.Preferences
 import com.badlogic.gdx.assets.AssetManager
 import com.badlogic.gdx.assets.loaders.I18NBundleLoader
+import com.badlogic.gdx.graphics.g2d.TextureAtlas
 import com.badlogic.gdx.scenes.scene2d.Actor
 import com.badlogic.gdx.scenes.scene2d.ui.CheckBox
 import com.badlogic.gdx.utils.Align
@@ -19,6 +20,7 @@ import io.github.solfeguido.factories.borderButton
 import io.github.solfeguido.factories.iconButton
 import io.github.solfeguido.factories.iconCheckBox
 import io.github.solfeguido.skins.getDefaultSkin
+import io.github.solfeguido.structures.Constants
 import ktx.actors.onClick
 import ktx.assets.async.AssetStorage
 import ktx.assets.async.toIdentifier
@@ -158,9 +160,10 @@ class OptionScreen(context: Context) : UIScreen(context) {
                 }
 
                 buttonGroup(1, 1) {
+                    val flagsTextureAtlas = assetManager.get<TextureAtlas>(Constants.FLAGS_ATLAS)
 
                     Language.values().forEach { lang ->
-                        preferenceCheckBox(TextureCheckBox(lang.name), lang) {
+                        preferenceCheckBox(TextureCheckBox(flagsTextureAtlas.findRegion(lang.code)), lang) {
                             stateMachine.switch<OptionScreen>(settings) {
                                 val bundleDescriptor = assetManager.getAssetDescriptor<I18NBundle>(
                                     "i18n/nls",
