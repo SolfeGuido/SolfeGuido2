@@ -3,6 +3,7 @@ package io.github.solfeguido.skins
 import com.badlogic.gdx.graphics.Color
 import com.badlogic.gdx.graphics.g2d.BitmapFont
 import com.badlogic.gdx.scenes.scene2d.ui.Skin
+import io.github.solfeguido.enums.Language
 import io.github.solfeguido.enums.Theme
 import io.github.solfeguido.structures.Constants
 import io.github.solfeguido.factories.TRANSPARENT
@@ -135,6 +136,12 @@ fun getDefaultSkin(assetManager: AssetStorage, theme: Theme): Skin {
             font = iconFont
             fontColor = self.getColor("font")
             checkedFontColor = Color.BLUE
+        }
+
+        Language.values().forEach {
+            checkBox(it.code) {
+                font = smallPrimary
+            }
         }
 
     }

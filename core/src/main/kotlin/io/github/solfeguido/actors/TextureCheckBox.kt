@@ -1,5 +1,6 @@
 package io.github.solfeguido.actors
 
+import com.badlogic.gdx.graphics.g2d.TextureAtlas
 import com.badlogic.gdx.graphics.g2d.TextureRegion
 import com.badlogic.gdx.math.Interpolation
 import com.badlogic.gdx.scenes.scene2d.actions.Actions
@@ -11,7 +12,7 @@ import ktx.actors.plusAssign
 import ktx.scene2d.KTable
 import ktx.scene2d.Scene2DSkin
 
-class TextureCheckBox(texture: TextureRegion) : CheckBox("", Scene2DSkin.defaultSkin), KTable {
+class TextureCheckBox(texture: TextureAtlas.AtlasRegion) : CheckBox("", Scene2DSkin.defaultSkin, texture.name), KTable {
     init {
         style.up = TextureRegionDrawable(texture)
         setOrigin(Align.center)
