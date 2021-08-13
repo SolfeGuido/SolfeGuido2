@@ -10,8 +10,8 @@ enum class KeySignatureEnum(val symbol: NoteAccidentalEnum, val numberOf: Int, v
     GMajor(NoteAccidentalEnum.Sharp, 1, ScaleEnum.Major),
     DMajor(NoteAccidentalEnum.Sharp, 2, ScaleEnum.Major),
     AMajor(NoteAccidentalEnum.Sharp, 3, ScaleEnum.Major),
-    EAMajor(NoteAccidentalEnum.Sharp, 4, ScaleEnum.Major),
-    BAMajor(NoteAccidentalEnum.Sharp, 5, ScaleEnum.Major),
+    EMajor(NoteAccidentalEnum.Sharp, 4, ScaleEnum.Major),
+    BMajor(NoteAccidentalEnum.Sharp, 5, ScaleEnum.Major),
     FSharpMajor(NoteAccidentalEnum.Sharp, 6, ScaleEnum.Major),
     CSharpMajor(NoteAccidentalEnum.Sharp, 7, ScaleEnum.Major),
 
