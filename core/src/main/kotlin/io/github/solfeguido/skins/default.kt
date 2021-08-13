@@ -2,7 +2,9 @@ package io.github.solfeguido.skins
 
 import com.badlogic.gdx.graphics.Color
 import com.badlogic.gdx.graphics.g2d.BitmapFont
+import com.badlogic.gdx.graphics.g2d.TextureAtlas
 import com.badlogic.gdx.scenes.scene2d.ui.Skin
+import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable
 import io.github.solfeguido.enums.Language
 import io.github.solfeguido.enums.Theme
 import io.github.solfeguido.structures.Constants
@@ -129,18 +131,20 @@ fun getDefaultSkin(assetManager: AssetStorage, theme: Theme): Skin {
             font = smallPrimary
             up = colorDrawable(self.getColor("background"))
             fontColor = self.getColor("font")
-            checkedFontColor = Color.BLUE
+            checkedFontColor = self.getColor("correct")
         }
 
         checkBox("icon") {
             font = iconFont
             fontColor = self.getColor("font")
-            checkedFontColor = Color.BLUE
+            checkedFontColor = self.getColor("correct")
         }
 
+        val flagsTextureAtlas = assetManager.get<TextureAtlas>(Constants.FLAGS_ATLAS)
         Language.values().forEach {
             checkBox(it.code) {
                 font = smallPrimary
+                up = TextureRegionDrawable(flagsTextureAtlas.findRegion(it.code))
             }
         }
 

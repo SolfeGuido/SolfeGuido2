@@ -2,16 +2,15 @@ package io.github.solfeguido.screens
 
 import com.badlogic.gdx.Application
 import com.badlogic.gdx.Gdx
-import com.badlogic.gdx.Preferences
-import com.badlogic.gdx.assets.AssetManager
 import com.badlogic.gdx.assets.loaders.I18NBundleLoader
 import com.badlogic.gdx.graphics.g2d.TextureAtlas
+import com.badlogic.gdx.math.Interpolation
 import com.badlogic.gdx.scenes.scene2d.Actor
+import com.badlogic.gdx.scenes.scene2d.actions.Actions
 import com.badlogic.gdx.scenes.scene2d.ui.CheckBox
 import com.badlogic.gdx.utils.Align
 import com.badlogic.gdx.utils.I18NBundle
 import io.github.solfeguido.actors.IconCheckBox
-import io.github.solfeguido.actors.TextureCheckBox
 import io.github.solfeguido.core.StateMachine
 import io.github.solfeguido.core.StateParameter
 import io.github.solfeguido.core.PreferencesManager
@@ -21,13 +20,13 @@ import io.github.solfeguido.factories.iconButton
 import io.github.solfeguido.factories.iconCheckBox
 import io.github.solfeguido.skins.getDefaultSkin
 import io.github.solfeguido.structures.Constants
+import ktx.actors.onChange
 import ktx.actors.onClick
+import ktx.actors.plusAssign
 import ktx.assets.async.AssetStorage
 import ktx.assets.async.toIdentifier
 import ktx.inject.Context
-import ktx.preferences.get
 import ktx.scene2d.*
-import org.w3c.dom.Text
 import java.util.*
 
 class OptionScreen(context: Context) : UIScreen(context) {
@@ -97,6 +96,8 @@ class OptionScreen(context: Context) : UIScreen(context) {
                             IconName.MobileVibrate,
                             Vibrations.Enabled
                         )
+
+                        it.left()
                     }
                     row()
                 }
@@ -108,7 +109,7 @@ class OptionScreen(context: Context) : UIScreen(context) {
                     iconPreference(IconName.RomanNotes, NoteStyle.RomanNotes)
                     iconPreference(IconName.LatinNotes, NoteStyle.LatinNotes)
                     iconPreference(IconName.EnglishNotes, NoteStyle.EnglishNotes)
-                    it.right()
+                    it.left()
                 }
 
                 row()
@@ -120,7 +121,7 @@ class OptionScreen(context: Context) : UIScreen(context) {
                     iconPreference(IconName.NotesButton, ButtonStyle.NotesButton)
                     iconPreference(IconName.PianoKeys, ButtonStyle.PianoKeys)
                     iconPreference(IconName.PianoWithNotes, ButtonStyle.PianoWithNotes)
-                    it.right()
+                    it.left()
                 }
 
                 row()
@@ -140,6 +141,8 @@ class OptionScreen(context: Context) : UIScreen(context) {
                             Scene2DSkin.defaultSkin = getDefaultSkin(context.inject(), Theme.Dark)
                         }
                     }
+
+                    it.left()
                 }
 
                 row()
@@ -150,7 +153,7 @@ class OptionScreen(context: Context) : UIScreen(context) {
                     // Todo : maybe change with a proper slider
                     iconCheckBox(IconName.VolumeOn)
                     iconCheckBox(IconName.VolumeOff)
-                    it.right()
+                    it.left()
                 }
 
                 row()
@@ -160,10 +163,17 @@ class OptionScreen(context: Context) : UIScreen(context) {
                 }
 
                 buttonGroup(1, 1) {
-                    val flagsTextureAtlas = assetManager.get<TextureAtlas>(Constants.FLAGS_ATLAS)
-
                     Language.values().forEach { lang ->
-                        preferenceCheckBox(TextureCheckBox(flagsTextureAtlas.findRegion(lang.code)), lang) {
+                        val checkBox = CheckBox("", Scene2DSkin.defaultSkin, lang.code)
+                        checkBox.setOrigin(Align.center)
+                        checkBox.onChange {
+                            val scale = if (isChecked) 0.7f else 1f
+                            isTransform = true
+                            this += Actions.scaleTo(scale, scale, 0.2f, Interpolation.exp10Out)
+                        }
+                        checkBox.pad(10f)
+
+                        preferenceCheckBox(checkBox, lang) {
                             stateMachine.switch<OptionScreen>(settings) {
                                 val bundleDescriptor = assetManager.getAssetDescriptor<I18NBundle>(
                                     "i18n/nls",
