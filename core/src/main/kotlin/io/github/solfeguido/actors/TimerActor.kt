@@ -19,7 +19,8 @@ class TimerActor(context: Context, settings: TimeSettings) : WidgetGroup() {
     private var timeBonus: Float
     private var timePenalty: Float
     private val direction: Float
-    private var running = false
+    private var isRunning = false
+    private var isPaused = false
 
     private val defaultParticles: ParticleEffect
     private val wrongParticles: ParticleEffect
@@ -53,6 +54,14 @@ class TimerActor(context: Context, settings: TimeSettings) : WidgetGroup() {
 
     }
 
+    fun pause() {
+        isPaused = true
+    }
+
+    fun resume() {
+        isPaused = false
+    }
+
     fun correct() {
         current -= timeBonus * direction
     }
@@ -65,20 +74,22 @@ class TimerActor(context: Context, settings: TimeSettings) : WidgetGroup() {
 
     override fun act(delta: Float) {
         super.act(delta)
-        defaultParticles.update(delta)
-        wrongParticles.update(delta)
-
-        if (!running) {
+        if (!isRunning) {
             // Timer already finished
             if (current !in 0f..max) return
-            running = true
+            isRunning = true
             defaultParticles.start()
         }
 
-        current += delta * direction
-        if (current !in 0f..max) {
-            firePooled<TimerFinishedEvent>()
-            running = false
+        if (!isPaused) {
+            defaultParticles.update(delta)
+            wrongParticles.update(delta)
+
+            current += delta * direction
+            if (current !in 0f..max) {
+                firePooled<TimerFinishedEvent>()
+                isRunning = false
+            }
         }
     }
 

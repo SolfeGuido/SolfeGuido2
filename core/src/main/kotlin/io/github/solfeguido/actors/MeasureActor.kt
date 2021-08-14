@@ -26,6 +26,7 @@ class MeasureActor(settings: MeasureSettings, private val noteStyle: NoteStyle) 
     val keySignature = settings.signature
     private val generator = settings.generator
     private var highlightedNote: NoteActor? = null
+    private var speedMultiplicator = 1f
 
     var terminated = false
     private var currentNoteIndex = 0
@@ -39,9 +40,6 @@ class MeasureActor(settings: MeasureSettings, private val noteStyle: NoteStyle) 
 
     val leftLimit
         get() = signatureActor.x + signatureActor.width
-
-    val lastNote
-        get() = this.notes.lastOrNull()
 
     private val clefActor: ClefActor = ClefActor(clef).also { addActor(it) }
     private val notes = gdxArrayOf<NoteActor>()
@@ -64,6 +62,14 @@ class MeasureActor(settings: MeasureSettings, private val noteStyle: NoteStyle) 
         return isCorrect
     }
 
+    fun pause() {
+        speedMultiplicator = 0f
+    }
+
+    fun resume() {
+        speedMultiplicator = 1f
+    }
+
     override fun act(delta: Float) {
         super.act(delta)
         val current = currentNote()
@@ -71,7 +77,7 @@ class MeasureActor(settings: MeasureSettings, private val noteStyle: NoteStyle) 
         val end = (signatureActor.x + signatureActor.width) + current.width
         val start = Constants.WIDTH + 100f
         val nwPos = Interpolation.exp10Out.apply(start, end, (start - current.x) / (start - end))
-        val moveBy = (current.x - nwPos) * delta
+        val moveBy = (current.x - nwPos) * delta * speedMultiplicator
 
         val clearNotes = mutableSetOf<NoteActor>()
         notes.forEach {

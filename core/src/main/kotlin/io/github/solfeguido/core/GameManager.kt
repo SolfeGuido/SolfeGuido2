@@ -29,6 +29,9 @@ class GameManager(private val context: Context, val settings: GameSettings, priv
     val currentMeasure
         get() = measures[currentMeasureIndex]
 
+    val isPaused
+        get() = pauseStart != 0L
+
     fun populateScene(parent: KStack, resultCallback: (ResultEvent) -> Unit) {
         val noteStyle = context.inject<PreferencesManager>().noteStyle
         measures.addAll(settings.options.generateMeasures(noteStyle))
@@ -58,9 +61,11 @@ class GameManager(private val context: Context, val settings: GameSettings, priv
 
     fun pause() {
         pauseStart = System.currentTimeMillis()
+        measures.forEach { it.pause() }
     }
 
     fun resume() {
+        measures.forEach { it.resume() }
         pauseStart = 0
         pauseTime += (System.currentTimeMillis() - pauseStart)
     }
@@ -83,7 +88,6 @@ class GameManager(private val context: Context, val settings: GameSettings, priv
         val options = settings.options
         if (options is LevelOptions) {
             val unlockedLevel = levelManager.registerLevelScore(options.level, stats)
-            print(unlockedLevel)
             levelManager.save()
         }
     }
