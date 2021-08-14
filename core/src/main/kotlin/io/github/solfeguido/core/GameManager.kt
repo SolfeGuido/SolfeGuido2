@@ -18,7 +18,7 @@ class GameManager(private val context: Context, val settings: GameSettings, priv
     private val levelManager = context.inject<LevelManager>()
     private val stats = GameStats()
     private val measures = GdxArray<MeasureActor>()
-    private var currentMeasure = -1
+    private var currentMeasureIndex = -1
     var startTime = 0L
     var pauseTime = 0L
     var pauseStart = 0L
@@ -26,10 +26,13 @@ class GameManager(private val context: Context, val settings: GameSettings, priv
     val hasAccidentals
         get() = settings.options.hasAccidentals()
 
+    val currentMeasure
+        get() = measures[currentMeasureIndex]
+
     fun populateScene(parent: KStack, resultCallback: (ResultEvent) -> Unit) {
         val noteStyle = context.inject<PreferencesManager>().noteStyle
         measures.addAll(settings.options.generateMeasures(noteStyle))
-        currentMeasure = 0
+        currentMeasureIndex = 0
         measures.forEach {
             parent.storeActor(it)
             it.onResult { result ->
@@ -38,11 +41,15 @@ class GameManager(private val context: Context, val settings: GameSettings, priv
                 true
             }
         }
+        measures[currentMeasureIndex].highlightCurrentNote()
     }
 
     fun validateAnswer(answer: AnswerGivenEvent) {
-        measures[currentMeasure].checkNote(answer.note)
-        currentMeasure = (currentMeasure + 1) % measures.size
+        val measure = currentMeasure
+        measure.lowlightCurrentNote()
+        measure.checkNote(answer.note)
+        currentMeasureIndex = (currentMeasureIndex + 1) % measures.size
+        currentMeasure.highlightCurrentNote()
     }
 
     fun start() {
@@ -70,6 +77,8 @@ class GameManager(private val context: Context, val settings: GameSettings, priv
     fun end() {
         stats.timePlayed = max(((System.currentTimeMillis() - startTime - pauseTime) / 1000f).toInt(), 0)
         statsManager.save()
+
+        measures.forEach { it.terminate() }
 
         val options = settings.options
         if (options is LevelOptions) {

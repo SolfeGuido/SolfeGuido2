@@ -17,12 +17,16 @@ import kotlin.math.max
 
 class MeasureActor(settings: MeasureSettings, private val noteStyle: NoteStyle) : WidgetGroup() {
 
+    companion object {
+        val LINE by lazy { colorDrawable(gCol("font")) }
+        val NOTE_HIGHLIGHTER by lazy { colorDrawable(gCol("stripe")) }
+    }
 
     val clef = settings.clef
     val keySignature = settings.signature
     private val generator = settings.generator
+    private var highlightedNote: NoteActor? = null
 
-    private val line: Drawable = colorDrawable(gCol("font"))
     var terminated = false
     private var currentNoteIndex = 0
     var lineSpace = 0f
@@ -121,21 +125,13 @@ class MeasureActor(settings: MeasureSettings, private val noteStyle: NoteStyle) 
             addActor(it)
         }
 
-//    // Used only for testing, move the current note to the next semi-tone
-//    fun nextNote() {
-//        val idx = (currentNote.note!!.midiIndex + 1)
-//        currentNote.reset()
-//        currentNote.create(this, MidiNotePool.fromIndex(idx))
-//        currentNote.layout()
-//    }
-//
-//    // Used only for testing, move the current note to the previous semi-tone
-//    fun prevNote() {
-//        val idx = (currentNote.note!!.midiIndex - 1)
-//        currentNote.reset()
-//        currentNote.create(this, MidiNotePool.fromIndex(idx))
-//        currentNote.layout()
-//    }
+    fun highlightCurrentNote() {
+        highlightedNote = currentNote()
+    }
+
+    fun lowlightCurrentNote() {
+        highlightedNote = null
+    }
 
     override fun layout() {
         super.layout()
@@ -154,7 +150,7 @@ class MeasureActor(settings: MeasureSettings, private val noteStyle: NoteStyle) 
 
     override fun draw(batch: Batch?, parentAlpha: Float) {
         if (isTransform) applyTransform(batch, computeTransform())
-        for (i in 0..4) line.draw(
+        for (i in 0..4) LINE.draw(
             batch,
             0f,
             0f + bottomLine + (i * lineSpace),
@@ -164,10 +160,14 @@ class MeasureActor(settings: MeasureSettings, private val noteStyle: NoteStyle) 
         if (isTransform) resetTransform(batch)
 
         super.draw(batch, parentAlpha)
+        highlightedNote?.let {
+            NOTE_HIGHLIGHTER.draw(batch, it.x - it.width / 4, this.y, it.width * 1.5f, this.height)
+        }
     }
 
     fun terminate() {
         terminated = true
+        highlightedNote = null
         notes.forEach {
             it.simpleFadeOut()
         }
