@@ -167,7 +167,7 @@ class MeasureActor(settings: MeasureSettings, private val noteStyle: NoteStyle) 
 
         super.draw(batch, parentAlpha)
         highlightedNote?.let {
-            NOTE_HIGHLIGHTER.draw(batch, it.x - it.width / 4, this.y, it.width * 1.5f, this.height)
+            NOTE_HIGHLIGHTER.draw(batch, it.leftMostX, this.y, it.rightMostX, this.height)
         }
     }
 

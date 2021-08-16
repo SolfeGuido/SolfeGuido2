@@ -38,6 +38,12 @@ class NoteActor : WidgetGroup(), Pool.Poolable {
     override fun getHeight() = noteIcon.height * scaleY
     override fun getWidth() = (noteIcon.width + accidentalIcon.width) * scaleX
 
+    val leftMostX
+        get() =  x - width / 4
+
+    val rightMostX
+        get() = width * 1.5f
+
     private val accidentalIcon = Icon(IconName.Empty).also {
         addActor(it)
     }
@@ -170,7 +176,7 @@ class NoteActor : WidgetGroup(), Pool.Poolable {
     }
 
     private fun drawLine(batch: Batch, y: Float) {
-        lineTexture.draw(batch, x - width / 4, y, width * 1.5f, Constants.LINE_THICKNESS)
+        lineTexture.draw(batch, leftMostX, y, rightMostX, Constants.LINE_THICKNESS)
     }
 
     override fun draw(batch: Batch, parentAlpha: Float) {
