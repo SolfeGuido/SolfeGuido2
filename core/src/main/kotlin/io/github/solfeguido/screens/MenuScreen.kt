@@ -135,7 +135,6 @@ class MenuScreen(context: Context) : UIScreen(context) {
         lateinit var playMenu: Table
         lateinit var playOptions: ScrollPane
         lateinit var levelKeyOptions: ScrollPane
-        lateinit var keyOptions: Actor
         return scene2d.table {
             setFillParent(true)
             setPosition(0f, 0f)
@@ -309,6 +308,15 @@ class MenuScreen(context: Context) : UIScreen(context) {
                     }
                     pad(5f)
                     it.expandX().bottom().left()
+                }
+
+                iconButton(IconName.Info) {
+                    onClick {
+                        stateMachine.switch<CreditsScreen>()
+                    }
+                    pad(5f)
+                    it.expandX().bottom().right()
+
                 }
                 it.expandX().fillX()
             }

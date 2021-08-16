@@ -58,7 +58,6 @@ class OptionScreen(context: Context) : UIScreen(context) {
     override fun setup(settings: StateParameter): Actor {
         val stateMachine: StateMachine = context.inject()
         val assetManager: AssetStorage = context.inject()
-        val preferences : PreferencesManager = context.inject()
         return scene2d.table {
             setFillParent(true)
             setPosition(0f, 0f)
