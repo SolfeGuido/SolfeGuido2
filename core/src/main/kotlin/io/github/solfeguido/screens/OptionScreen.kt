@@ -32,6 +32,7 @@ import java.util.*
 class OptionScreen(context: Context) : UIScreen(context) {
 
     private val preferencesManager: PreferencesManager = context.inject()
+    private lateinit var menu: MenuScreen.VisibleMenu
 
     private inline fun <S> KWidget<S>.iconPreference(
         icon: IconName,
@@ -56,6 +57,7 @@ class OptionScreen(context: Context) : UIScreen(context) {
     }
 
     override fun setup(settings: StateParameter): Actor {
+        menu = settings.get()
         val stateMachine: StateMachine = context.inject()
         val assetManager: AssetStorage = context.inject()
         return scene2d.table {
@@ -67,7 +69,7 @@ class OptionScreen(context: Context) : UIScreen(context) {
 
                 iconButton(IconName.Home) {
                     onClick {
-                        context.inject<StateMachine>().switch<MenuScreen>()
+                        back()
                     }
                     pad(5f)
                     it.top().left()
@@ -192,7 +194,7 @@ class OptionScreen(context: Context) : UIScreen(context) {
                     it.pad(10f)
 
                     onClick {
-                        context.inject<StateMachine>().switch<MenuScreen>()
+                        back()
                     }
                 }
 
@@ -209,7 +211,7 @@ class OptionScreen(context: Context) : UIScreen(context) {
 
     override fun back(): Boolean {
         //TODO: could save the last state of the menu screen to return to it instead of the root
-        context.inject<StateMachine>().switch<MenuScreen>()
+        context.inject<StateMachine>().switch<MenuScreen>(StateParameter.witType(menu))
         return true
     }
 

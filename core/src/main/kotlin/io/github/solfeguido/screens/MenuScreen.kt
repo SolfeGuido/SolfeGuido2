@@ -34,10 +34,10 @@ import ktx.scene2d.*
 
 class MenuScreen(context: Context) : UIScreen(context) {
 
-    enum class VisibleMenu {
-        Root,
-        Play,
-        LevelKeySelection
+    enum class VisibleMenu(val previous: () -> VisibleMenu, val next: () -> VisibleMenu) {
+        Root({ Root }, { Play }),
+        Play({ Root }, { LevelKeySelection }),
+        LevelKeySelection({ Play }, { LevelKeySelection })
     }
 
     private lateinit var measure: MeasureActor
@@ -47,28 +47,6 @@ class MenuScreen(context: Context) : UIScreen(context) {
     private val stateMachine: StateMachine = context.inject()
     private val widgetStack = gdxArrayOf<Actor>()
 
-//    override fun keyTyped(character: Char): Boolean {
-//        return when (character) {
-//            //'+' -> measure.nextNote().let { true }
-//            //'-' -> measure.prevNote().let { true }
-//            else -> super.keyTyped(character)
-//        }
-//    }
-
-    private fun showCreditsDialog() {
-        scene2d.zoomDialog {
-            title("Credits")
-            line("Made by : Azarias").align(Align.left)
-            line("Made with : LibGdx & ktx").align(Align.left)
-            line("Sounds : University of Iowa").align(Align.left)
-            line("Icons : IconMoonApp").align(Align.left)
-            this.borderButton("Ok").actor.icon(IconName.Check, 0.5f)
-            key(Input.Keys.ENTER, true)
-            key(Input.Keys.ESCAPE, false)
-            setOrigin(Align.center)
-            contentTable.pad(10f)
-        }.show(this@MenuScreen.stage)
-    }
 
     private fun updateBackButton() {
         // backButton.clearActions()
@@ -90,6 +68,7 @@ class MenuScreen(context: Context) : UIScreen(context) {
 
     private fun pushActor(actor: Actor) {
         val top = widgetStack.last()
+        shownMenu = shownMenu.next()
         top.clearActions()
         actor.clearActions()
         val shift = -stage.width
@@ -110,6 +89,7 @@ class MenuScreen(context: Context) : UIScreen(context) {
     private fun popActor(): Boolean {
         if (widgetStack.size < 2) return false
         val top = widgetStack.pop()
+        shownMenu = shownMenu.previous()
         val current = widgetStack.last()
         top.clearActions()
         current.clearActions()
@@ -157,7 +137,7 @@ class MenuScreen(context: Context) : UIScreen(context) {
                     onClick {
                         context.inject<AssetStorage>().get<Sound>(Constants.CLICK_SOUND).play()
                         this.addAction(Actions.rotateBy(360f, 0.3f))
-                        stateMachine.switch<OptionScreen>()
+                        stateMachine.switch<OptionScreen>(StateParameter.witType(shownMenu))
                     }
                     pad(5f)
                     it.expandX().top().right()
@@ -169,18 +149,20 @@ class MenuScreen(context: Context) : UIScreen(context) {
             stack {
                 measure = measure(MeasureSettings(ClefEnum.GClef), context.inject<PreferencesManager>().noteStyle)
                 playMenu = table {
-                    borderButton("Stats") {
+                    borderButton(Nls.Statistics()) {
                         icon(IconName.PointsChart, 0.9f).pad(5f)
                         pad(5f)
                         it.pad(10f)
                     }
-                    borderButton(Nls.Menu.nls) {
+                    borderButton("Play") {
                         icon(IconName.Play, 0.9f).pad(5f)
-                        onClick { pushActor(playOptions) }
+                        onClick {
+                            pushActor(playOptions)
+                        }
                         pad(25f)
                         it.pad(10f)
                     }
-                    borderButton(Nls.Credits.nls) {
+                    borderButton(Nls.Scoreboard()) {
                         icon(IconName.List, 0.9f).pad(5f)
                         pad(5f)
                         it.pad(10f)
@@ -213,45 +195,6 @@ class MenuScreen(context: Context) : UIScreen(context) {
                                 pushActor(levelKeyOptions)
                             }
                         }
-//                        borderButton("Ear training") {
-//                            icon(IconName.Eacute, 0.9f).left()
-//                            label.setAlignment(Align.right)
-//                            pad(10f)
-//                            onClick {
-//                                //TODO go to play scene
-//                                info { "Doing ear training" }
-//                            }
-//                        }
-                        // borderButton("Custom") {
-                        //     icon(IconName.Road, 0.9f).left()
-                        //     label.setAlignment(Align.right)
-                        //     pad(10f)
-                        //     onClick {
-                        //         // TODO: load list of custom games
-                        //         info { "Playing custom gamemode" }
-                        //     }
-                        // }
-                        // borderButton("Create custom") {
-                        //     icon(IconName.Direction, 0.9f).left()
-                        //     label.setAlignment(Align.right)
-                        //     pad(10f)
-                        //     onClick {
-                        //         context.inject<StateMachine>().switch<GameCreationScreen>()
-                        //     }
-                        // }
-//                        borderButton("Key Signature") {
-//                            icon(IconName.SharpAccidental, 0.9f).left()
-//                            label.setAlignment(Align.right)
-//                            pad(10f)
-//                            onClick { pushActor(keyOptions) }
-//                        }
-                        // Later
-                        // borderButton("Competitive") {
-                        //     icon(IconName.Speedometer, 0.9f).left()
-                        //     label.setAlignment(Align.right)
-                        //     pad(10f)
-                        //     onClick { pushActor(classicOptions)  }
-                        // }
                         fill()
                         center()
                         padTop(10f)
@@ -312,7 +255,7 @@ class MenuScreen(context: Context) : UIScreen(context) {
 
                 iconButton(IconName.Info) {
                     onClick {
-                        stateMachine.switch<CreditsScreen>()
+                        stateMachine.switch<CreditsScreen>(StateParameter.witType(shownMenu))
                     }
                     pad(5f)
                     it.expandX().bottom().right()

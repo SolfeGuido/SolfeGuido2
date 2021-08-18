@@ -15,8 +15,10 @@ import ktx.scene2d.table
 
 class CreditsScreen(context: Context) : UIScreen(context) {
 
-    override fun setup(settings: StateParameter): Actor {
+    private lateinit var menuTarget: MenuScreen.VisibleMenu
 
+    override fun setup(settings: StateParameter): Actor {
+        menuTarget = settings.get()
         return scene2d.table {
             setFillParent(true)
             setPosition(0f, 0f)
@@ -46,5 +48,10 @@ class CreditsScreen(context: Context) : UIScreen(context) {
 
             }
         }
+    }
+
+    override fun back(): Boolean {
+        context.inject<StateMachine>().switch<MenuScreen>(StateParameter.witType(menuTarget))
+        return true
     }
 }
