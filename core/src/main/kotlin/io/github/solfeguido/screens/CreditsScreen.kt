@@ -44,8 +44,19 @@ class CreditsScreen(context: Context) : UIScreen(context) {
             row()
 
             table {
+                label(Nls.MadeWith())
+                label("LibGDX")
+                row()
+                label(Nls.By())
+                label("AzariasB")
+                row()
+                label(Nls.Icons())
+                label("IconMoonApp")
+                row()
+                label(Nls.Sounds())
+                label("University of Iowa")
 
-
+                it.grow()
             }
         }
     }
