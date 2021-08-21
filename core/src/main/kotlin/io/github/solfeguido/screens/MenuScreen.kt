@@ -153,6 +153,10 @@ class MenuScreen(context: Context) : UIScreen(context) {
                         icon(IconName.PointsChart, 0.9f).pad(5f)
                         pad(5f)
                         it.pad(10f)
+                        onClick {
+                            stateMachine.switch<StatsScreen>()
+
+                        }
                     }
                     borderButton("Play") {
                         icon(IconName.Play, 0.9f).pad(5f)

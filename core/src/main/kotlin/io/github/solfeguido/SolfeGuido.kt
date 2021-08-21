@@ -8,8 +8,18 @@ import io.github.solfeguido.core.*
 import io.github.solfeguido.factories.ParticlePool
 import io.github.solfeguido.factories.gCol
 import io.github.solfeguido.screens.*
+import io.github.solfeguido.settings.gamemode.IGameModeOptions
+import io.github.solfeguido.settings.gamemode.LevelOptions
+import io.github.solfeguido.settings.gamemode.NoteGuessOptions
+import io.github.solfeguido.settings.generator.IGeneratorOptions
+import io.github.solfeguido.settings.generator.MidiGenerator
+import io.github.solfeguido.settings.generator.RandomGenerator
 import io.github.solfeguido.skins.getPreloadSkin
 import io.github.solfeguido.structures.Constants
+import kotlinx.serialization.json.Json
+import kotlinx.serialization.modules.SerializersModule
+import kotlinx.serialization.modules.polymorphic
+import kotlinx.serialization.modules.subclass
 import ktx.assets.async.AssetStorage
 import ktx.async.KtxAsync
 import ktx.async.newAsyncContext
@@ -31,6 +41,21 @@ class SolfeGuido : ApplicationListener {
         val prefManager = PreferencesManager(gamePreferences)
         Scene2DSkin.defaultSkin = getPreloadSkin(prefManager.theme)
 
+        val jsonSerializer = Json {
+            serializersModule = SerializersModule {
+                polymorphic(IGameModeOptions::class) {
+                    subclass(NoteGuessOptions::class)
+                    subclass(LevelOptions::class)
+                }
+
+                polymorphic(IGeneratorOptions::class) {
+                    subclass(RandomGenerator::class)
+                    subclass(MidiGenerator::class)
+                }
+            }
+
+        }
+
         stateMachine = StateMachine(context)
             .addCurrentScreen<SplashScreen>()
             .addScreen<TransitionScreen>()
@@ -40,6 +65,7 @@ class SolfeGuido : ApplicationListener {
             .addScreen<ClassicSelectionScreen>()
             .addScreen<OptionScreen>()
             .addScreen<CreditsScreen>()
+            .addScreen<StatsScreen>()
 
 
         context.register {
@@ -50,7 +76,7 @@ class SolfeGuido : ApplicationListener {
             bindSingleton(AssetStorage(asyncContext = newAsyncContext(Constants.ASYNC_THREADS)))
             bindSingleton(SoundHelper(context))
             bindSingleton(stateMachine)
-            bindSingleton(StatsManager(gamePreferences))
+            bindSingleton(StatsManager(gamePreferences, jsonSerializer))
             bindSingleton(LevelManager(gamePreferences))
         }
 

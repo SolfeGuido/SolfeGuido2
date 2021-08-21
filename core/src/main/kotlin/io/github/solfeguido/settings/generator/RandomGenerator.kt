@@ -1,10 +1,12 @@
 package io.github.solfeguido.settings.generator
 
+import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 import kotlinx.serialization.Transient
 
 
 @Serializable
+@SerialName("randomGenerator")
 class RandomGenerator(
     private var minNote: Int = 0,
     private var maxNote: Int = 1,

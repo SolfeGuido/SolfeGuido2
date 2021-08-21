@@ -6,6 +6,7 @@ import io.github.solfeguido.core.StateMachine
 import io.github.solfeguido.core.StateParameter
 import io.github.solfeguido.enums.IconName
 import io.github.solfeguido.enums.Nls
+import io.github.solfeguido.factories.borderButton
 import io.github.solfeguido.factories.iconButton
 import ktx.actors.onClick
 import ktx.inject.Context
@@ -55,6 +56,18 @@ class CreditsScreen(context: Context) : UIScreen(context) {
                 row()
                 label(Nls.Sounds())
                 label("University of Iowa")
+
+                row()
+
+                borderButton(Nls.Menu()) {
+                    this.pad(10f)
+                    it.colspan(2)
+                    it.pad(10f)
+
+                    onClick {
+                        back()
+                    }
+                }
 
                 it.grow()
             }

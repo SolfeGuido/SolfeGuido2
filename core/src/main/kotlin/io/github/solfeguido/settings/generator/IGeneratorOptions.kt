@@ -1,7 +1,7 @@
 package io.github.solfeguido.settings.generator
 
 
-interface IGeneratorOptions {
+sealed interface IGeneratorOptions {
 
     fun next(): Int
 

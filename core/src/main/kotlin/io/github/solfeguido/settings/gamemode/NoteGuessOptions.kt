@@ -2,14 +2,15 @@ package io.github.solfeguido.settings.gamemode
 
 import io.github.solfeguido.actors.MeasureActor
 import io.github.solfeguido.enums.NoteAccidentalEnum
-import io.github.solfeguido.enums.NoteOrderEnum
 import io.github.solfeguido.enums.NoteStyle
 import io.github.solfeguido.settings.MeasureSettings
+import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 import ktx.collections.toGdxArray
 
 @Serializable
-open class NoteGuessOptions(
+@SerialName("noteGuess")
+class NoteGuessOptions(
     var measures: List<MeasureSettings> = listOf(),
     var isCustom: Boolean = true
 ) : IGameModeOptions {
