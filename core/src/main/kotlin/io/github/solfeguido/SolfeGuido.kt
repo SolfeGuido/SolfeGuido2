@@ -68,13 +68,14 @@ class SolfeGuido : ApplicationListener {
             .addScreen<StatsScreen>()
 
 
+        val assetStorage = AssetStorage(asyncContext = newAsyncContext(Constants.ASYNC_THREADS))
         context.register {
             bindSingleton(gamePreferences)
             bindSingleton(prefManager)
             bindSingleton(ParticlePool(context))
             bindSingleton(Jingles(context))
-            bindSingleton(AssetStorage(asyncContext = newAsyncContext(Constants.ASYNC_THREADS)))
-            bindSingleton(SoundHelper(context))
+            bindSingleton(assetStorage)
+            bindSingleton(SoundManager(assetStorage))
             bindSingleton(stateMachine)
             bindSingleton(StatsManager(gamePreferences, jsonSerializer))
             bindSingleton(LevelManager(gamePreferences))

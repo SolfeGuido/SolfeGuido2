@@ -24,7 +24,7 @@ class Jingles(
         var wait = 3000
         (33..90).forEach {
             schedule(wait / 1000f){
-                context.inject<SoundHelper>().playNote(it)
+                context.inject<SoundManager>().playNote(it)
             }
             wait += 500
         }
@@ -42,7 +42,7 @@ class Jingles(
                     .filter { note -> note.velocity > 0 }
                     .forEach {note ->
                         schedule(note.tick / 1000f) {
-                            context.inject<SoundHelper>().playNote(note.noteValue)
+                            context.inject<SoundManager>().playNote(note.noteValue)
                         }
                     }
         }

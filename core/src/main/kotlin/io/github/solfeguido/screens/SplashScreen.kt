@@ -45,14 +45,14 @@ class SplashScreen(context: Context) : UIScreen(context) {
         val start = System.currentTimeMillis()
 
         KtxAsync.launch {
-            val soundHelper: SoundHelper = context.inject()
+            val soundManager: SoundManager = context.inject()
             val stats: StatsManager = context.inject()
             val levels: LevelManager = context.inject()
 
             stats.loadSave()
             levels.load()
 
-            toLoad += jingles.allJingles.size + soundHelper.existingSounds.size
+            toLoad += jingles.allJingles.size + soundManager.existingSounds.size
 
             // Set midi file loader
             assetManager.setLoader(".mid") { MidiLoader(assetManager.fileResolver) }
@@ -74,8 +74,8 @@ class SplashScreen(context: Context) : UIScreen(context) {
                 jingles.allJingles.map { loadAsync<MidiFile>(it.path()) }.toTypedArray()
 
 
-                soundHelper.existingSounds.map {
-                    load<Sound>("${Constants.MUSICAL_NOTES_PATH}/${it.key}.mp3")
+                soundManager.existingSounds.map {
+                    load<Sound>( SoundManager.toAssetName(it.key.midiIndex))
                 }.toTypedArray()
 
                 load<Sound>(Constants.CLICK_SOUND)

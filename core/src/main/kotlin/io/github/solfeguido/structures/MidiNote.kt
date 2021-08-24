@@ -85,10 +85,6 @@ data class MidiNote(
         }
     }
 
-    fun nextIndex() = this.also { midiIndex++ }
-
-    fun prevIndex() = this.also { midiIndex-- }
-
     operator fun plusAssign(other: MidiNote) {
         plusAssign(other.midiIndex)
     }
