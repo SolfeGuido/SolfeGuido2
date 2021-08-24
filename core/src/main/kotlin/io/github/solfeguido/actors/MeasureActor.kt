@@ -16,16 +16,14 @@ import kotlin.math.max
 
 class MeasureActor(settings: MeasureSettings, private val noteStyle: NoteStyle) : WidgetGroup() {
 
-    companion object {
-        val LINE by lazy { colorDrawable(gCol("font")) }
-        val NOTE_HIGHLIGHTER by lazy { colorDrawable(gCol("stripe")) }
-    }
-
     val clef = settings.clef
     val keySignature = settings.signature
     private val generator = settings.generator
     private var highlightedNote: NoteActor? = null
     private var speedMultiplier = 1f
+
+    private val lineDrawable = colorDrawable(gCol("font"))
+    private val highlighterDrawable = colorDrawable(gCol("stripe"))
 
     var terminated = false
     private var currentNoteIndex = 0
@@ -155,7 +153,7 @@ class MeasureActor(settings: MeasureSettings, private val noteStyle: NoteStyle) 
 
     override fun draw(batch: Batch?, parentAlpha: Float) {
         if (isTransform) applyTransform(batch, computeTransform())
-        for (i in 0..4) LINE.draw(
+        for (i in 0..4) lineDrawable.draw(
             batch,
             0f,
             0f + bottomLine + (i * lineSpace),
@@ -166,7 +164,7 @@ class MeasureActor(settings: MeasureSettings, private val noteStyle: NoteStyle) 
 
         super.draw(batch, parentAlpha)
         highlightedNote?.let {
-            NOTE_HIGHLIGHTER.draw(batch, it.leftMostX, this.y, it.rightMostX, this.height)
+            highlighterDrawable.draw(batch, it.leftMostX, this.y, it.rightMostX, this.height)
         }
     }
 
