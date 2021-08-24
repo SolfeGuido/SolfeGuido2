@@ -115,6 +115,10 @@ class STextButton(text: String, buttonStyle: STextButtonStyle) : Button(buttonSt
             }
 
             override fun clicked(event: InputEvent?, x: Float, y: Float) {
+                event?.apply {
+                    relatedActor = self
+                }
+
                 super.clicked(event, x, y)
                 self.isDisabled = self.disableOnPressed
             }

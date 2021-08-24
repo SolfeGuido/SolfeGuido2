@@ -21,7 +21,6 @@ import io.github.solfeguido.enums.Nls
 import io.github.solfeguido.factories.borderButton
 import io.github.solfeguido.factories.iconButton
 import io.github.solfeguido.factories.measure
-import io.github.solfeguido.factories.zoomDialog
 import io.github.solfeguido.settings.MeasureSettings
 import ktx.actors.div
 import ktx.actors.onClick
@@ -49,7 +48,6 @@ class MenuScreen(context: Context) : UIScreen(context) {
 
 
     private fun updateBackButton() {
-        // backButton.clearActions()
         backButton += if (widgetStack.size > 1) {
             if (backButton.isVisible) return
             (Actions.moveTo(
@@ -135,7 +133,6 @@ class MenuScreen(context: Context) : UIScreen(context) {
                 iconButton(IconName.Cog) {
                     label.setAlignment(Align.topRight)
                     onClick {
-                        context.inject<AssetStorage>().get<Sound>(Constants.CLICK_SOUND).play()
                         this.addAction(Actions.rotateBy(360f, 0.3f))
                         stateMachine.switch<OptionScreen>(StateParameter.witType(shownMenu))
                     }

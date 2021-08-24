@@ -4,16 +4,23 @@ import com.badlogic.gdx.Gdx
 import com.badlogic.gdx.Input
 import com.badlogic.gdx.InputMultiplexer
 import com.badlogic.gdx.InputProcessor
+import com.badlogic.gdx.audio.Sound
 import com.badlogic.gdx.input.GestureDetector
 import com.badlogic.gdx.math.Vector2
 import com.badlogic.gdx.scenes.scene2d.Actor
+import com.badlogic.gdx.scenes.scene2d.ui.Button
 import com.badlogic.gdx.scenes.scene2d.ui.Skin
 import com.badlogic.gdx.utils.viewport.FillViewport
 import io.github.solfeguido.core.StateParameter
+import io.github.solfeguido.structures.Constants
+import io.github.solfeguido.ui.STextButton
 import io.github.solfeguido.ui.SlidingTable
+import ktx.actors.onClick
+import ktx.actors.onClickEvent
 import ktx.actors.plusAssign
 import ktx.actors.stage
 import ktx.app.KtxScreen
+import ktx.assets.async.AssetStorage
 import ktx.inject.Context
 import ktx.scene2d.KWidget
 import ktx.scene2d.Scene2DSkin
@@ -23,11 +30,23 @@ abstract class UIScreen(protected val context: Context) : KtxScreen, InputProces
 
     lateinit var rootActor: Actor
     private val slidingTables = mutableListOf<SlidingTable>()
+    private val assetManager = context.inject<AssetStorage>()
     val stage = stage(viewport = FillViewport(Gdx.graphics.width.toFloat(), Gdx.graphics.height.toFloat()))
 
 
     fun create(settings: StateParameter) {
         rootActor = setup(settings)
+        rootActor.onClickEvent { evt ->
+            val actor = evt.target
+            if (actor is Button && !actor.isDisabled) {
+                assetManager.get<Sound>(Constants.CLICK_SOUND).play()
+            } else {
+                val parent = actor.parent
+                if (parent is Button && !parent.isDisabled) {
+                    assetManager.get<Sound>(Constants.CLICK_SOUND).play()
+                }
+            }
+        }
         stage += rootActor
         Gdx.input.inputProcessor = InputMultiplexer(GestureDetector(this), this)
     }
