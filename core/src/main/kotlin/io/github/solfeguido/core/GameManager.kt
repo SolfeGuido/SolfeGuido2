@@ -16,6 +16,8 @@ class GameManager(private val context: Context, val settings: GameSettings, priv
 
     private val statsManager = context.inject<StatsManager>()
     private val levelManager = context.inject<LevelManager>()
+    private val soundManager = context.inject<SoundManager>()
+    private val preferencesManager = context.inject<PreferencesManager>()
     private val stats = GameStats()
     private val measures = GdxArray<MeasureActor>()
     private var currentMeasureIndex = -1
@@ -26,7 +28,7 @@ class GameManager(private val context: Context, val settings: GameSettings, priv
     val hasAccidentals
         get() = settings.options.hasAccidentals()
 
-    val currentMeasure
+    private val currentMeasure
         get() = measures[currentMeasureIndex]
 
     val isPaused
@@ -72,6 +74,7 @@ class GameManager(private val context: Context, val settings: GameSettings, priv
 
     private fun handleResult(result: ResultEvent) {
         statsManager.registerResult(result)
+        soundManager.playNote(result.expected, preferencesManager.soundEnabled.volume)
         if (result.isCorrect) {
             stats.correctGuesses++
         } else {

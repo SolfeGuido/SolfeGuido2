@@ -10,6 +10,6 @@ data class UserSettings(
     var vibrations: Vibrations = Vibrations.Enabled,
     var noteStyle: NoteStyle = NoteStyle.EnglishNotes,
     var buttonStyle: ButtonStyle = ButtonStyle.NotesButton,
-    var language: Language = Language.fromLocale(Locale.getDefault(Locale.Category.DISPLAY))
-    // Sound enabled or level
+    var language: Language = Language.fromLocale(Locale.getDefault(Locale.Category.DISPLAY)),
+    var soundEnabled : SoundEnabled = SoundEnabled.Enabled
 )

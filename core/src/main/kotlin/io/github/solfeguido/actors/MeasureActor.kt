@@ -3,7 +3,6 @@ package io.github.solfeguido.actors
 import com.badlogic.gdx.graphics.g2d.Batch
 import com.badlogic.gdx.math.Interpolation
 import com.badlogic.gdx.scenes.scene2d.ui.WidgetGroup
-import com.badlogic.gdx.scenes.scene2d.utils.Drawable
 import io.github.solfeguido.structures.Constants
 import io.github.solfeguido.structures.KeySignatureConfig
 import io.github.solfeguido.enums.NoteNameEnum
@@ -26,7 +25,7 @@ class MeasureActor(settings: MeasureSettings, private val noteStyle: NoteStyle) 
     val keySignature = settings.signature
     private val generator = settings.generator
     private var highlightedNote: NoteActor? = null
-    private var speedMultiplicator = 1f
+    private var speedMultiplier = 1f
 
     var terminated = false
     private var currentNoteIndex = 0
@@ -49,7 +48,7 @@ class MeasureActor(settings: MeasureSettings, private val noteStyle: NoteStyle) 
     fun nameNote(note: NoteNameEnum) = NoteNameEnum[note.name, noteStyle]
 
     fun checkNote(note: NoteOrderEnum): Boolean {
-        val expected = currentNote().note?.noteOrder ?: return false
+        val expected = currentNote().note ?: return false
         val isCorrect = withPooled<ResultEvent, Boolean> { result ->
             result.expected = expected
             result.actual = note
@@ -63,11 +62,11 @@ class MeasureActor(settings: MeasureSettings, private val noteStyle: NoteStyle) 
     }
 
     fun pause() {
-        speedMultiplicator = 0f
+        speedMultiplier = 0f
     }
 
     fun resume() {
-        speedMultiplicator = 1f
+        speedMultiplier = 1f
     }
 
     override fun act(delta: Float) {
@@ -77,7 +76,7 @@ class MeasureActor(settings: MeasureSettings, private val noteStyle: NoteStyle) 
         val end = (signatureActor.x + signatureActor.width) + current.width
         val start = Constants.WIDTH + 100f
         val nwPos = Interpolation.exp10Out.apply(start, end, (start - current.x) / (start - end))
-        val moveBy = (current.x - nwPos) * delta * speedMultiplicator
+        val moveBy = (current.x - nwPos) * delta * speedMultiplier
 
         val clearNotes = mutableSetOf<NoteActor>()
         notes.forEach {

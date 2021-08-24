@@ -34,6 +34,7 @@ data class MidiNote(
             NaturalOrFlatNote(NoteNameEnum.B, NoteNameEnum.C)
         )
 
+        val DEFAULT_NOTE = MidiNote()
 
         private val MIDI_OCTAVE = NOTE_NAMES.size
 

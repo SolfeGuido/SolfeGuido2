@@ -2,7 +2,6 @@ package io.github.solfeguido.core
 
 import com.badlogic.gdx.Preferences
 import io.github.solfeguido.structures.Constants
-import io.github.solfeguido.enums.NoteOrderEnum
 import io.github.solfeguido.events.ResultEvent
 import io.github.solfeguido.settings.GameSettings
 import io.github.solfeguido.structures.GameSave
@@ -16,14 +15,14 @@ import ktx.log.error
 
 class StatsManager(private val preference: Preferences, private val serializer: Json) {
 
-    private var wrongNotes = hashMapOf<NoteOrderEnum, Int>()
+    private var wrongNotes = hashMapOf<Int, Int>()
     private var saves = mutableListOf<GameSave>()
 
     fun allSaves() = saves.toList()
 
     fun registerResult(event: ResultEvent) {
         if (!event.isCorrect) {
-            wrongNotes[event.expected] = (wrongNotes[event.expected] ?: 0) + 1
+            wrongNotes[event.expected.midiIndex] = (wrongNotes[event.expected.midiIndex] ?: 0) + 1
         }
     }
 
@@ -53,7 +52,7 @@ class StatsManager(private val preference: Preferences, private val serializer: 
                 wrongNotes = serializer.decodeFromString(wrongNotesData)
             }
 
-        } catch (ex : Exception) {
+        } catch (ex: Exception) {
             error(ex) { "Failed to load note stats" }
         }
 

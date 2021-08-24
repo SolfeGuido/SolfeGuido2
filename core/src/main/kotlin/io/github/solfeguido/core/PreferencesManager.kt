@@ -42,12 +42,19 @@ class PreferencesManager(private val preferences: Preferences) {
             settings.language = value
         }
 
+    var soundEnabled: SoundEnabled
+        get() = settings.soundEnabled
+        private set(value) {
+            settings.soundEnabled = value
+        }
+
     fun get(default: SettingsEnum) = when (default) {
         is Theme -> theme
         is Vibrations -> vibrations
         is NoteStyle -> noteStyle
         is ButtonStyle -> buttonStyle
         is Language -> language
+        is SoundEnabled -> soundEnabled
     }
 
     fun set(value: SettingsEnum) {
@@ -57,6 +64,7 @@ class PreferencesManager(private val preferences: Preferences) {
             is NoteStyle -> noteStyle = value
             is ButtonStyle -> buttonStyle = value
             is Language -> language = value
+            is SoundEnabled -> soundEnabled = value
         }
     }
 

@@ -44,3 +44,8 @@ enum class Language(val code: String) : SettingsEnum {
         }
     }
 }
+
+enum class SoundEnabled(val volume: Float): SettingsEnum {
+    Enabled(1f),
+    Disabled(0f)
+}
