@@ -3,7 +3,7 @@ plugins {
 }
 
 application {
-    mainClass.set("io.github.solfeguido.lwjgl3.DesktopLauncherKt")
+    mainClass.set("io.github.solfeguido2.lwjgl3.DesktopLauncherKt")
 
     version = Versions.APP_VERION
     applicationName = Versions.APP_NAME
