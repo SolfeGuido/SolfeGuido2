@@ -11,8 +11,11 @@ import com.badlogic.gdx.scenes.scene2d.Actor
 import com.badlogic.gdx.scenes.scene2d.ui.Button
 import com.badlogic.gdx.scenes.scene2d.ui.Skin
 import com.badlogic.gdx.utils.viewport.FillViewport
+import io.github.solfeguido2.actors.ButtonAnswerActor
+import io.github.solfeguido2.actors.PianoAnswerActor
 import io.github.solfeguido2.core.StateParameter
 import io.github.solfeguido2.structures.Constants
+import io.github.solfeguido2.ui.PianoKey
 import io.github.solfeguido2.ui.STextButton
 import io.github.solfeguido2.ui.SlidingTable
 import ktx.actors.onClick
@@ -33,18 +36,15 @@ abstract class UIScreen(protected val context: Context) : KtxScreen, InputProces
     private val assetManager = context.inject<AssetStorage>()
     val stage = stage(viewport = FillViewport(Gdx.graphics.width.toFloat(), Gdx.graphics.height.toFloat()))
 
+    private fun hasClickSound(actor: Actor?) =
+        actor is Button && !actor.isDisabled && actor !is ButtonAnswerActor && actor !is PianoKey
 
     fun create(settings: StateParameter) {
         rootActor = setup(settings)
         rootActor.onClickEvent { evt ->
             val actor = evt.target
-            if (actor is Button && !actor.isDisabled) {
+            if (hasClickSound(actor) || hasClickSound(actor?.parent) || hasClickSound(actor?.parent?.parent)) {
                 assetManager.get<Sound>(Constants.CLICK_SOUND).play()
-            } else {
-                val parent = actor.parent
-                if (parent is Button && !parent.isDisabled) {
-                    assetManager.get<Sound>(Constants.CLICK_SOUND).play()
-                }
             }
         }
         stage += rootActor
