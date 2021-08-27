@@ -152,8 +152,8 @@ class OptionScreen(context: Context) : UIScreen(context) {
                 }
                 buttonGroup(1, 1) {
                     // Todo : maybe change with a proper slider
-                    iconCheckBox(IconName.VolumeOn)
-                    iconCheckBox(IconName.VolumeOff)
+                    iconPreference(IconName.VolumeOn, SoundEnabled.Enabled)
+                    iconPreference(IconName.VolumeOff, SoundEnabled.Disabled)
                     it.left()
                 }
 

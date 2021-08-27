@@ -13,6 +13,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.Skin
 import com.badlogic.gdx.utils.viewport.FillViewport
 import io.github.solfeguido2.actors.ButtonAnswerActor
 import io.github.solfeguido2.actors.PianoAnswerActor
+import io.github.solfeguido2.core.PreferencesManager
 import io.github.solfeguido2.core.StateParameter
 import io.github.solfeguido2.structures.Constants
 import io.github.solfeguido2.ui.PianoKey
@@ -34,10 +35,13 @@ abstract class UIScreen(protected val context: Context) : KtxScreen, InputProces
     lateinit var rootActor: Actor
     private val slidingTables = mutableListOf<SlidingTable>()
     private val assetManager = context.inject<AssetStorage>()
+
+    private val preferences: PreferencesManager = context.inject()
+
     val stage = stage(viewport = FillViewport(Gdx.graphics.width.toFloat(), Gdx.graphics.height.toFloat()))
 
     private fun hasClickSound(actor: Actor?) =
-        actor is Button && !actor.isDisabled && actor !is ButtonAnswerActor && actor !is PianoKey
+        preferences.soundEnabled.volume > 0f && actor is Button && !actor.isDisabled && actor !is ButtonAnswerActor && actor !is PianoKey
 
     fun create(settings: StateParameter) {
         rootActor = setup(settings)

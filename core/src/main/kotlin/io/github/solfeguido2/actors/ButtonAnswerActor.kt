@@ -28,7 +28,6 @@ class ButtonAnswerActor(
     private var currentAccidental: NoteAccidentalEnum = NoteAccidentalEnum.Natural
 
     init {
-        debug = false
         NoteNameEnum.values().dropLast(1).forEach {
             noteButton(it)
         }

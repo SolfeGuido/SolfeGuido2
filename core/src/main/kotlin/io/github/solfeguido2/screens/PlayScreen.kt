@@ -41,7 +41,6 @@ class PlayScreen(context: Context) : UIScreen(context) {
         lateinit var scoreActor: ScoreActor
         gameManager.start()
         return scene2d.table {
-            debug = true
             setFillParent(true)
             setPosition(0f, 0f)
             align(Align.center)
