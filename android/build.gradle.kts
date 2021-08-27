@@ -17,10 +17,10 @@ android {
         exclude 'META-INF/robovm/ios/robovm.xml'
     }
     defaultConfig {
-        applicationId "come.solfeguido"
+        applicationId "io.github.solfeguido2"
         minSdkVersion 14
         targetSdkVersion 29
-        versionCode 6
+        versionCode 1
         versionName "2.0"
     }
     buildTypes {
@@ -86,5 +86,5 @@ task run(type: Exec) {
     }
 
     def adb = path + "/platform-tools/adb"
-    commandLine "$adb", 'shell', 'am', 'start', '-n', 'io.github.solfeguido/io.github.solfeguido.AndroidLauncher'
+    commandLine "$adb", 'shell', 'am', 'start', '-n', 'io.github.solfeguido2/io.github.solfeguido2.AndroidLauncher'
 }

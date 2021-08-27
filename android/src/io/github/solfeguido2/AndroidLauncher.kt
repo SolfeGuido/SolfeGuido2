@@ -1,4 +1,4 @@
-package io.github.solfeguido
+package io.github.solfeguido2
 
 import android.os.Bundle
 import com.badlogic.gdx.backends.android.AndroidApplication
