@@ -81,6 +81,7 @@ inline fun <S> KWidget<S>.answerButton(
     init: (@Scene2dDsl AnswerButton).(S) -> Unit
 ) = actor(AnswerButton(text), init)
 
+@OptIn(kotlin.contracts.ExperimentalContracts::class)
 inline fun <S> KWidget<S>.borderContainer(
     init: BorderContainer<Actor>.(S) -> Unit = {}
 ): BorderContainer<Actor> {
@@ -89,6 +90,7 @@ inline fun <S> KWidget<S>.borderContainer(
 }
 
 
+@OptIn(kotlin.contracts.ExperimentalContracts::class)
 @Scene2dDsl
 inline fun RootWidget.zoomDialog(
     style: String = defaultStyle,
@@ -99,6 +101,7 @@ inline fun RootWidget.zoomDialog(
     return storeActor(ZoomDialog(style, skin)).apply(init)
 }
 
+@OptIn(kotlin.contracts.ExperimentalContracts::class)
 inline fun <S> KWidget<S>.iconCheckBox(
     icon: IconName,
     init: IconCheckBox.(S) -> Unit = {}
@@ -107,6 +110,7 @@ inline fun <S> KWidget<S>.iconCheckBox(
     return actor(IconCheckBox(icon), init)
 }
 
+@OptIn(kotlin.contracts.ExperimentalContracts::class)
 inline fun <S> KWidget<S>.textCheckBox(
     text: String,
     init: TextCheckBox.(S) -> Unit = {}
@@ -115,6 +119,7 @@ inline fun <S> KWidget<S>.textCheckBox(
     return actor(TextCheckBox(text), init)
 }
 
+@OptIn(kotlin.contracts.ExperimentalContracts::class)
 inline fun <S> KWidget<S>.score(
     initialValue: Int,
     init: ScoreActor.(S) -> Unit = {}

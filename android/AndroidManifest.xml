@@ -11,7 +11,7 @@
         android:label="@string/app_name"
         android:theme="@style/GdxTheme" >
         <activity
-            android:name="io.github.solfeguido2.AndroidLauncher"
+            android:name="io.github.solfeguido2.android.AndroidLauncherKt"
             android:label="@string/app_name"
             android:screenOrientation="sensorLandscape"
             android:configChanges="keyboard|keyboardHidden|navigation|orientation|screenSize|screenLayout"

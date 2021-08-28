@@ -8,6 +8,7 @@ import ktx.style.defaultStyle
 import kotlin.contracts.InvocationKind
 import kotlin.contracts.contract
 
+@OptIn(kotlin.contracts.ExperimentalContracts::class)
 @SkinDsl
 inline fun Skin.borderButton(
         name: String = defaultStyle,

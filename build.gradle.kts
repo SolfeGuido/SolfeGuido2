@@ -1,24 +1,17 @@
+val kotlinVersion: String by project
 
-plugins {
-    kotlin("jvm") version Versions.KOTLIN
+buildscript {
+    val androidPluginVersion: String by project
+    val kotlinVersion: String by project
+    repositories {
+        google()
+    }
+    dependencies {
+        classpath("com.android.tools.build:gradle:$androidPluginVersion")
+        classpath(kotlin("gradle-plugin", kotlinVersion))
+    }
 }
 
-
-subprojects {
-    apply {
-        plugin("org.jetbrains.kotlin.jvm")
-    }
-
-    val implementation by configurations
-
-    dependencies {
-        implementation(kotlin("stdlib"))
-    }
-
-    tasks.withType<org.jetbrains.kotlin.gradle.tasks.KotlinCompile>().configureEach {
-        kotlinOptions {
-            jvmTarget = "16"
-            freeCompilerArgs = freeCompilerArgs + "-Xopt-in=kotlin.contracts.ExperimentalContracts"
-        }
-    }
+plugins {
+    base
 }

@@ -1,12 +1,25 @@
 plugins {
     application
+    kotlin("jvm")
+}
+
+
+val gdxVersion: String by project
+val mainClassName = "io.github.solfeguido2.lwjgl3.DesktopLauncherKt"
+val assetsDir = rootProject.file("assets")
+val appVersion : String by project
+val applicationName : String by project
+
+java {
+    sourceCompatibility = JavaVersion.VERSION_16
+    targetCompatibility = JavaVersion.VERSION_16
 }
 
 application {
     mainClass.set("io.github.solfeguido2.lwjgl3.DesktopLauncherKt")
 
-    version = Versions.APP_VERION
-    applicationName = Versions.APP_NAME
+    version = appVersion
+    applicationName = applicationName
 }
 
 sourceSets {
@@ -15,25 +28,23 @@ sourceSets {
     }
 }
 
+
 dependencies {
-    val gdx = Versions.GDX
     implementation(project(":core"))
-    implementation("com.badlogicgames.gdx:gdx-backend-lwjgl3:$gdx")
-    implementation("com.badlogicgames.gdx:gdx-platform:$gdx:natives-desktop")
-    implementation("com.badlogicgames.gdx:gdx-platform:$gdx:natives-desktop")
-    implementation("com.badlogicgames.gdx:gdx-freetype-platform:$gdx:natives-desktop")
+    implementation("com.badlogicgames.gdx:gdx-backend-lwjgl3:$gdxVersion")
+    implementation("com.badlogicgames.gdx:gdx-platform:$gdxVersion:natives-desktop")
+    implementation("com.badlogicgames.gdx:gdx-platform:$gdxVersion:natives-desktop")
+    implementation("com.badlogicgames.gdx:gdx-freetype-platform:$gdxVersion:natives-desktop")
 }
 
-tasks {
-    jar {
-        duplicatesStrategy = DuplicatesStrategy.INCLUDE
-        dependsOn(configurations.runtimeClasspath)
-        from(configurations.runtimeClasspath.get().map { if (it.isDirectory) it else zipTree(it) })
 
-        archiveFileName.set("${application.applicationName}-${project.version}.jar")
+// Use this task to create a fat jar.
+tasks.register<Jar>("dist") {
+    from(files(sourceSets.main.get().output.classesDirs))
+    from(configurations.runtimeClasspath.get().map { if (it.isDirectory) it else zipTree(it) })
+    from(assetsDir)
 
-        manifest {
-            attributes["Main-Class"] = application.mainClass.get()
-        }
+    manifest {
+        attributes["Main-Class"] = mainClassName
     }
 }
