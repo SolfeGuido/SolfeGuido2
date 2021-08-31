@@ -66,6 +66,7 @@ class SolfeGuido : ApplicationListener {
             .addScreen<OptionScreen>()
             .addScreen<CreditsScreen>()
             .addScreen<StatsScreen>()
+            .addScreen<ScoreboardScreen>()
 
 
         val assetStorage = AssetStorage(asyncContext = newAsyncContext(Constants.ASYNC_THREADS))

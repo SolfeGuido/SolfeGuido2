@@ -167,6 +167,9 @@ class MenuScreen(context: Context) : UIScreen(context) {
                         icon(IconName.List, 0.9f).pad(5f)
                         pad(5f)
                         it.pad(10f)
+                        onClick {
+                            stateMachine.switch<ScoreboardScreen>(StateParameter.witType(shownMenu))
+                        }
                     }
                     isVisible = shownMenu == VisibleMenu.Root
                 }
