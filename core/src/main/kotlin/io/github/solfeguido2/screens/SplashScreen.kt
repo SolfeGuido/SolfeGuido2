@@ -150,7 +150,7 @@ class SplashScreen(context: Context) : UIScreen(context) {
             pBar = progressBar {
                 this.setRange(0f, 100f)
                 this.setAnimateDuration(0.1f)
-                it.expandX().fillX()
+                it.expandX().fillX().pad(40f)
             }
         }
 
