@@ -84,7 +84,7 @@ class SplashScreen(context: Context) : UIScreen(context) {
                 load("bigIcon.woff", FontLoader.FontLoaderParameter().also {
                     it.fontFileName = Constants.ICONS_PATH
                     it.fontParameters.apply {
-                        size = (Constants.HEIGHT / 2.7f).toInt()
+                        size = Constants.BIG_ICON_SIZE
                         minFilter = Texture.TextureFilter.Linear
                         magFilter = Texture.TextureFilter.Linear
                         characters = IconName.values().joinToString("") { icon -> icon.value }
@@ -93,6 +93,7 @@ class SplashScreen(context: Context) : UIScreen(context) {
                 load(Constants.PRIMARY_FONT, FontLoader.FontLoaderParameter().also {
                     it.fontFileName = Constants.PRIMARY_FONT
                     it.fontParameters.apply {
+                        print(Constants.TITLE_SIZE)
                         size = Constants.TITLE_SIZE
                         minFilter = Texture.TextureFilter.Linear
                         magFilter = Texture.TextureFilter.Linear

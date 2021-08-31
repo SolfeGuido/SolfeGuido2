@@ -1,6 +1,7 @@
 package io.github.solfeguido2.structures
 
 import com.badlogic.gdx.Gdx
+import com.badlogic.gdx.math.MathUtils.clamp
 
 object Constants {
 
@@ -9,7 +10,11 @@ object Constants {
     val HEIGHT
         get() = Gdx.graphics.height
 
-    const val TITLE_SIZE = 50
+    val TITLE_SIZE
+        get() = clamp(Gdx.graphics.height / 15, 8, 50)
+
+    val BIG_ICON_SIZE
+        get() = clamp((Gdx.graphics.height / 2.7f).toInt(), 8, 1280)
 
     const val JINGLES_PATH = "midi/jingles"
     const val SOUNDS_PATH = "sounds"
@@ -46,6 +51,7 @@ object Constants {
 
     // Preferences
     const val PREFERENCES_NAME = "solfeguido2"
+
     object Preferences {
         const val LEVELS = "level"
         const val GAME_SAVES = "stats"
