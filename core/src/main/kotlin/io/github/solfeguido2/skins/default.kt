@@ -2,8 +2,10 @@ package io.github.solfeguido2.skins
 
 import com.badlogic.gdx.graphics.Color
 import com.badlogic.gdx.graphics.g2d.BitmapFont
+import com.badlogic.gdx.graphics.g2d.Sprite
 import com.badlogic.gdx.graphics.g2d.TextureAtlas
 import com.badlogic.gdx.scenes.scene2d.ui.Skin
+import com.badlogic.gdx.scenes.scene2d.utils.SpriteDrawable
 import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable
 import io.github.solfeguido2.enums.Language
 import io.github.solfeguido2.enums.Theme
@@ -146,7 +148,7 @@ fun getDefaultSkin(assetManager: AssetStorage, theme: Theme): Skin {
         Language.values().forEach {
             checkBox(it.code) {
                 font = smallPrimary
-                up = TextureRegionDrawable(flagsTextureAtlas.findRegion(it.code))
+                checkboxOff = TextureRegionDrawable(flagsTextureAtlas.findRegion(it.code))
             }
         }
 

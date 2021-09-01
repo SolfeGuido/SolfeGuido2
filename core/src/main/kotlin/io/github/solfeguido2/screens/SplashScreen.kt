@@ -75,7 +75,7 @@ class SplashScreen(context: Context) : UIScreen(context) {
 
 
                 soundManager.existingSounds.map {
-                    load<Sound>( SoundManager.toAssetName(it.key.midiIndex))
+                    load<Sound>(SoundManager.toAssetName(it.key.midiIndex))
                 }.toTypedArray()
 
                 load<Sound>(Constants.CLICK_SOUND)
@@ -93,7 +93,6 @@ class SplashScreen(context: Context) : UIScreen(context) {
                 load(Constants.PRIMARY_FONT, FontLoader.FontLoaderParameter().also {
                     it.fontFileName = Constants.PRIMARY_FONT
                     it.fontParameters.apply {
-                        print(Constants.TITLE_SIZE)
                         size = Constants.TITLE_SIZE
                         minFilter = Texture.TextureFilter.Linear
                         magFilter = Texture.TextureFilter.Linear
@@ -151,7 +150,7 @@ class SplashScreen(context: Context) : UIScreen(context) {
             pBar = progressBar {
                 this.setRange(0f, 100f)
                 this.setAnimateDuration(0.1f)
-                it.expandX().fillX().pad(40f)
+                it.expandX().fillX().pad(5f, 40f, 0f, 40f)
             }
         }
 

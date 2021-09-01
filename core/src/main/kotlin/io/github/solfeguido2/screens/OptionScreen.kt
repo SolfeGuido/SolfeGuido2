@@ -168,11 +168,11 @@ class OptionScreen(context: Context) : UIScreen(context) {
                         val checkBox = CheckBox("", Scene2DSkin.defaultSkin, lang.code)
                         checkBox.setOrigin(Align.center)
                         checkBox.onChange {
-                            val scale = if (isChecked) 0.7f else 1f
+                            val scale = if (isChecked) 0.4f else 1f
                             isTransform = true
                             this += Actions.scaleTo(scale, scale, 0.2f, Interpolation.exp10Out)
                         }
-                        checkBox.pad(10f)
+                        checkBox.pad(2f)
 
                         preferenceCheckBox(checkBox, lang) {
                             stateMachine.switch<OptionScreen>(settings) {
