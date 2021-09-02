@@ -90,30 +90,3 @@ tasks.whenTaskAdded {
         dependsOn("copyAndroidNatives")
     }
 }
-
-// 
-// tasks {
-// 
-//     val run by registering(Exec::class) {
-//         val localProperties = project.file("../local.properties")
-//         val path = if (localProperties.exists()) {
-//             val properties = Properties()
-//             properties.load(localProperties.inputStream())
-//             val sdkDir = properties.getProperty("sdk.dir")
-//             if (sdkDir.isNullOrEmpty()) {
-//                 System.getenv("ANDROID_HOME")
-//             } else {
-//                 sdkDir
-//             }
-//         } else {
-//             System.getenv("ANDROID_HOME")
-//         }
-// 
-//         val adb = path + "/platform-tools/adb"
-//         commandLine =
-//             listOf("$adb", "shell", "am", "start", "-n", "io.github.solfeguido2/io.github.solfeguido2.AndroidLauncher")
-//     }
-// 
-// 
-// }
-// 
