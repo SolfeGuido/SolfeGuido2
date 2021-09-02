@@ -60,9 +60,9 @@ class PlayScreen(context: Context) : UIScreen(context) {
                     gameManager.end()
                     scene2d.zoomDialog {
                         closeOptions = setOf(ZoomDialog.ClosingOptions.ESCAPE, ZoomDialog.ClosingOptions.CROSS)
-                        title("Finished !")
-                        line("your score is ... ${scoreActor.score}")
-                        borderButton("Ok").actor.icon(IconName.Check, 0.5f)
+                        title(Nls.Finished())
+                        line(Nls.Score(scoreActor.score))
+                        borderButton(Nls.Nice()).actor.icon(IconName.Check, 0.5f)
                         setOrigin(Align.center)
 
                         onDialogHide {

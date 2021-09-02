@@ -103,7 +103,7 @@ class OptionScreen(context: Context) : UIScreen(context) {
                     row()
                 }
 
-                label("Note style : ", "contentLabelStyle") {
+                label(Nls.SettingsNoteStyle(), "contentLabelStyle") {
                     setFontScale(0.7f)
                 }
                 buttonGroup(1, 1) {
@@ -115,7 +115,7 @@ class OptionScreen(context: Context) : UIScreen(context) {
 
                 row()
 
-                label("Buttons : ", "contentLabelStyle") {
+                label(Nls.SettingsAnswer(), "contentLabelStyle") {
                     setFontScale(0.7f)
                 }
                 buttonGroup(1, 1) {
@@ -127,7 +127,7 @@ class OptionScreen(context: Context) : UIScreen(context) {
 
                 row()
 
-                label("Theme : ", "contentLabelStyle") {
+                label(Nls.SettingsTheme(), "contentLabelStyle") {
                     setFontScale(0.7f)
                 }
                 buttonGroup(1, 1) {
@@ -159,7 +159,7 @@ class OptionScreen(context: Context) : UIScreen(context) {
 
                 row()
 
-                label("Language : ", "contentLabelStyle") {
+                label(Nls.SettingsLanguage(), "contentLabelStyle") {
                     setFontScale(0.7f)
                 }
 
@@ -188,7 +188,7 @@ class OptionScreen(context: Context) : UIScreen(context) {
 
                 row()
 
-                borderButton("Menu") {
+                borderButton(Nls.Menu()) {
                     this.pad(10f)
                     it.colspan(2)
                     it.pad(10f)
