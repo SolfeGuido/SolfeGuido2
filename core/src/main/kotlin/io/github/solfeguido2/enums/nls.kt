@@ -1,8 +1,12 @@
 package io.github.solfeguido2.enums
-import com.badlogic.gdx.utils.I18NBundle
+        
 import ktx.i18n.BundleLine
+import com.badlogic.gdx.utils.I18NBundle
 /** Generated from assets/i18n/nls.properties file. */
 enum class Nls(private val key: String) : BundleLine {
+    Play("play"),
+    Classic("classic"),
+    Levels("levels"),
     Gclef("gclef"),
     Fclef("fclef"),
     Cclef3("cclef3"),
@@ -25,13 +29,11 @@ enum class Nls(private val key: String) : BundleLine {
     TotalGames("total_games"),
     TotalPoints("total_points"),
     AvgReactionTime("avg_reaction_time"),
-    LongestStreak("longest_streak"),
     Statistics("statistics"),
     BestScore("best_score"),
     Score("score"),
     Scoreboard("scoreboard"),
     Loading("loading"),
-    NewVersion("new_version"),
     Nice("nice"),
     SettingsLanguage("settings.language"),
     SettingsNoteStyle("settings.note_style"),
@@ -47,8 +49,7 @@ enum class Nls(private val key: String) : BundleLine {
     SettingsThemeLight("settings.theme.light"),
     SettingsThemeDark("settings.theme.dark"),
     AboutContributors("about.contributors"),
-    ;
-
+;
     override fun toString() = key
 
     override val bundle: I18NBundle
@@ -58,4 +59,3 @@ enum class Nls(private val key: String) : BundleLine {
         lateinit var i18nBundle: I18NBundle
     }
 }
-

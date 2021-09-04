@@ -155,7 +155,7 @@ class MenuScreen(context: Context) : UIScreen(context) {
 
                         }
                     }
-                    borderButton("Play") {
+                    borderButton(Nls.Play()) {
                         icon(IconName.Play, 0.9f).pad(5f)
                         onClick {
                             pushActor(playOptions)
@@ -180,18 +180,18 @@ class MenuScreen(context: Context) : UIScreen(context) {
                     setOrigin(Align.center)
                     isVisible = shownMenu == VisibleMenu.Play
                     verticalGroup {
-                        borderButton("Classic") {
+                        borderButton(Nls.Classic()) {
                             icon(IconName.Music, 0.9f).left()
                             label.setAlignment(Align.right)
                             left()
                             pad(10f)
                             onClick {
-                                val label = Label("Loading", Scene2DSkin.defaultSkin, "contentLabelStyle")
+                                val label = Label(Nls.Loading(), Scene2DSkin.defaultSkin, "contentLabelStyle")
                                 stateMachine.switch<ClassicSelectionScreen>(align = Align.top, actor = label)
 
                             }
                         }
-                        borderButton("Levels") {
+                        borderButton(Nls.Levels()) {
                             icon(IconName.FullStar, 0.9f).left()
                             label.setAlignment(Align.right)
                             pad(10f)

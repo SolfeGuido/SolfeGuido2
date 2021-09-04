@@ -133,8 +133,7 @@ class SplashScreen(context: Context) : UIScreen(context) {
                     assetManager,
                     context.inject<PreferencesManager>().theme
                 )
-                jingles.registerJingles(assetManager)
-                jingles.playJingle("Startup")
+                //jingles.registerJingles(assetManager)
                 if (System.getenv("START_STATE") == "PlayScreen") {
                     context.inject<StateMachine>().switch<PlayScreen>(StateParameter.witType(GameSettings()))
                 } else {
