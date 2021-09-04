@@ -4,6 +4,7 @@ import com.badlogic.gdx.Preferences
 import io.github.solfeguido2.structures.Constants
 import io.github.solfeguido2.structures.UserSettings
 import io.github.solfeguido2.enums.*
+import kotlinx.serialization.ExperimentalSerializationApi
 import kotlinx.serialization.decodeFromString
 import kotlinx.serialization.encodeToString
 import kotlinx.serialization.json.Json
@@ -11,6 +12,7 @@ import ktx.preferences.get
 import ktx.preferences.set
 
 
+@OptIn(ExperimentalSerializationApi::class)
 class PreferencesManager(private val preferences: Preferences) {
 
     private val settings: UserSettings

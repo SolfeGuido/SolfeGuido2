@@ -164,12 +164,13 @@ class MenuScreen(context: Context) : UIScreen(context) {
                         it.pad(10f)
                     }
                     borderButton(Nls.Scoreboard()) {
+                        isDisabled = true
                         icon(IconName.List, 0.9f).pad(5f)
                         pad(5f)
                         it.pad(10f)
-                        onClick {
-                            stateMachine.switch<ScoreboardScreen>(StateParameter.witType(shownMenu))
-                        }
+//                        onClick {
+//                            stateMachine.switch<ScoreboardScreen>(StateParameter.witType(shownMenu))
+//                        }
                     }
                     isVisible = shownMenu == VisibleMenu.Root
                 }

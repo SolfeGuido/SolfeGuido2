@@ -67,8 +67,6 @@ class SplashScreen(context: Context) : UIScreen(context) {
                 load<Texture>(Constants.APP_ICON)
                 load<TextureAtlas>(Constants.FLAGS_ATLAS)
 
-                // Load translations
-                load<I18NBundle>(Constants.TRANSLATIONS_PATH)
 
 
                 jingles.allJingles.map { loadAsync<MidiFile>(it.path()) }.toTypedArray()
@@ -123,11 +121,9 @@ class SplashScreen(context: Context) : UIScreen(context) {
                 val end = System.currentTimeMillis()
                 info("START") { "Assets loaded in ${end - start}ms" }
                 val preferences: PreferencesManager = context.inject()
-                val bundleDescriptor = assetManager.getAssetDescriptor<I18NBundle>(
-                    Constants.TRANSLATIONS_PATH,
-                    I18NBundleLoader.I18NBundleParameter(Locale(preferences.language.code))
-                )
-                Nls.i18nBundle = assetManager[bundleDescriptor.toIdentifier()]
+
+                val baseFileHandle = Gdx.files.internal(Constants.TRANSLATIONS_PATH)
+                Nls.i18nBundle = I18NBundle.createBundle(baseFileHandle, Locale(preferences.language.code));
 
                 Scene2DSkin.defaultSkin = getDefaultSkin(
                     assetManager,

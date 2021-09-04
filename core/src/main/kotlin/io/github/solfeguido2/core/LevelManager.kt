@@ -31,7 +31,6 @@ class LevelManager(private val preferences: Preferences) {
         }
 
         val exist = levelScores[clef]!!.getOrDefault(difficulty, EMPTY_RESULT)
-        println("Scored ${gameStats.score}, vs : ${exist.score}")
         if (exist < gameStats) {
             levelScores[clef]!![difficulty] = gameStats
             save()

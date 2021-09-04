@@ -3,7 +3,6 @@ package io.github.solfeguido2.screens
 import com.badlogic.gdx.Application
 import com.badlogic.gdx.Gdx
 import com.badlogic.gdx.assets.loaders.I18NBundleLoader
-import com.badlogic.gdx.graphics.g2d.TextureAtlas
 import com.badlogic.gdx.math.Interpolation
 import com.badlogic.gdx.scenes.scene2d.Actor
 import com.badlogic.gdx.scenes.scene2d.actions.Actions
@@ -11,13 +10,12 @@ import com.badlogic.gdx.scenes.scene2d.ui.CheckBox
 import com.badlogic.gdx.utils.Align
 import com.badlogic.gdx.utils.I18NBundle
 import io.github.solfeguido2.actors.IconCheckBox
+import io.github.solfeguido2.core.PreferencesManager
 import io.github.solfeguido2.core.StateMachine
 import io.github.solfeguido2.core.StateParameter
-import io.github.solfeguido2.core.PreferencesManager
 import io.github.solfeguido2.enums.*
 import io.github.solfeguido2.factories.borderButton
 import io.github.solfeguido2.factories.iconButton
-import io.github.solfeguido2.factories.iconCheckBox
 import io.github.solfeguido2.skins.getDefaultSkin
 import io.github.solfeguido2.structures.Constants
 import ktx.actors.onChange
@@ -28,6 +26,7 @@ import ktx.assets.async.toIdentifier
 import ktx.inject.Context
 import ktx.scene2d.*
 import java.util.*
+
 
 class OptionScreen(context: Context) : UIScreen(context) {
 
@@ -176,11 +175,8 @@ class OptionScreen(context: Context) : UIScreen(context) {
 
                         preferenceCheckBox(checkBox, lang) {
                             stateMachine.switch<OptionScreen>(settings) {
-                                val bundleDescriptor = assetManager.getAssetDescriptor<I18NBundle>(
-                                    "i18n/nls",
-                                    I18NBundleLoader.I18NBundleParameter(Locale(lang.code))
-                                )
-                                Nls.i18nBundle = assetManager[bundleDescriptor.toIdentifier()]
+                                val baseFileHandle = Gdx.files.internal(Constants.TRANSLATIONS_PATH)
+                                Nls.i18nBundle = I18NBundle.createBundle(baseFileHandle, Locale(lang.code));
                             }
                         }
                     }
