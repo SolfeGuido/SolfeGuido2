@@ -127,7 +127,7 @@ class PlayScreen(context: Context) : UIScreen(context) {
             pauseCallbacks.forEach { it.invoke() }
             scene2d.zoomDialog {
                 title(Nls.Paused())
-                line("Close this dialog to resume the game")
+                line(Nls.DialogPauseText())
                 borderButton(Nls.Resume())
                 val btn = borderButton(Nls.Menu.invoke())
                 btn.actor.onClick { gameManager.exit() }

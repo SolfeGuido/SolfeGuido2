@@ -105,28 +105,28 @@ class StatsScreen(context: Context) : UIScreen(context) {
 
             table {
                 val customSpace = "  "
-                label("Games played$customSpace")
+                label(Nls.TotalGames()+ customSpace)
                 label(globalStats.gamesPlayed.toString())
 
                 row()
 
-                label("Time played$customSpace")
+                label(Nls.TotalTime()+ customSpace)
                 label(formatSeconds(globalStats.timePlayed))
 
                 row()
 
-                label("Correct guesses$customSpace")
+                label(Nls.CorrectGuesses()+ customSpace)
                 label(globalStats.correctGuesses.toString())
 
                 row()
 
-                label("Wrong guesses$customSpace")
+                label(Nls.WrongGuesses() + customSpace)
                 label(globalStats.wrongGuesses.toString())
 
                 row()
 
 
-                label("Average reaction time$customSpace")
+                label(Nls.AvgReactionTime() + customSpace)
                 label(String.format("%.2fs", globalStats.averageReactionTime))
 
                 row()

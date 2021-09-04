@@ -9,6 +9,7 @@ import io.github.solfeguido2.core.StateParameter
 import io.github.solfeguido2.enums.ClefEnum
 import io.github.solfeguido2.enums.IconName
 import io.github.solfeguido2.enums.KeySignatureEnum
+import io.github.solfeguido2.enums.Nls
 import io.github.solfeguido2.factories.*
 import io.github.solfeguido2.settings.GameSettings
 import io.github.solfeguido2.settings.MeasureSettings
@@ -69,7 +70,7 @@ class ClassicSelectionScreen(context: Context) : UIScreen(context) {
                     it.top().left()
                 }
 
-                label("Classic mode") {
+                label(Nls.ModeClassic()) {
                     it.expandX()
                 }
                 pad(10f)
@@ -120,7 +121,7 @@ class ClassicSelectionScreen(context: Context) : UIScreen(context) {
                     row()
 
 
-                    borderButton("Play") {
+                    borderButton(Nls.Play()) {
                         icon(IconName.Play, 0.9f).pad(5f)
                         pad(5f)
 

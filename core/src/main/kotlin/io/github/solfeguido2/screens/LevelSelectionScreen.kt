@@ -8,6 +8,7 @@ import io.github.solfeguido2.core.StateMachine
 import io.github.solfeguido2.core.StateParameter
 import io.github.solfeguido2.enums.ClefEnum
 import io.github.solfeguido2.enums.IconName
+import io.github.solfeguido2.enums.Nls
 import io.github.solfeguido2.factories.borderButton
 import io.github.solfeguido2.factories.gCol
 import io.github.solfeguido2.factories.icon
@@ -43,7 +44,7 @@ class LevelSelectionScreen(context: Context) : UIScreen(context) {
                     }
                 }
 
-                label("Level selection") {
+                label(Nls.ModeLevel()) {
                     it.expandX()
                 }
 
@@ -68,7 +69,7 @@ class LevelSelectionScreen(context: Context) : UIScreen(context) {
                             }
                         }
 
-                        borderButton("Level ${index + 1}") {
+                        borderButton(Nls.Level(index + 1)) {
                             pad(5f)
                             isDisabled = !enabled
                             icon(if (isDisabled) IconName.Lock else IconName.Play).right()

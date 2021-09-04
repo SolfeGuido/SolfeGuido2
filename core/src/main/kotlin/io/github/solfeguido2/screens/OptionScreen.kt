@@ -75,7 +75,7 @@ class OptionScreen(context: Context) : UIScreen(context) {
                     it.top().left()
                 }
 
-                label("Options") {
+                label(Nls.Settings()) {
                     it.expandX()
                 }
 
@@ -85,7 +85,7 @@ class OptionScreen(context: Context) : UIScreen(context) {
             row()
             table {
                 if (Gdx.app.type == Application.ApplicationType.Android) {
-                    label("Vibrations : ", "contentLabelStyle") {
+                    label(Nls.SettingsVibrations(), "contentLabelStyle") {
                         setFontScale(0.7f)
                     }
                     buttonGroup(1, 1) {
@@ -147,7 +147,7 @@ class OptionScreen(context: Context) : UIScreen(context) {
                 }
 
                 row()
-                label("Sound : ", "contentLabelStyle") {
+                label(Nls.SettingsSound(), "contentLabelStyle") {
                     setFontScale(0.7f)
                 }
                 buttonGroup(1, 1) {
