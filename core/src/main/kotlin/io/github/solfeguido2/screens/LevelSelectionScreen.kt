@@ -62,13 +62,6 @@ class LevelSelectionScreen(context: Context) : UIScreen(context) {
                     pad(10f)
                     clefRequirements.forEachIndexed { index, _ ->
                         val enabled = levelManager.hasAccessTo(clef, index)
-                        for (star in 1..5) {
-                            icon(IconName.FullStar) {
-                                color = gCol("font")
-                                it.pad(15f, 2f, 15f, 2f)
-                            }
-                        }
-
                         borderButton(Nls.Level(index + 1)) {
                             pad(5f)
                             isDisabled = !enabled
@@ -88,6 +81,15 @@ class LevelSelectionScreen(context: Context) : UIScreen(context) {
                                         Align.right
                                     )
                                 }
+                            }
+
+                            it.pad(5f)
+                        }
+
+                        for (star in 1..5) {
+                            icon(IconName.FullStar) {
+                                color = gCol("font")
+                                it.pad(15f, 2f, 15f, 2f)
                             }
                         }
                         row()
