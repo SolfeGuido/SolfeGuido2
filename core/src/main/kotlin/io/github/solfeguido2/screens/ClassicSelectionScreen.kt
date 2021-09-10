@@ -20,6 +20,7 @@ import io.github.solfeguido2.structures.Constants
 import ktx.actors.onClick
 import ktx.inject.Context
 import ktx.scene2d.*
+import kotlin.streams.toList
 
 class ClassicSelectionScreen(context: Context) : UIScreen(context) {
 
