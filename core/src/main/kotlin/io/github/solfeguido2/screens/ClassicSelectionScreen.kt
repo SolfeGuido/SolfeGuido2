@@ -108,7 +108,7 @@ class ClassicSelectionScreen(context: Context) : UIScreen(context) {
                         scrollPane {
                             buttonGroup(1, 1) {
                                 KeySignatureEnum.values().forEach { signature ->
-                                    textCheckBox(signature.name) {
+                                    textCheckBox(signature.translation()) {
                                         onClick {
                                             selectedKeySignature = signature
                                         }
