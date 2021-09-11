@@ -84,6 +84,9 @@ class GameManager(private val context: Context, val settings: GameSettings, priv
 
     fun end() {
         stats.timePlayed = max(((System.currentTimeMillis() - startTime - pauseTime) / 1000f).toInt(), 0)
+        println(stats.correctGuesses)
+        println(stats.wrongGuesses)
+        println(stats.score)
         statsManager.saveGameScore(settings, stats)
         statsManager.save()
 

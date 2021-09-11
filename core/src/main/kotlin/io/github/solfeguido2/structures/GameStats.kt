@@ -15,7 +15,7 @@ data class GameStats(
 
 
     val score
-        get() = (correctGuesses - wrongGuesses) * (timePlayed - wrongGuesses * 2)
+        get() = (correctGuesses - wrongGuesses)
 
     override operator fun compareTo(other: GameStats) = this.score - other.score
 }

@@ -88,20 +88,23 @@ class LevelSelectionScreen(context: Context) : UIScreen(context) {
 
                         levelManager.levelResult(clef, index)?.let { gameStats ->
                             levelManager.levelRequirements[clef]?.get(index)?.let { requirements ->
-                                var totalStars = 1
-                                if (gameStats.wrongGuesses == 0) {
-                                    totalStars++
+                                val totalStars = 1 + if (gameStats.wrongGuesses == 0) {
+                                    1
+                                } else {
+                                    0
+                                } + if (gameStats.score >= requirements.minScore) {
+                                    1
+                                } else {
+                                    0
                                 }
-                                if (gameStats.score > requirements.minScore) {
-                                    totalStars++
-                                }
+
                                 for (star in 1..totalStars) {
                                     icon(IconName.FullStar) {
                                         color = gCol("font")
                                         it.pad(15f, 2f, 15f, 2f)
                                     }
                                 }
-                                for (empty in (totalStars+1)..3) {
+                                for (empty in (totalStars + 1)..3) {
                                     icon(IconName.EmptyStar) {
                                         color = gCol("font")
                                         it.pad(15f, 2f, 15f, 2f)
