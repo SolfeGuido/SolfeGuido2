@@ -5,20 +5,21 @@ import kotlinx.serialization.Serializable
 
 @Serializable
 class TimeSettings(
-    var start : Float = 0.0f,
+    var start: Float = 0.0f,
     var max: Float = Constants.CLASSIC_TIME,
     var timeBonus: Float = 0f,
     var timePenalty: Float = 1f,
     var multiplicator: Float = 1f,
-    var showParticles: Boolean = true
-)  {
+    var showParticles: Boolean = true,
+    val giveAnswerFrequency: Float = -1f
+) {
 
     companion object {
 
         val InfiniteMode = TimeSettings(
             start = 0f,
             max = 1f,
-            timeBonus =  0f,
+            timeBonus = 0f,
             timePenalty = 0f,
             multiplicator = 0f,
             showParticles = false
@@ -33,6 +34,15 @@ class TimeSettings(
             showParticles = true
         )
 
+        val InfiniteAutoMode = TimeSettings(
+            start = 0f,
+            max = 1f,
+            timeBonus = 0f,
+            timePenalty = 0f,
+            multiplicator = 0f,
+            showParticles = false,
+            giveAnswerFrequency = 1f
+        )
     }
 
 

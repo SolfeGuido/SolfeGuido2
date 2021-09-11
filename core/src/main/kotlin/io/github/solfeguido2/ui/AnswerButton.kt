@@ -26,15 +26,17 @@ class AnswerButton(note: String) : Stack(), KGroup, Disableable {
     private var currentIcon: IconName = IconName.Empty
     private val accidentalLabel: Label
     private val labelParent: BorderContainer<Actor>
+    private val noteLabel: BorderContainer<Actor>
 
     init {
         isTransform = true
         container {
-            borderContainer {
+            this@AnswerButton.noteLabel = borderContainer {
                 label(note, "contentLabelStyle") {
                     setAlignment(Align.center)
                 }
-            }.fill()
+                this.fill()
+            }
         }.fill().pad(10f)
         currentIcon = IconName.Empty
         val icon = currentIcon.value
@@ -51,6 +53,10 @@ class AnswerButton(note: String) : Stack(), KGroup, Disableable {
         this.labelParent.setScale(0f)
 
         initialize()
+    }
+
+    fun highlight() {
+        this.noteLabel += Actions.color(gCol("correct"), 0.1f) + Actions.color(gCol("font"), 0.8f)
     }
 
     private fun queueActions(action: Action) {
@@ -115,7 +121,14 @@ class AnswerButton(note: String) : Stack(), KGroup, Disableable {
             override fun touchDown(event: InputEvent?, x: Float, y: Float, pointer: Int, button: Int): Boolean {
                 val res = super.touchDown(event, x, y, pointer, button)
                 if (self.isDisabled) return res
-                self.addAction(Actions.scaleTo(Constants.PRESSED_SCALING, Constants.PRESSED_SCALING, .2f, Interpolation.exp10Out))
+                self.addAction(
+                    Actions.scaleTo(
+                        Constants.PRESSED_SCALING,
+                        Constants.PRESSED_SCALING,
+                        .2f,
+                        Interpolation.exp10Out
+                    )
+                )
                 return res
             }
 

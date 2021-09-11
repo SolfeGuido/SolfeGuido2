@@ -3,6 +3,7 @@ package io.github.solfeguido2.actors
 import com.badlogic.gdx.scenes.scene2d.ui.Stack
 import com.badlogic.gdx.scenes.scene2d.ui.Table
 import com.badlogic.gdx.utils.Align
+import io.github.solfeguido2.core.IAnswerGiver
 import io.github.solfeguido2.structures.Constants
 import io.github.solfeguido2.enums.NoteNameEnum
 import io.github.solfeguido2.enums.NoteOrderEnum
@@ -15,7 +16,13 @@ import ktx.actors.onClick
 
 
 class PianoAnswerActor(private val noteStyle: NoteStyle, private val showNotes: Boolean = false) :
-    Stack() {
+    Stack(), IAnswerGiver {
+
+    private val noteOrders = mutableMapOf<NoteOrderEnum, PianoKey>()
+
+    override fun highlightAnswer(note: NoteOrderEnum) {
+        noteOrders[note]?.highlight()
+    }
 
     init {
         debug = false
@@ -24,11 +31,11 @@ class PianoAnswerActor(private val noteStyle: NoteStyle, private val showNotes: 
         val whiteWidth = prefWidth / 7
         val blackWidth = whiteWidth / 2
         val blackPadding = whiteWidth - (blackWidth / 2)
-        //blackKeys.space(10f)
 
         val createWhiteKey = { note: NoteOrderEnum ->
             val text = if (showNotes) NoteNameEnum[note.name, noteStyle] else ""
             val key = PianoKey(text, type = PianoKeyTypeEnum.White)
+            noteOrders[note] = key
             key.onClick {
                 firePooled<AnswerGivenEvent> { this.note = note }
             }
@@ -37,6 +44,7 @@ class PianoAnswerActor(private val noteStyle: NoteStyle, private val showNotes: 
 
         val createBlackKey = { note: NoteOrderEnum, leftPad: Float, rightPad: Float ->
             val key = PianoKey("", type = PianoKeyTypeEnum.Black)
+            noteOrders[note] = key
             key.onClick {
                 firePooled<AnswerGivenEvent> { this.note = note }
             }

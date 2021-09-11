@@ -96,7 +96,7 @@ class MeasureActor(settings: MeasureSettings, private val noteStyle: NoteStyle) 
 
     }
 
-    private fun currentNote() =
+    fun currentNote() =
         if (notes.isEmpty || currentNoteIndex >= notes.size) NoteActorPool.generate(
             MidiNotePool.fromIndex(
                 60

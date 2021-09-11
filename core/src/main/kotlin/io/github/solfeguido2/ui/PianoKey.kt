@@ -11,6 +11,8 @@ import io.github.solfeguido2.structures.Constants
 import io.github.solfeguido2.enums.PianoKeyTypeEnum
 import io.github.solfeguido2.factories.colorDrawable
 import io.github.solfeguido2.factories.gCol
+import ktx.actors.plus
+import ktx.actors.plusAssign
 import ktx.scene2d.KTable
 import ktx.scene2d.Scene2DSkin
 import ktx.scene2d.label
@@ -37,6 +39,10 @@ class PianoKey(text: String = "", private val type: PianoKeyTypeEnum = PianoKeyT
     override fun layout() {
         super.layout()
         setOrigin(width / 2f, height)
+    }
+
+    fun highlight() {
+        this += Actions.color(gCol("correct"), 0.1f) + Actions.color(gCol("font"), 0.8f)
     }
 
     private val borderDrawable = colorDrawable(gCol("font"))

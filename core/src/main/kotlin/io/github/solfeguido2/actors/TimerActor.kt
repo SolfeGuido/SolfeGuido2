@@ -3,6 +3,7 @@ package io.github.solfeguido2.actors
 import com.badlogic.gdx.graphics.g2d.Batch
 import com.badlogic.gdx.graphics.g2d.ParticleEffect
 import com.badlogic.gdx.scenes.scene2d.ui.WidgetGroup
+import io.github.solfeguido2.events.GiveAnswerEvent
 import io.github.solfeguido2.structures.Constants
 import io.github.solfeguido2.factories.*
 import io.github.solfeguido2.settings.TimeSettings
@@ -15,6 +16,8 @@ class TimerActor(context: Context, settings: TimeSettings) : WidgetGroup() {
     private val errorColor = gCol("error")
     private val timeLine = colorDrawable(frontColor)
     private val max: Float
+    private val giveAnswerFrequency: Float
+    private var nextGiveAnswer: Float
     private var current: Float
     private var timeBonus: Float
     private var timePenalty: Float
@@ -32,6 +35,12 @@ class TimerActor(context: Context, settings: TimeSettings) : WidgetGroup() {
     init {
         val pool = context.inject<ParticlePool>()
         max = settings.max
+        giveAnswerFrequency = settings.giveAnswerFrequency
+        nextGiveAnswer = if (giveAnswerFrequency > 0) {
+            0f
+        } else {
+            -1f
+        }
         current = settings.start
         timePenalty = settings.timePenalty
         timeBonus = settings.timeBonus
@@ -80,15 +89,22 @@ class TimerActor(context: Context, settings: TimeSettings) : WidgetGroup() {
             isRunning = true
             defaultParticles.start()
         }
+        if (isPaused) return
 
-        if (!isPaused) {
-            defaultParticles.update(delta)
-            wrongParticles.update(delta)
+        defaultParticles.update(delta)
+        wrongParticles.update(delta)
 
-            current += delta * direction
-            if (current !in 0f..max) {
-                firePooled<TimerFinishedEvent>()
-                isRunning = false
+        current += delta * direction
+        if (current !in 0f..max) {
+            firePooled<TimerFinishedEvent>()
+            isRunning = false
+        }
+
+        if (nextGiveAnswer >= 0f) {
+            nextGiveAnswer += delta
+            if (nextGiveAnswer >= giveAnswerFrequency) {
+                nextGiveAnswer = 0f
+                firePooled<GiveAnswerEvent>()
             }
         }
     }

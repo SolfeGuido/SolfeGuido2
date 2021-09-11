@@ -5,6 +5,7 @@ import com.badlogic.gdx.scenes.scene2d.Actor
 import com.badlogic.gdx.utils.Align
 import io.github.solfeguido2.actors.ScoreActor
 import io.github.solfeguido2.core.GameManager
+import io.github.solfeguido2.core.IAnswerGiver
 import io.github.solfeguido2.core.PreferencesManager
 import io.github.solfeguido2.core.StateParameter
 import io.github.solfeguido2.enums.ButtonStyle
@@ -39,6 +40,7 @@ class PlayScreen(context: Context) : UIScreen(context) {
         val answerType = preferencesManager.buttonStyle
         val noteStyle = preferencesManager.noteStyle
         lateinit var scoreActor: ScoreActor
+        lateinit var answerGiver: IAnswerGiver
         gameManager.start()
         return scene2d.table {
             setFillParent(true)
@@ -71,6 +73,10 @@ class PlayScreen(context: Context) : UIScreen(context) {
                         }
                     }.show(this.stage)
                     true
+                }
+
+                onGiveAnswer {
+                    gameManager.giveAnswer()?.let { answerGiver.highlightAnswer(it) } != null
                 }
             }
             row()
@@ -108,6 +114,7 @@ class PlayScreen(context: Context) : UIScreen(context) {
                     gameManager.validateAnswer(answer)
                     true
                 }
+                answerGiver = answerer
             }
             onPause {
                 timer.pause()

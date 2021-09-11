@@ -11,6 +11,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.ScrollPane
 import com.badlogic.gdx.scenes.scene2d.ui.Table
 import com.badlogic.gdx.utils.Align
 import io.github.solfeguido2.actors.MeasureActor
+import io.github.solfeguido2.core.GameManager
 import io.github.solfeguido2.structures.Constants
 import io.github.solfeguido2.core.PreferencesManager
 import io.github.solfeguido2.core.StateMachine
@@ -21,6 +22,7 @@ import io.github.solfeguido2.enums.Nls
 import io.github.solfeguido2.factories.borderButton
 import io.github.solfeguido2.factories.iconButton
 import io.github.solfeguido2.factories.measure
+import io.github.solfeguido2.settings.GameSettings
 import io.github.solfeguido2.settings.MeasureSettings
 import ktx.actors.div
 import ktx.actors.onClick
@@ -36,7 +38,8 @@ class MenuScreen(context: Context) : UIScreen(context) {
     enum class VisibleMenu(val previous: () -> VisibleMenu, val next: () -> VisibleMenu) {
         Root({ Root }, { Play }),
         Play({ Root }, { LevelKeySelection }),
-        LevelKeySelection({ Play }, { LevelKeySelection })
+        LevelKeySelection({ Play }, { LevelKeySelection }),
+        AutoKeySelection({ Play }, { AutoKeySelection })
     }
 
     private lateinit var measure: MeasureActor
@@ -113,6 +116,7 @@ class MenuScreen(context: Context) : UIScreen(context) {
         lateinit var playMenu: Table
         lateinit var playOptions: ScrollPane
         lateinit var levelKeyOptions: ScrollPane
+        lateinit var autoKeyOptions: ScrollPane
         return scene2d.table {
             setFillParent(true)
             setPosition(0f, 0f)
@@ -200,6 +204,14 @@ class MenuScreen(context: Context) : UIScreen(context) {
                                 pushActor(levelKeyOptions)
                             }
                         }
+                        borderButton("Auto") {
+                            icon(IconName.Road, 0.9f).left()
+                            label.setAlignment(Align.right)
+                            pad(10f)
+                            onClick {
+                                pushActor(autoKeyOptions)
+                            }
+                        }
                         fill()
                         center()
                         padTop(10f)
@@ -238,12 +250,48 @@ class MenuScreen(context: Context) : UIScreen(context) {
                     }
                 }
 
+                autoKeyOptions = scrollPane {
+                    this.setScrollbarsVisible(false)
+                    fadeScrollBars = false
+                    setOrigin(Align.center)
+                    isVisible = shownMenu == VisibleMenu.AutoKeySelection
+                    verticalGroup {
+
+                        ClefEnum.values().forEach { clef ->
+                            borderButton(clef.name) {
+                                icon(clef.icon)
+                                label.setAlignment(Align.right)
+                                pad(10f)
+                                onClick {
+                                    val manager = GameManager(context, GameSettings.autoGame(clef)) {
+                                        stateMachine.switch<MenuScreen>(StateParameter.witType(VisibleMenu.AutoKeySelection))
+                                    }
+                                    stateMachine.switch<PlayScreen>(
+                                        StateParameter.witType(manager),
+                                        align = Align.right,
+                                    )
+                                }
+                            }
+                        }
+
+                        fill()
+                        center()
+                        padTop(10f)
+                        padBottom(10f)
+                        this.space(10f)
+                    }
+                }
+
                 if (shownMenu == VisibleMenu.Play) {
                     widgetStack.add(playOptions)
                     updateBackButton()
                 } else if (shownMenu == VisibleMenu.LevelKeySelection) {
                     widgetStack.add(playOptions)
                     widgetStack.add(levelKeyOptions)
+                    updateBackButton()
+                } else if(shownMenu == VisibleMenu.AutoKeySelection) {
+                    widgetStack.add(playOptions)
+                    widgetStack.add(autoKeyOptions)
                     updateBackButton()
                 }
                 it.grow()

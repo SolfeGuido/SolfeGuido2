@@ -1,6 +1,7 @@
 package io.github.solfeguido2.core
 
 import io.github.solfeguido2.actors.MeasureActor
+import io.github.solfeguido2.enums.NoteOrderEnum
 import io.github.solfeguido2.events.AnswerGivenEvent
 import io.github.solfeguido2.events.ResultEvent
 import io.github.solfeguido2.factories.onResult
@@ -72,6 +73,12 @@ class GameManager(private val context: Context, val settings: GameSettings, priv
         pauseTime += (System.currentTimeMillis() - pauseStart)
     }
 
+    fun giveAnswer(): NoteOrderEnum? {
+        val measure = currentMeasure
+        val currentNote = measure.currentNote().note
+        return currentNote?.noteOrder?.also { measure.checkNote(it) }
+    }
+
     private fun handleResult(result: ResultEvent) {
         statsManager.registerResult(result)
         soundManager.playNote(result.expected, preferencesManager.soundEnabled.volume)
@@ -84,9 +91,6 @@ class GameManager(private val context: Context, val settings: GameSettings, priv
 
     fun end() {
         stats.timePlayed = max(((System.currentTimeMillis() - startTime - pauseTime) / 1000f).toInt(), 0)
-        println(stats.correctGuesses)
-        println(stats.wrongGuesses)
-        println(stats.score)
         statsManager.saveGameScore(settings, stats)
         statsManager.save()
 
@@ -95,6 +99,7 @@ class GameManager(private val context: Context, val settings: GameSettings, priv
         val options = settings.options
         if (options is LevelOptions) {
             val unlockedLevel = levelManager.registerLevelScore(options.level, stats)
+            //TODO: show to the user when the level is unlocked !
             levelManager.save()
         }
     }
