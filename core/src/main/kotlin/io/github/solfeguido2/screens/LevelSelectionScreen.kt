@@ -86,15 +86,30 @@ class LevelSelectionScreen(context: Context) : UIScreen(context) {
                             it.pad(5f)
                         }
 
-                        levelManager.levelResult(clef, index)?.let {
-                            for (star in 1..5) {
-                                icon(IconName.FullStar) {
-                                    color = gCol("font")
-                                    it.pad(15f, 2f, 15f, 2f)
+                        levelManager.levelResult(clef, index)?.let { gameStats ->
+                            levelManager.levelRequirements[clef]?.get(index)?.let { requirements ->
+                                var totalStars = 1
+                                if (gameStats.wrongGuesses == 0) {
+                                    totalStars++
+                                }
+                                if (gameStats.score > requirements.minScore) {
+                                    totalStars++
+                                }
+                                for (star in 1..totalStars) {
+                                    icon(IconName.FullStar) {
+                                        color = gCol("font")
+                                        it.pad(15f, 2f, 15f, 2f)
+                                    }
+                                }
+                                for (empty in (totalStars+1)..3) {
+                                    icon(IconName.EmptyStar) {
+                                        color = gCol("font")
+                                        it.pad(15f, 2f, 15f, 2f)
+                                    }
                                 }
                             }
                         } ?: kotlin.run {
-                            for (star in 1..5) {
+                            for (star in 1..3) {
                                 icon(IconName.EmptyStar) {
                                     color = gCol("font")
                                     it.pad(15f, 2f, 15f, 2f)
