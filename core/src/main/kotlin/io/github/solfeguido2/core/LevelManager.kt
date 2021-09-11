@@ -47,9 +47,12 @@ class LevelManager(private val preferences: Preferences) {
     fun generateLevel(clef: ClefEnum, level: Int) = Level(clef, level, levelRequirements[clef]!![level])
 
     fun hasAccessTo(clef: ClefEnum, level: Int) =
-        level == 0 || levelRequirements[clef]!![level - 1].minScore <= levelResult(clef, level - 1).score
+        level == 0 || (levelResult(
+            clef,
+            level - 1
+        )?.let { stats -> levelRequirements[clef]!![level - 1].minScore <= stats.score } ?: false)
 
-    fun levelResult(clef: ClefEnum, level: Int): GameStats = levelScores[clef]?.get(level) ?: EMPTY_RESULT
+    fun levelResult(clef: ClefEnum, level: Int): GameStats? = levelScores[clef]?.get(level)
 
     fun save() {
         preferences[Constants.Preferences.LEVELS] = Json.encodeToString(levelScores)

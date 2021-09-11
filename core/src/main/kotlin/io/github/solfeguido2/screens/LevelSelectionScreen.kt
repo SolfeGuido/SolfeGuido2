@@ -86,10 +86,19 @@ class LevelSelectionScreen(context: Context) : UIScreen(context) {
                             it.pad(5f)
                         }
 
-                        for (star in 1..5) {
-                            icon(IconName.FullStar) {
-                                color = gCol("font")
-                                it.pad(15f, 2f, 15f, 2f)
+                        levelManager.levelResult(clef, index)?.let {
+                            for (star in 1..5) {
+                                icon(IconName.FullStar) {
+                                    color = gCol("font")
+                                    it.pad(15f, 2f, 15f, 2f)
+                                }
+                            }
+                        } ?: kotlin.run {
+                            for (star in 1..5) {
+                                icon(IconName.EmptyStar) {
+                                    color = gCol("font")
+                                    it.pad(15f, 2f, 15f, 2f)
+                                }
                             }
                         }
                         row()
