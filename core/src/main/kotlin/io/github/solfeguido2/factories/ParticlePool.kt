@@ -18,32 +18,31 @@ class ParticlePool(context: Context) {
     }
 
     val emptyParticles = ParticleEffect()
+    private val loadedParticles = hashMapOf<String, ParticleEffect>()
 
     // TODO : add an option to enable/ disable the particles
-    private val isEnabled = true// context.inject<Preferences>().getBoolean("particles", true)
+    private val isEnabled = context.inject<Preferences>().getBoolean("particles", true)
 
     private fun loadParticleEffect(path: String) = ParticleEffect().also {
         it.load(Gdx.files.internal(path), Gdx.files.internal(Constants.IMAGES_PATH))
     }
 
+    private fun loadOrGetParticle(path : String) : ParticleEffect{
+        if(!isEnabled) return emptyParticles
+        if(loadedParticles.containsKey(path)) return loadedParticles[path]!!
+        val nwLoad = loadParticleEffect(path)
+        loadedParticles[path] = nwLoad
+        return nwLoad
+    }
+
     // TODO: find a cleaner way to handle this
-    private val _sparkles = loadParticleEffect(SPARKLE_PARTICLE)
-    val sparkles: ParticleEffect
-        get() = if (isEnabled) _sparkles else emptyParticles
+    val sparkles get() = loadOrGetParticle(SPARKLE_PARTICLE)
 
-    private val _absorb = loadParticleEffect(ABSORB_PARTICLE)
-    val absorb: ParticleEffect
-        get() = if (isEnabled) _absorb else emptyParticles
+    val absorb get() = loadOrGetParticle(ABSORB_PARTICLE)
 
-    private val _explode = loadParticleEffect(EXPLODE_PARTICLE)
-    val explode: ParticleEffect
-        get() = if (isEnabled) _explode else emptyParticles
+    val explode get() = loadOrGetParticle(EXPLODE_PARTICLE)
 
-    private val _implode = loadParticleEffect(IMPLODE_PARTICLE)
-    val implode: ParticleEffect
-        get() = if (isEnabled) _implode else emptyParticles
+    val implode get() = loadOrGetParticle(IMPLODE_PARTICLE)
 
-    private val _noteBurst = loadParticleEffect(NOTE_BURST_PARTICLE)
-    val noteBurst: ParticleEffect
-        get() = if (isEnabled) _noteBurst else emptyParticles
+    val noteBurst get() = loadOrGetParticle(NOTE_BURST_PARTICLE)
 }
