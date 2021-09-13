@@ -4,6 +4,7 @@ import com.badlogic.gdx.Input
 import com.badlogic.gdx.graphics.Color
 import com.badlogic.gdx.graphics.g2d.Batch
 import com.badlogic.gdx.math.Interpolation
+import com.badlogic.gdx.scenes.scene2d.Actor
 import com.badlogic.gdx.scenes.scene2d.InputEvent
 import com.badlogic.gdx.scenes.scene2d.InputListener
 import com.badlogic.gdx.scenes.scene2d.Stage
@@ -69,6 +70,7 @@ class ZoomDialog(style: String, skin: Skin) : Dialog("", skin, style) {
             }
         })
 
+        contentTable.pad(20f)
     }
 
 
@@ -111,6 +113,10 @@ class ZoomDialog(style: String, skin: Skin) : Dialog("", skin, style) {
         Label(text, Scene2DSkin.defaultSkin.get<Label.LabelStyle>("contentLabelStyle")).let {
             contentTable.add(it).also { contentTable.row() }
         }
+
+    fun <T : Actor> actor(actor: T): Cell<T> {
+        return this.add(actor)
+    }
 
     fun borderButton(text: String, value: Any? = null): Cell<STextButton> =
         STextButton(text, defaultStyle, Scene2DSkin.defaultSkin).let {

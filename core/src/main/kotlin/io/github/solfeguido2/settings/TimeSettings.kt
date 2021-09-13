@@ -26,8 +26,8 @@ class TimeSettings(
         )
 
         val ClassicCountdownMode = TimeSettings(
-            start = Constants.CLASSIC_TIME,
-            max = Constants.CLASSIC_TIME,
+            start = 5f,//Constants.CLASSIC_TIME,
+            max = 5f,//Constants.CLASSIC_TIME,
             timeBonus = 0f,
             timePenalty = 2f,
             multiplicator = -1f,

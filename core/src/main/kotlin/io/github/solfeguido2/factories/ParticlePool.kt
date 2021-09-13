@@ -14,28 +14,36 @@ class ParticlePool(context: Context) {
         const val ABSORB_PARTICLE = "${Constants.PARTICLES_PATH}/absorb.p"
         const val EXPLODE_PARTICLE = "${Constants.PARTICLES_PATH}/explode.p"
         const val IMPLODE_PARTICLE = "${Constants.PARTICLES_PATH}/implode.p"
+        const val NOTE_BURST_PARTICLE = "${Constants.PARTICLES_PATH}/note_burst.p"
     }
 
     val emptyParticles = ParticleEffect()
-    private val isEnabled = context.inject<Preferences>().getBoolean("particles", true)
+
+    // TODO : add an option to enable/ disable the particles
+    private val isEnabled = true// context.inject<Preferences>().getBoolean("particles", true)
 
     private fun loadParticleEffect(path: String) = ParticleEffect().also {
         it.load(Gdx.files.internal(path), Gdx.files.internal(Constants.IMAGES_PATH))
     }
 
+    // TODO: find a cleaner way to handle this
     private val _sparkles = loadParticleEffect(SPARKLE_PARTICLE)
-    val sparkles : ParticleEffect
-        get() = if(isEnabled) _sparkles else emptyParticles
+    val sparkles: ParticleEffect
+        get() = if (isEnabled) _sparkles else emptyParticles
 
     private val _absorb = loadParticleEffect(ABSORB_PARTICLE)
-    val absorb : ParticleEffect
-        get() = if(isEnabled) _absorb else emptyParticles
+    val absorb: ParticleEffect
+        get() = if (isEnabled) _absorb else emptyParticles
 
     private val _explode = loadParticleEffect(EXPLODE_PARTICLE)
-    val explode : ParticleEffect
-        get() = if(isEnabled) _explode else emptyParticles
+    val explode: ParticleEffect
+        get() = if (isEnabled) _explode else emptyParticles
 
     private val _implode = loadParticleEffect(IMPLODE_PARTICLE)
     val implode: ParticleEffect
-        get() = if(isEnabled) _implode else emptyParticles
+        get() = if (isEnabled) _implode else emptyParticles
+
+    private val _noteBurst = loadParticleEffect(NOTE_BURST_PARTICLE)
+    val noteBurst: ParticleEffect
+        get() = if (isEnabled) _noteBurst else emptyParticles
 }

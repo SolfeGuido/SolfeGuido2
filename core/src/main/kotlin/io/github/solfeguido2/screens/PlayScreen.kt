@@ -1,8 +1,10 @@
 package io.github.solfeguido2.screens
 
 import com.badlogic.gdx.Gdx
+import com.badlogic.gdx.graphics.g2d.ParticleEffect
 import com.badlogic.gdx.scenes.scene2d.Actor
 import com.badlogic.gdx.utils.Align
+import io.github.solfeguido2.actors.ParticlesActor
 import io.github.solfeguido2.actors.ScoreActor
 import io.github.solfeguido2.core.GameManager
 import io.github.solfeguido2.core.IAnswerGiver
@@ -26,6 +28,9 @@ class PlayScreen(context: Context) : UIScreen(context) {
     private val preferencesManager: PreferencesManager = context.inject()
     private lateinit var gameManager: GameManager
 
+    private val endParticles = ParticlesActor(context.inject<ParticlePool>().noteBurst).also {
+        it.isVisible = false
+    }
     private val pauseCallbacks = gdxArrayOf<() -> Unit>()
     private val resumeCallbacks = gdxArrayOf<() -> Unit>()
 
@@ -59,11 +64,13 @@ class PlayScreen(context: Context) : UIScreen(context) {
                             - timeLost
 
                      */
+
                     gameManager.end()
                     scene2d.zoomDialog {
                         closeOptions = setOf(ZoomDialog.ClosingOptions.ESCAPE, ZoomDialog.ClosingOptions.CROSS)
                         title(Nls.Finished())
                         line(Nls.Score(scoreActor.score))
+
                         borderButton(Nls.Nice()).actor.icon(IconName.Check, 0.5f)
                         setOrigin(Align.center)
 
@@ -72,6 +79,11 @@ class PlayScreen(context: Context) : UIScreen(context) {
                             true
                         }
                     }.show(this.stage)
+                    endParticles.isVisible = true
+                    endParticles.start()
+                    val stage = this.stage
+                    endParticles.setPosition(stage.width / 2f, stage.height / 2f)
+                    stage.addActor(endParticles)
                     true
                 }
 
@@ -125,6 +137,11 @@ class PlayScreen(context: Context) : UIScreen(context) {
                 gameManager.resume()
             }
         }
+    }
+
+    override fun render(delta: Float) {
+        super.render(delta)
+        endParticles.act(delta)
     }
 
     override fun back(): Boolean {
