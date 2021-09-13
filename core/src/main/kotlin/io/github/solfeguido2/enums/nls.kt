@@ -7,6 +7,7 @@ enum class Nls(private val key: String) : BundleLine {
     Play("play"),
     Classic("classic"),
     Levels("levels"),
+    LevelUnlocked("level_unlocked"),
     ModeClassic("mode.classic"),
     ModeLevel("mode.level"),
     Settings("settings"),

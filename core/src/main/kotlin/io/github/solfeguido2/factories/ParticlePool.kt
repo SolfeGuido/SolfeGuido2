@@ -20,7 +20,6 @@ class ParticlePool(context: Context) {
     val emptyParticles = ParticleEffect()
     private val loadedParticles = hashMapOf<String, ParticleEffect>()
 
-    // TODO : add an option to enable/ disable the particles
     private val isEnabled = context.inject<Preferences>().getBoolean("particles", true)
 
     private fun loadParticleEffect(path: String) = ParticleEffect().also {
@@ -35,7 +34,6 @@ class ParticlePool(context: Context) {
         return nwLoad
     }
 
-    // TODO: find a cleaner way to handle this
     val sparkles get() = loadOrGetParticle(SPARKLE_PARTICLE)
 
     val absorb get() = loadOrGetParticle(ABSORB_PARTICLE)

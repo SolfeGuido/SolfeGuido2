@@ -135,7 +135,6 @@ class ClassicSelectionScreen(context: Context) : UIScreen(context) {
                                             MeasureSettings(
                                                 selectedClef,
                                                 signature = selectedKeySignature,
-                                                //TODO: maybe let the user configure the high & low values ?
                                                 generator = RandomGenerator(
                                                     selectedClef.minNote,
                                                     selectedClef.minNote + Constants.MAX_NOTE_SPAN,

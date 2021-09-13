@@ -106,7 +106,6 @@ fun getDefaultSkin(assetManager: AssetStorage, theme: Theme): Skin {
             borderColor = self.getColor("font")
         }
 
-        //TODO : for border style:  border thickness, and border color
         label(name = "borderButtonTopIconStyle") {
             font = iconFont
             fontColor = self.getColor("font")

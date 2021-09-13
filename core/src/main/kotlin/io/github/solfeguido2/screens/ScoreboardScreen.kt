@@ -44,7 +44,6 @@ class ScoreboardScreen(context: Context) : UIScreen(context) {
 
             table {
                 scrollPane {
-                    // TODO
                 }
 
                 it.grow()

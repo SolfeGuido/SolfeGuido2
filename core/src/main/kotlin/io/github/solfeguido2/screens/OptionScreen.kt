@@ -150,7 +150,6 @@ class OptionScreen(context: Context) : UIScreen(context) {
                     setFontScale(0.7f)
                 }
                 buttonGroup(1, 1) {
-                    // Todo : maybe change with a proper slider
                     iconPreference(IconName.VolumeOn, SoundEnabled.Enabled)
                     iconPreference(IconName.VolumeOff, SoundEnabled.Disabled)
                     it.left()
@@ -206,7 +205,6 @@ class OptionScreen(context: Context) : UIScreen(context) {
     }
 
     override fun back(): Boolean {
-        //TODO: could save the last state of the menu screen to return to it instead of the root
         context.inject<StateMachine>().switch<MenuScreen>(StateParameter.witType(menu))
         return true
     }

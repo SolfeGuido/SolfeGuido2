@@ -65,11 +65,12 @@ class PlayScreen(context: Context) : UIScreen(context) {
 
                      */
 
-                    gameManager.end()
+                    val addLine = gameManager.end()
                     scene2d.zoomDialog {
                         closeOptions = setOf(ZoomDialog.ClosingOptions.ESCAPE, ZoomDialog.ClosingOptions.CROSS)
                         title(Nls.Finished())
                         line(Nls.Score(scoreActor.score))
+                        addLine?.let { line(it) }
 
                         borderButton(Nls.Nice()).actor.icon(IconName.Check, 0.5f)
                         setOrigin(Align.center)

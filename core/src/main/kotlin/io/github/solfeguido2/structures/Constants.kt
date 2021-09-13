@@ -46,7 +46,7 @@ object Constants {
 
     // Others
     const val CLASSIC_TIME = 60f
-    const val MAX_NOTE_SPAN = 40
+    const val MAX_NOTE_SPAN = 35
     const val ASYNC_THREADS = 2
 
     // Preferences

@@ -9,7 +9,6 @@ import kotlin.random.Random
 class MidiGenerator(var filename: String = "") : IGeneratorOptions {
 
     override fun next(): Int {
-        //TODO
         return Random.nextInt()
     }
 

@@ -1,6 +1,7 @@
 package io.github.solfeguido2.core
 
 import io.github.solfeguido2.actors.MeasureActor
+import io.github.solfeguido2.enums.Nls
 import io.github.solfeguido2.enums.NoteOrderEnum
 import io.github.solfeguido2.events.AnswerGivenEvent
 import io.github.solfeguido2.events.ResultEvent
@@ -89,7 +90,7 @@ class GameManager(private val context: Context, val settings: GameSettings, priv
         }
     }
 
-    fun end() {
+    fun end(): String? {
         stats.timePlayed = max(((System.currentTimeMillis() - startTime - pauseTime) / 1000f).toInt(), 0)
         statsManager.saveGameScore(settings, stats)
         statsManager.save()
@@ -98,10 +99,16 @@ class GameManager(private val context: Context, val settings: GameSettings, priv
 
         val options = settings.options
         if (options is LevelOptions) {
-            val unlockedLevel = levelManager.registerLevelScore(options.level, stats)
-            //TODO: show to the user when the level is unlocked !
+            val wasAccessible = levelManager.hasAccessTo(options.level.clef, options.level.stage + 1)
+            levelManager.registerLevelScore(options.level, stats)
             levelManager.save()
+            if (!wasAccessible && levelManager.hasAccessTo(
+                    options.level.clef,
+                    options.level.stage + 1
+                )
+            ) return Nls.LevelUnlocked()
         }
+        return null
     }
 
     fun exit() {
