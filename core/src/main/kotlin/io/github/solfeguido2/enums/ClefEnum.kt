@@ -10,7 +10,7 @@ enum class ClefEnum(
         IconName.GClef,
         7.4f,
         1.8f,
-        56
+        53
     ),
     FClef(IconName.FClef, 5.7f, 3f, 36),
     CClef3(IconName.CClef3, 4.5f, 3.5f, 46),

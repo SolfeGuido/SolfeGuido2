@@ -137,7 +137,7 @@ class ClassicSelectionScreen(context: Context) : UIScreen(context) {
                                                 signature = selectedKeySignature,
                                                 generator = RandomGenerator(
                                                     selectedClef.minNote,
-                                                    selectedClef.minNote + Constants.MAX_NOTE_SPAN,
+                                                    selectedClef.minNote +Constants.MAX_NOTE_SPAN,
                                                     accidentalsEnabled
                                                 )
                                             )

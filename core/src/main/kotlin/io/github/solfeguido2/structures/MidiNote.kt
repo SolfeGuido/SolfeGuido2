@@ -43,12 +43,10 @@ data class MidiNote(
     }
 
     fun getMeasurePosition(base: Int, signature: KeySignatureEnum): Int {
-        val relativeStart = base % MIDI_OCTAVE
-        val diff = midiIndex - base
-        var position = 1
-        var firstNote = signature.extractNoteName(NOTE_NAMES[relativeStart])
-        for (i in 1..diff) {
-            val nwNote = signature.extractNoteName(NOTE_NAMES[(relativeStart + i) % MIDI_OCTAVE])
+        var position = 0
+        var firstNote = signature.extractNoteName(NOTE_NAMES[base % MIDI_OCTAVE])
+        for (i in base..midiIndex) {
+            val nwNote = signature.extractNoteName(NOTE_NAMES[i % MIDI_OCTAVE])
             if (firstNote != nwNote && nwNote != NoteNameEnum.None) {
                 firstNote = nwNote
                 position++
