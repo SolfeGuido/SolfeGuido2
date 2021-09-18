@@ -20,10 +20,12 @@ android {
     defaultConfig {
         val appVersion: String by project
         applicationId = "io.github.solfeguido2"
-        minSdkVersion(14)
+        minSdkVersion(20)
         targetSdkVersion(30)
         versionCode = appVersion.split('.').joinToString("") { it.padStart(2, '0') }.toInt()
         versionName = appVersion
+        // Required when setting minSdkVersion to 20 or lower
+        multiDexEnabled = true
     }
     buildTypes {
         named("release") {
@@ -32,6 +34,7 @@ android {
         }
     }
     compileOptions {
+        isCoreLibraryDesugaringEnabled = true
         sourceCompatibility = JavaVersion.VERSION_11
         targetCompatibility = JavaVersion.VERSION_11
     }
@@ -63,6 +66,7 @@ dependencies {
     natives("com.badlogicgames.gdx:gdx-freetype-platform:$gdxVersion:natives-arm64-v8a")
     natives("com.badlogicgames.gdx:gdx-freetype-platform:$gdxVersion:natives-x86")
     natives("com.badlogicgames.gdx:gdx-freetype-platform:$gdxVersion:natives-x86_64")
+    coreLibraryDesugaring("com.android.tools:desugar_jdk_libs:1.1.5")
 }
 
 

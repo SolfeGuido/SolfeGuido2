@@ -30,19 +30,19 @@ class StatsScreen(context: Context) : UIScreen(context) {
     private fun formatSeconds(seconds: Long): String {
         val dur = Duration.ofSeconds(seconds)
         var res = ""
-        val secs = dur.toSecondsPart()
+        val secs = dur.seconds % 60
         if (secs > 0) {
             res = "${secs}s"
         }
-        val minutes = dur.toMinutesPart()
+        val minutes = dur.toMinutes() % 60
         if (minutes > 0) {
             res = "${minutes}mn " + res
         }
-        val hours = dur.toHoursPart()
+        val hours = dur.toHours() % 24
         if (hours > 0) {
             res = "${hours}h " + res
         }
-        val days = dur.toDaysPart()
+        val days = dur.seconds / 86400L
         if (days > 0) {
             res = "${days}j " + res
         }
