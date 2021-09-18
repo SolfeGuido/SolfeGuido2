@@ -42,7 +42,7 @@ class PianoKey(text: String = "", private val type: PianoKeyTypeEnum = PianoKeyT
     }
 
     fun highlight() {
-        this += Actions.color(gCol("correct"), 0.1f) + Actions.color(gCol("font"), 0.8f)
+        this += Actions.color(gCol("correct"), 0.1f) + Actions.color(gCol("reset"), 0.8f)
     }
 
     private val borderDrawable = colorDrawable(gCol("font"))

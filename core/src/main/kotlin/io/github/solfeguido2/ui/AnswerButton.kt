@@ -56,7 +56,7 @@ class AnswerButton(note: String) : Stack(), KGroup, Disableable {
     }
 
     fun highlight() {
-        this.noteLabel += Actions.color(gCol("correct"), 0.1f) + Actions.color(gCol("font"), 0.8f)
+        this.noteLabel += Actions.color(gCol("correct"), 0.1f) + Actions.color(gCol("reset"), 0.8f)
     }
 
     private fun queueActions(action: Action) {

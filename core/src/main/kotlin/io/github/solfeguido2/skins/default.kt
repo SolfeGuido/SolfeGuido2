@@ -33,6 +33,7 @@ fun getDefaultSkin(assetManager: AssetStorage, theme: Theme): Skin {
             color("correct", 125 / 255f, 220 / 255f, 31 / 255f, 1f)
             color("error", 179 / 255f, 40 / 255f, 77 / 255f, 1f)
             color("stripe", 151 / 255f, 155 / 255f, 194 / 255f, 74 / 255f)
+            color("reset", 245 / 255f, 245 / 255f, 245 / 255f)
         } else {
             color("background", 34f / 255f, 40f / 255f, 49f / 255f, 1f)
             color("font", 238f / 255f, 238f / 255f, 238f / 255f, 1f)
@@ -40,6 +41,7 @@ fun getDefaultSkin(assetManager: AssetStorage, theme: Theme): Skin {
             color("correct", 72f / 255f, 158f / 255f, 115f / 255f, 1f)
             color("error", 168f / 255f, 17f / 255f, 0f, 1f)
             color("stripe", 70 / 255f, 77 / 255f, 87 / 255f, 74 / 255f)
+            color("reset", 238f / 255f, 238f / 255f, 238f / 255f)
         }
 
         label {
