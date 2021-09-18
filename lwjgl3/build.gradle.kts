@@ -45,6 +45,7 @@ tasks.register<Jar>("dist") {
     from(assetsDir)
 
     manifest {
+        duplicatesStrategy = org.gradle.api.file.DuplicatesStrategy.INCLUDE
         attributes["Main-Class"] = mainClassName
     }
 }
