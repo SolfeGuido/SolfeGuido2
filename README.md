@@ -1,6 +1,10 @@
 # SolfeGuido2
 Learn to read a music sheet the fun way !
 
+[<img src="https://play.google.com/intl/en_us/badges/images/generic/en-play-badge.png"
+alt="Get it on Google Play"
+height="80">](https://play.google.com/store/apps/details?id=io.github.solfeguido2)
+
 SolfeGuido2 is a complete rewrite of the first version.
 It was created as a mobile and desktop game.
 It works on computer, but is more enjoyable on a phone or tablet.
